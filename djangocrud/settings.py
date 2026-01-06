@@ -89,14 +89,19 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://basededatosnube_1wje_user:w066iQ7HSNiKYKrKSUwSTJ5gTf6Q2BPN@dpg-d5d1kgm3jp1c73ejng4g-a/basededatosnube_1wje',
-        conn_max_age=600,
-    )
-}
-
+if 'RENDER' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.config(
+            conn_max_age=600
+        )
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
