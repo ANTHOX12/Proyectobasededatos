@@ -1,17 +1,33 @@
-{% extends 'base.html' %}
-{% block content %}
-<main class="container py-5">
-    <section class="card card-body">
-        <h1 class="display-1 text-center">Django App</h1>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore quibusdam, dolorem quaerat sapiente possimus atque nesciunt odio modi eveniet enim assumenda voluptates tempore minus dolor fugit, accusantium sequi debitis earum!
-        <div class="text-center">
-            <a class="btn btn-secondary" href="/signin/">
-                Signin
-            </a>
-            <a class="btn btn-dark" href="/signup/">
-                Signup
-            </a>
-        </div>
-    </section>
-</main>
-{% endblock %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Hoja de Vida</title>
+</head>
+<body>
+  <h1>Hoja de Vida</h1>
+
+  <p>✅ El servidor está vivo.</p>
+
+  <hr>
+
+  <h2>Datos personales</h2>
+  {% if datos %}
+    <p><b>Nombre:</b> {{ datos }}</p>
+  {% else %}
+    <p>No hay datos personales aún.</p>
+  {% endif %}
+
+  <h2>Cursos</h2>
+  <p>Total: {{ cursos|length }}</p>
+
+  <h2>Experiencia</h2>
+  <p>Total: {{ experiencia|length }}</p>
+
+  <h2>Productos académicos</h2>
+  <p>Total: {{ productos|length }}</p>
+
+  <h2>Reconocimientos</h2>
+  <p>Total: {{ reconocimientos|length }}</p>
+</body>
+</html>
