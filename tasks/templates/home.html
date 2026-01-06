@@ -2,32 +2,330 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hoja de Vida</title>
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a33;
+      --muted:#9fb2d0;
+      --text:#eaf0ff;
+      --line:rgba(255,255,255,.08);
+      --accent:#6ea8fe;
+      --ok:#22c55e;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(110,168,254,.18), transparent 60%),
+                  radial-gradient(900px 500px at 90% 20%, rgba(34,197,94,.12), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    .container{max-width: 980px; margin: 0 auto; padding: 28px 18px 60px;}
+    .top{
+      display:flex; gap:16px; align-items:center; justify-content:space-between;
+      padding: 18px; border: 1px solid var(--line); border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      backdrop-filter: blur(8px);
+    }
+    .title h1{margin:0; font-size: 28px; letter-spacing:.2px}
+    .title p{margin:6px 0 0; color:var(--muted); font-size: 14px}
+
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 10px 12px; border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      font-size: 13px; color: var(--muted);
+      user-select:none;
+    }
+    .dot{width:9px; height:9px; border-radius:50%; background: var(--ok); box-shadow: 0 0 18px rgba(34,197,94,.5);}
+
+    .grid{display:grid; grid-template-columns: 1fr; gap: 14px; margin-top: 16px;}
+    @media(min-width: 860px){
+      .grid{grid-template-columns: 1.3fr .7fr;}
+    }
+
+    .card{
+      border: 1px solid var(--line);
+      background: rgba(15,26,51,.72);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size: 16px;
+      letter-spacing:.3px;
+      color: var(--text);
+      display:flex; align-items:center; justify-content:space-between;
+    }
+
+    .kv{
+      display:grid; grid-template-columns: 160px 1fr;
+      gap: 8px 12px;
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      font-size: 14px;
+    }
+    .k{color: var(--muted)}
+    .v{color: var(--text)}
+    .pill{
+      display:inline-flex; align-items:center;
+      padding: 5px 10px; border-radius:999px;
+      border:1px solid var(--line); background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tabs{
+      display:flex; gap:8px; flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .tab{
+      cursor:pointer;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      transition: .15s;
+    }
+    .tab.active{
+      color: var(--text);
+      border-color: rgba(110,168,254,.55);
+      background: rgba(110,168,254,.12);
+    }
+
+    .section{margin-top: 14px; display:none;}
+    .section.active{display:block;}
+
+    .item{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255,255,255,.02);
+      margin-top: 10px;
+    }
+    .item .head{
+      display:flex; gap:10px; justify-content:space-between; align-items:flex-start;
+    }
+    .item .head b{font-size: 14px;}
+    .item small{color: var(--muted)}
+    .muted{color: var(--muted)}
+    .empty{
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 10px;
+      color: var(--muted);
+      background: rgba(255,255,255,.02);
+    }
+
+    .right .card{position: sticky; top: 16px;}
+    a{color: var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
 </head>
+
 <body>
-  <h1>Hoja de Vida</h1>
+  <div class="container">
+    <div class="top">
+      <div class="title">
+        <h1>Hoja de Vida</h1>
+        <p>Proyecto Django + Render • Datos desde PostgreSQL</p>
+      </div>
+      <div class="badge" title="Estado">
+        <span class="dot"></span>
+        Servidor activo
+      </div>
+    </div>
 
-  <p>✅ El servidor está vivo.</p>
+    <div class="grid">
+      <div class="left">
+        <div class="card">
+          <h2>
+            Perfil
+            {% if perfil %}
+              <span class="pill">Activo</span>
+            {% else %}
+              <span class="pill">Sin registros</span>
+            {% endif %}
+          </h2>
 
-  <hr>
+          {% if perfil %}
+            <div class="kv">
+              <div class="k">Nombres</div><div class="v">{{ perfil.nombres }}</div>
+              <div class="k">Apellidos</div><div class="v">{{ perfil.apellidos }}</div>
+              <div class="k">Cédula</div><div class="v">{{ perfil.numerocedula }}</div>
+              <div class="k">Sexo</div><div class="v">{{ perfil.get_sexo_display }}</div>
+              <div class="k">Estado civil</div><div class="v">{{ perfil.estadocivil|default:"-" }}</div>
+              <div class="k">Nacionalidad</div><div class="v">{{ perfil.nacionalidad|default:"-" }}</div>
+              <div class="k">Fecha nacimiento</div><div class="v">{{ perfil.fechanacimiento|default:"-" }}</div>
+              <div class="k">Web</div>
+              <div class="v">
+                {% if perfil.sitioweb %}
+                  <a href="{{ perfil.sitioweb }}" target="_blank" rel="noreferrer">{{ perfil.sitioweb }}</a>
+                {% else %}
+                  -
+                {% endif %}
+              </div>
+              <div class="k">Descripción</div><div class="v">{{ perfil.descripcionperfil|default:"-" }}</div>
+            </div>
+          {% else %}
+            <div class="empty">
+              Aún no hay un perfil activo en la base de datos. <br/>
+              Crea un registro en <b>DatosPersonales</b> para que la hoja de vida se llene.
+            </div>
+          {% endif %}
+        </div>
 
-  <h2>Datos personales</h2>
-  {% if datos %}
-    <p><b>Nombre:</b> {{ datos }}</p>
-  {% else %}
-    <p>No hay datos personales aún.</p>
-  {% endif %}
+        <div class="card" style="margin-top:14px;">
+          <h2>Secciones</h2>
 
-  <h2>Cursos</h2>
-  <p>Total: {{ cursos|length }}</p>
+          <div class="tabs" id="tabs">
+            <button class="tab active" data-target="sec-cursos">Cursos ({{ cursos|length }})</button>
+            <button class="tab" data-target="sec-exp">Experiencia ({{ experiencias|length }})</button>
+            <button class="tab" data-target="sec-prod">Productos ({{ productos|length }})</button>
+            <button class="tab" data-target="sec-rec">Reconocimientos ({{ reconocimientos|length }})</button>
+          </div>
 
-  <h2>Experiencia</h2>
-  <p>Total: {{ experiencia|length }}</p>
+          <!-- CURSOS -->
+          <div class="section active" id="sec-cursos">
+            {% if cursos %}
+              {% for c in cursos %}
+                <div class="item">
+                  <div class="head">
+                    <div>
+                      <b>{{ c.nombrecurso }}</b><br/>
+                      <small>
+                        {% if c.fechainicio %}{{ c.fechainicio }}{% endif %}
+                        {% if c.fechafin %} — {{ c.fechafin }}{% endif %}
+                        {% if c.totalhoras %} • {{ c.totalhoras }} horas{% endif %}
+                      </small>
+                    </div>
+                    <div class="pill">Curso</div>
+                  </div>
+                  {% if c.descripcioncurso %}<p class="muted" style="margin:10px 0 0;">{{ c.descripcioncurso }}</p>{% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty">No hay cursos aún.</div>
+            {% endif %}
+          </div>
 
-  <h2>Productos académicos</h2>
-  <p>Total: {{ productos|length }}</p>
+          <!-- EXPERIENCIA -->
+          <div class="section" id="sec-exp">
+            {% if experiencias %}
+              {% for e in experiencias %}
+                <div class="item">
+                  <div class="head">
+                    <div>
+                      <b>{{ e.cargodesempenado }}</b><br/>
+                      <small>
+                        {{ e.nombrempresa }}
+                        {% if e.lugarempresa %} • {{ e.lugarempresa }}{% endif %}
+                      </small><br/>
+                      <small>
+                        {% if e.fechainiciogestion %}{{ e.fechainiciogestion }}{% endif %}
+                        {% if e.fechafingestion %} — {{ e.fechafingestion }}{% endif %}
+                      </small>
+                    </div>
+                    <div class="pill">Trabajo</div>
+                  </div>
+                  {% if e.descripcionfunciones %}<p class="muted" style="margin:10px 0 0;">{{ e.descripcionfunciones }}</p>{% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty">No hay experiencia laboral aún.</div>
+            {% endif %}
+          </div>
 
-  <h2>Reconocimientos</h2>
-  <p>Total: {{ reconocimientos|length }}</p>
+          <!-- PRODUCTOS -->
+          <div class="section" id="sec-prod">
+            {% if productos %}
+              {% for p in productos %}
+                <div class="item">
+                  <div class="head">
+                    <div>
+                      <b>{{ p.nombrerecurso }}</b><br/>
+                      <small>
+                        {% if p.clasificador %}{{ p.clasificador }}{% endif %}
+                      </small>
+                    </div>
+                    <div class="pill">Académico</div>
+                  </div>
+                  {% if p.descripcion %}<p class="muted" style="margin:10px 0 0;">{{ p.descripcion }}</p>{% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty">No hay productos académicos aún.</div>
+            {% endif %}
+          </div>
+
+          <!-- RECONOCIMIENTOS -->
+          <div class="section" id="sec-rec">
+            {% if reconocimientos %}
+              {% for r in reconocimientos %}
+                <div class="item">
+                  <div class="head">
+                    <div>
+                      <b>{{ r.tiporeconocimiento }}</b><br/>
+                      <small>
+                        {% if r.fechareconocimiento %}{{ r.fechareconocimiento }}{% endif %}
+                        {% if r.entidadpatrocinadora %} • {{ r.entidadpatrocinadora }}{% endif %}
+                      </small>
+                    </div>
+                    <div class="pill">Logro</div>
+                  </div>
+                  {% if r.descripcionreconocimiento %}<p class="muted" style="margin:10px 0 0;">{{ r.descripcionreconocimiento }}</p>{% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty">No hay reconocimientos aún.</div>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card">
+          <h2>Tips rápidos</h2>
+          <p class="muted" style="margin:0;">
+            Si todo está en 0, es porque no hay registros en la base.
+            Lo siguiente que haremos es crear pantallas para ingresar datos (sin usar Admin).
+          </p>
+          <hr style="border:none; border-top:1px solid var(--line); margin:14px 0;">
+          <p class="muted" style="margin:0;">
+            <b>Pro tip:</b> tu modelo tiene <code>perfilactivo</code>. Si creas más de un perfil,
+            asegúrate de dejar solo uno con <code>perfilactivo=1</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tabs simples
+    const tabs = document.querySelectorAll(".tab");
+    const sections = document.querySelectorAll(".section");
+
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabs.forEach(b => b.classList.remove("active"));
+        sections.forEach(s => s.classList.remove("active"));
+
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.target).classList.add("active");
+      });
+    });
+  </script>
 </body>
 </html>
+
