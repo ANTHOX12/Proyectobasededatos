@@ -8,28 +8,28 @@ class DatosPersonales(models.Model):
     ]
 
     # Perfil
-    descripcionperfil = models.CharField(max_length=50, blank=True)
-    perfilactivo = models.IntegerField(default=1)
+    descripcion_de_perfil = models.CharField(max_length=50, blank=True)
+    perfil_activo = models.IntegerField(default=1)
 
     # Datos básicos
     apellidos = models.CharField(max_length=60)
     nombres = models.CharField(max_length=60)
 
     nacionalidad = models.CharField(max_length=20, blank=True)
-    lugarnacimiento = models.CharField(max_length=60, blank=True)
-    fechanacimiento = models.DateField(null=True, blank=True)
+    lugar_de_nacimiento = models.CharField(max_length=60, blank=True)
+    fechana_de_nacimiento = models.DateField(null=True, blank=True)
 
-    numerocedula = models.CharField(max_length=10, unique=True)
+    numero_de_cedula = models.CharField(max_length=10, unique=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
 
-    estadocivil = models.CharField(max_length=50, blank=True)
-    licenciaconducir = models.CharField(max_length=6, blank=True)
+    estado_civil = models.CharField(max_length=50, blank=True)
+    licencia_de_conducir = models.CharField(max_length=6, blank=True)
 
-    telefonoconvencional = models.CharField(max_length=15, blank=True)
-    telefonofijo = models.CharField(max_length=15, blank=True)
+    telefono_convencional = models.CharField(max_length=15, blank=True)
+    telefono_fijo = models.CharField(max_length=15, blank=True)
 
-    direcciontrabajo = models.CharField(max_length=50, blank=True)
-    direcciondomiciliaria = models.CharField(max_length=50, blank=True)
+    direccion_de_trabajo = models.CharField(max_length=50, blank=True)
+    direccion_domiciliaria = models.CharField(max_length=50, blank=True)
 
     sitioweb = models.CharField(max_length=60, blank=True)
 
@@ -42,26 +42,26 @@ class ExperienciaLaboral(models.Model):
         DatosPersonales, on_delete=models.CASCADE, related_name="experiencias"
     )
 
-    cargodesempenado = models.CharField(max_length=100)
-    nombrempresa = models.CharField(max_length=50)
+    cargo_desempenado = models.CharField(max_length=100)
+    nombre_de_la_empresa = models.CharField(max_length=50)
     lugarempresa = models.CharField(max_length=50, blank=True)
 
-    emailempresa = models.EmailField(blank=True)
-    sitiowebempresa = models.CharField(max_length=100, blank=True)
+    email_empresa = models.EmailField(blank=True)
+    sitio_web_empresa = models.CharField(max_length=100, blank=True)
 
-    nombrecontactoempresarial = models.CharField(max_length=100, blank=True)
-    telefonocontactoempresarial = models.CharField(max_length=60, blank=True)
+    nombre_contacto_empresarial = models.CharField(max_length=100, blank=True)
+    telefono_contacto_empresarial = models.CharField(max_length=60, blank=True)
 
-    fechainiciogestion = models.DateField(null=True, blank=True)
-    fechafingestion = models.DateField(null=True, blank=True)
+    fecha_de_inicio_de_gestion = models.DateField(null=True, blank=True)
+    fecha_fin_de_gestion = models.DateField(null=True, blank=True)
 
-    descripcionfunciones = models.CharField(max_length=100, blank=True)
+    descripcion_de_funciones = models.CharField(max_length=100, blank=True)
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
-    rutacertificado = models.CharField(max_length=100, blank=True)
+    ruta_certificado = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return f"{self.cargodesempenado} - {self.nombrempresa}"
+        return f"{self.cargo_desempenado} - {self.nombre_de_la_empresa}"
 
 
 class Reconocimiento(models.Model):
@@ -69,19 +69,19 @@ class Reconocimiento(models.Model):
         DatosPersonales, on_delete=models.CASCADE, related_name="reconocimientos"
     )
 
-    tiporeconocimiento = models.CharField(max_length=100)
-    fechareconocimiento = models.DateField(null=True, blank=True)
-    descripcionreconocimiento = models.CharField(max_length=100, blank=True)
+    tipo_reconocimiento = models.CharField(max_length=100)
+    fecha_reconocimiento = models.DateField(null=True, blank=True)
+    descripcion_reconocimiento = models.CharField(max_length=100, blank=True)
 
-    entidadpatrocinadora = models.CharField(max_length=100, blank=True)
-    nombrecontactoauspicia = models.CharField(max_length=100, blank=True)
-    telefonocontactoauspicia = models.CharField(max_length=60, blank=True)
+    entidad_patrocinadora = models.CharField(max_length=100, blank=True)
+    nombre_contacto_auspicia = models.CharField(max_length=100, blank=True)
+    telefono_contacto_auspicia = models.CharField(max_length=60, blank=True)
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
     rutacertificado = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return self.tiporeconocimiento
+        return self.tipo_reconocimiento
 
 
 class CursoRealizado(models.Model):
@@ -90,16 +90,16 @@ class CursoRealizado(models.Model):
     )
 
     nombrecurso = models.CharField(max_length=100)
-    fechainicio = models.DateField(null=True, blank=True)
-    fechafin = models.DateField(null=True, blank=True)
+    fecha_inicio = models.DateField(null=True, blank=True)
+    fecha_fin = models.DateField(null=True, blank=True)
 
-    totalhoras = models.IntegerField(null=True, blank=True)
-    descripcioncurso = models.CharField(max_length=100, blank=True)
+    total_horas = models.IntegerField(null=True, blank=True)
+    descripcion_curso = models.CharField(max_length=100, blank=True)
 
-    entidadpatrocinadora = models.CharField(max_length=100, blank=True)
-    nombrecontactoauspicia = models.CharField(max_length=100, blank=True)
-    telefonocontactoauspicia = models.CharField(max_length=60, blank=True)
-    emailempresapatrocinadora = models.EmailField(blank=True)
+    entidad_patrocinadora = models.CharField(max_length=100, blank=True)
+    nombre_contacto_auspicia = models.CharField(max_length=100, blank=True)
+    telefono_contactoauspicia = models.CharField(max_length=60, blank=True)
+    email_empresapatrocinadora = models.EmailField(blank=True)
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
     rutacertificado = models.CharField(max_length=100, blank=True)
