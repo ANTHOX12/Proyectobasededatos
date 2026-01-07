@@ -10,7 +10,7 @@ from .models import (
 
 def home(request):
     # Trae el primer perfil activo (si existe)
-    perfil = DatosPersonales.objects.filter(perfilactivo=1).first()
+    perfil = DatosPersonales.objects.filter(perfil_activo=1).first()
 
     # Si no hay perfil todavía, manda listas vacías para que no explote el HTML
     if not perfil:
