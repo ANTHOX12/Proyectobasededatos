@@ -1,183 +1,99 @@
 {% extends "base.html" %}
+
+{% block title %}Hoja de Vida{% endblock %}
+
 {% block content %}
 
-<div style="max-width: 980px; margin: 0 auto; padding: 22px; line-height: 1.5;">
+{% if perfil %}
+  <h1 style="margin:0 0 6px 0;">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
 
-  {% if perfil %}
-
-    <!-- ================= HEADER ================= -->
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:18px;">
-      <div>
-        <h1 style="margin:0 0 6px 0;">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
-
-        {% if perfil.descripcion_de_perfil %}
-          <p style="margin:0;"><strong>Perfil:</strong> {{ perfil.descripcion_de_perfil }}</p>
-        {% endif %}
-      </div>
-
-      <div style="text-align:right; font-size:14px;">
-        <div><strong>Cédula:</strong> {{ perfil.numero_de_cedula }}</div>
-        <div><strong>Sexo:</strong> {{ perfil.get_sexo_display }}</div>
-        {% if perfil.estado_civil %}<div><strong>Estado civil:</strong> {{ perfil.estado_civil }}</div>{% endif %}
-        {% if perfil.licencia_de_conducir %}<div><strong>Licencia:</strong> {{ perfil.licencia_de_conducir }}</div>{% endif %}
-      </div>
-    </div>
-
-    <hr style="margin:18px 0;">
-
-    <!-- ================= DATOS PERSONALES ================= -->
-    <h2 style="margin:0 0 10px 0;">Datos personales</h2>
-
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px 22px;">
-      <div><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</div>
-      <div><strong>Lugar de nacimiento:</strong> {{ perfil.lugar_de_nacimiento }}</div>
-      <div><strong>Fecha de nacimiento:</strong> {{ perfil.fechana_de_nacimiento }}</div>
-
-      <div><strong>Teléfono convencional:</strong> {{ perfil.telefono_convencional }}</div>
-      <div><strong>Teléfono fijo:</strong> {{ perfil.telefono_fijo }}</div>
-
-      <div style="grid-column: 1 / -1;">
-        <strong>Dirección domiciliaria:</strong> {{ perfil.direccion_domiciliaria }}
-      </div>
-      <div style="grid-column: 1 / -1;">
-        <strong>Dirección de trabajo:</strong> {{ perfil.direccion_de_trabajo }}
-      </div>
-
-      {% if perfil.sitioweb %}
-        <div style="grid-column: 1 / -1;">
-          <strong>Sitio web:</strong> {{ perfil.sitioweb }}
-        </div>
-      {% endif %}
-    </div>
-
-    <hr style="margin:18px 0;">
-
-    <!-- ================= EXPERIENCIA LABORAL ================= -->
-    <h2 style="margin:0 0 10px 0;">Experiencia laboral</h2>
-
-    {% for exp in experiencias %}
-      <div style="padding:12px 14px; border:1px solid #ddd; border-radius:10px; margin-bottom:12px;">
-        <div style="display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;">
-          <div>
-            <h3 style="margin:0 0 6px 0;">{{ exp.cargo_desempenado }}</h3>
-            <div><strong>Empresa:</strong> {{ exp.nombre_de_la_empresa }}</div>
-            {% if exp.lugarempresa %}<div><strong>Ubicación:</strong> {{ exp.lugarempresa }}</div>{% endif %}
-          </div>
-
-          <div style="text-align:right;">
-            <div><strong>Inicio:</strong> {{ exp.fecha_de_inicio_de_gestion }}</div>
-            <div><strong>Fin:</strong> {{ exp.fecha_fin_de_gestion }}</div>
-          </div>
-        </div>
-
-        {% if exp.descripcion_de_funciones %}
-          <p style="margin:10px 0 0 0;"><strong>Funciones:</strong> {{ exp.descripcion_de_funciones }}</p>
-        {% endif %}
-
-        {% if exp.email_empresa or exp.sitio_web_empresa %}
-          <p style="margin:8px 0 0 0; font-size:14px;">
-            {% if exp.email_empresa %}<span><strong>Email:</strong> {{ exp.email_empresa }}</span>{% endif %}
-            {% if exp.email_empresa and exp.sitio_web_empresa %} | {% endif %}
-            {% if exp.sitio_web_empresa %}<span><strong>Web:</strong> {{ exp.sitio_web_empresa }}</span>{% endif %}
-          </p>
-        {% endif %}
-      </div>
-    {% empty %}
-      <p>No hay experiencia laboral marcada para mostrar.</p>
-    {% endfor %}
-
-    <hr style="margin:18px 0;">
-
-    <!-- ================= CURSOS ================= -->
-    <h2 style="margin:0 0 10px 0;">Cursos realizados</h2>
-
-    {% for curso in cursos %}
-      <div style="padding:12px 14px; border:1px solid #ddd; border-radius:10px; margin-bottom:12px;">
-        <div style="display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;">
-          <div>
-            <h3 style="margin:0 0 6px 0;">{{ curso.nombrecurso }}</h3>
-            {% if curso.descripcion_curso %}
-              <p style="margin:0;">{{ curso.descripcion_curso }}</p>
-            {% endif %}
-          </div>
-
-          <div style="text-align:right;">
-            <div><strong>Horas:</strong> {{ curso.total_horas }}</div>
-            <div><strong>Inicio:</strong> {{ curso.fecha_inicio }}</div>
-            <div><strong>Fin:</strong> {{ curso.fecha_fin }}</div>
-          </div>
-        </div>
-
-        {% if curso.entidad_patrocinadora %}
-          <p style="margin:8px 0 0 0; font-size:14px;">
-            <strong>Entidad:</strong> {{ curso.entidad_patrocinadora }}
-          </p>
-        {% endif %}
-      </div>
-    {% empty %}
-      <p>No hay cursos marcados para mostrar.</p>
-    {% endfor %}
-
-    <hr style="margin:18px 0;">
-
-    <!-- ================= RECONOCIMIENTOS ================= -->
-    <h2 style="margin:0 0 10px 0;">Reconocimientos</h2>
-
-    {% for rec in reconocimientos %}
-      <div style="padding:12px 14px; border:1px solid #ddd; border-radius:10px; margin-bottom:12px;">
-        <div style="display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;">
-          <div>
-            <h3 style="margin:0 0 6px 0;">{{ rec.tipo_reconocimiento }}</h3>
-            {% if rec.descripcion_reconocimiento %}
-              <p style="margin:0;">{{ rec.descripcion_reconocimiento }}</p>
-            {% endif %}
-            {% if rec.entidad_patrocinadora %}
-              <div style="font-size:14px;"><strong>Entidad:</strong> {{ rec.entidad_patrocinadora }}</div>
-            {% endif %}
-          </div>
-
-          <div style="text-align:right;">
-            <div><strong>Fecha:</strong> {{ rec.fecha_reconocimiento }}</div>
-          </div>
-        </div>
-      </div>
-    {% empty %}
-      <p>No hay reconocimientos marcados para mostrar.</p>
-    {% endfor %}
-
-    <hr style="margin:18px 0;">
-
-    <!-- ================= PRODUCTOS ACADÉMICOS ================= -->
-    <h2 style="margin:0 0 10px 0;">Productos académicos</h2>
-
-    {% for prod in productos %}
-      <div style="padding:12px 14px; border:1px solid #ddd; border-radius:10px; margin-bottom:12px;">
-        <h3 style="margin:0 0 6px 0;">{{ prod.nombrerecurso }}</h3>
-
-        {% if prod.clasificador %}
-          <div style="font-size:14px;"><strong>Clasificador:</strong> {{ prod.clasificador }}</div>
-        {% endif %}
-
-        {% if prod.descripcion %}
-          <p style="margin:8px 0 0 0;">{{ prod.descripcion }}</p>
-        {% endif %}
-      </div>
-    {% empty %}
-      <p>No hay productos académicos marcados para mostrar.</p>
-    {% endfor %}
-
-  {% else %}
-
-    <!-- ================= SIN PERFIL ================= -->
-    <div style="padding:18px; border:1px solid #ddd; border-radius:10px;">
-      <h2 style="margin:0 0 8px 0;">No hay perfil activo</h2>
-      <p style="margin:0;">
-        Entra al <strong>Admin</strong> y crea un registro en <strong>DatosPersonales</strong> con <code>perfil_activo = 1</code>.
-      </p>
-    </div>
-
+  {% if perfil.descripcion_de_perfil %}
+    <p><strong>Perfil:</strong> {{ perfil.descripcion_de_perfil }}</p>
   {% endif %}
 
-</div>
+  <hr>
+
+  <h2>Datos personales</h2>
+  <ul>
+    <li><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</li>
+    <li><strong>Lugar de nacimiento:</strong> {{ perfil.lugar_de_nacimiento }}</li>
+    <li><strong>Fecha de nacimiento:</strong> {{ perfil.fechana_de_nacimiento }}</li>
+    <li><strong>Cédula:</strong> {{ perfil.numero_de_cedula }}</li>
+    <li><strong>Sexo:</strong> {{ perfil.get_sexo_display }}</li>
+    <li><strong>Estado civil:</strong> {{ perfil.estado_civil }}</li>
+    <li><strong>Licencia:</strong> {{ perfil.licencia_de_conducir }}</li>
+  </ul>
+
+  <h3>Contacto</h3>
+  <ul>
+    <li><strong>Teléfono convencional:</strong> {{ perfil.telefono_convencional }}</li>
+    <li><strong>Teléfono fijo:</strong> {{ perfil.telefono_fijo }}</li>
+    <li><strong>Dirección domiciliaria:</strong> {{ perfil.direccion_domiciliaria }}</li>
+    <li><strong>Dirección de trabajo:</strong> {{ perfil.direccion_de_trabajo }}</li>
+    {% if perfil.sitioweb %}<li><strong>Sitio web:</strong> {{ perfil.sitioweb }}</li>{% endif %}
+  </ul>
+
+  <hr>
+
+  <h2>Experiencia laboral</h2>
+  {% for exp in experiencias %}
+    <div style="margin-bottom: 12px;">
+      <h3 style="margin:0;">{{ exp.cargo_desempenado }}</h3>
+      <div><strong>Empresa:</strong> {{ exp.nombre_de_la_empresa }}</div>
+      <div><strong>Periodo:</strong> {{ exp.fecha_de_inicio_de_gestion }} - {{ exp.fecha_fin_de_gestion }}</div>
+      {% if exp.descripcion_de_funciones %}
+        <p style="margin:6px 0 0 0;">{{ exp.descripcion_de_funciones }}</p>
+      {% endif %}
+    </div>
+  {% empty %}
+    <p>No hay experiencia marcada para mostrar.</p>
+  {% endfor %}
+
+  <hr>
+
+  <h2>Cursos realizados</h2>
+  {% for curso in cursos %}
+    <div style="margin-bottom: 12px;">
+      <h3 style="margin:0;">{{ curso.nombrecurso }}</h3>
+      {% if curso.descripcion_curso %}<p style="margin:6px 0 0 0;">{{ curso.descripcion_curso }}</p>{% endif %}
+      <div><strong>Horas:</strong> {{ curso.total_horas }}</div>
+      <div><strong>Periodo:</strong> {{ curso.fecha_inicio }} - {{ curso.fecha_fin }}</div>
+      {% if curso.entidad_patrocinadora %}<div><strong>Entidad:</strong> {{ curso.entidad_patrocinadora }}</div>{% endif %}
+    </div>
+  {% empty %}
+    <p>No hay cursos marcados para mostrar.</p>
+  {% endfor %}
+
+  <hr>
+
+  <h2>Reconocimientos</h2>
+  {% for rec in reconocimientos %}
+    <div style="margin-bottom: 12px;">
+      <h3 style="margin:0;">{{ rec.tipo_reconocimiento }}</h3>
+      {% if rec.descripcion_reconocimiento %}<p style="margin:6px 0 0 0;">{{ rec.descripcion_reconocimiento }}</p>{% endif %}
+      <div><strong>Fecha:</strong> {{ rec.fecha_reconocimiento }}</div>
+      {% if rec.entidad_patrocinadora %}<div><strong>Entidad:</strong> {{ rec.entidad_patrocinadora }}</div>{% endif %}
+    </div>
+  {% empty %}
+    <p>No hay reconocimientos marcados para mostrar.</p>
+  {% endfor %}
+
+  <hr>
+
+  <h2>Productos académicos</h2>
+  {% for prod in productos %}
+    <div style="margin-bottom: 12px;">
+      <h3 style="margin:0;">{{ prod.nombrerecurso }}</h3>
+      {% if prod.clasificador %}<div><strong>Clasificador:</strong> {{ prod.clasificador }}</div>{% endif %}
+      {% if prod.descripcion %}<p style="margin:6px 0 0 0;">{{ prod.descripcion }}</p>{% endif %}
+    </div>
+  {% empty %}
+    <p>No hay productos académicos marcados para mostrar.</p>
+  {% endfor %}
+
+{% else %}
+  <h1>No hay perfil activo</h1>
+  <p>Crea un registro en <strong>DatosPersonales</strong> con <code>perfil_activo = 1</code>.</p>
+{% endif %}
 
 {% endblock %}
