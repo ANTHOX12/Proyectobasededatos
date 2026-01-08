@@ -7,194 +7,219 @@
 
   <style>
     :root{
-      --navy:#243A53;
-      --navy2:#1f3348;
-      --bg:#f1f3f7;
+      --navy:#233a52;
+      --navy2:#1a2c3f;
+      --paper:#f6f7fb;
+      --card:#ffffff;
       --text:#0f172a;
-      --muted:#4b5563;
-      --white:#ffffff;
-      --pill:#2b3e56;
+      --muted:#52606d;
+      --line:#e7eaf1;
+      --pill:#223a54;
       --radius:22px;
+      --shadow: 0 14px 30px rgba(16, 24, 40, .12);
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: var(--bg);
+      background: var(--paper);
       color: var(--text);
-    }
-    .page{
-      max-width: 1100px;
-      margin: 18px auto;
-      padding: 18px;
-    }
-    .sheet{
-      display:grid;
-      grid-template-columns: 320px 1fr;
-      gap: 22px;
-      background: transparent;
-    }
-    @media (max-width: 980px){
-      .sheet{grid-template-columns: 1fr}
+      overflow-x: hidden; /* evita scroll lateral por padding */
     }
 
-    /* LEFT CARD */
-    .left{
+    /* ====== Full width layout (sin espacios laterales) ====== */
+    .layout{
+      min-height: 100vh;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    @media (max-width: 980px){
+      .layout{
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+    }
+
+    /* ====== Sidebar ====== */
+    .side{
       background: var(--navy);
-      color: var(--white);
       border-radius: var(--radius);
-      padding: 18px 18px 20px;
+      color: #fff;
+      padding: 18px;
+      box-shadow: var(--shadow);
       position: sticky;
       top: 18px;
       height: fit-content;
     }
+
     @media (max-width: 980px){
-      .left{ position: relative; top: auto; }
+      .side{ position: relative; top: 0; }
     }
-    .avatar{
-      width: 170px;
-      height: 170px;
+
+    .photo{
+      width: 180px;
+      height: 180px;
       margin: 6px auto 14px;
-      border-radius: 22px;
+      border-radius: 26px;
       overflow:hidden;
-      border: 2px solid rgba(255,255,255,.6);
-      box-shadow: 0 10px 26px rgba(0,0,0,.25);
+      border: 2px solid rgba(255,255,255,.65);
       background: rgba(255,255,255,.08);
+      box-shadow: 0 12px 26px rgba(0,0,0,.25);
       display:flex;
       align-items:center;
       justify-content:center;
     }
-    .avatar img{
-      width: 100%;
-      height: 100%;
+
+    .photo img{
+      width:100%;
+      height:100%;
       object-fit: cover;
       display:block;
     }
-    .name{
-      text-align:left;
-      font-size: 38px;
+
+    .fullname{
+      font-weight: 900;
+      font-size: 40px;
       line-height: 1.02;
-      margin: 10px 0 10px;
+      margin: 8px 0 10px;
       letter-spacing:.2px;
-      font-weight: 800;
-    }
-    .role{
-      display:inline-block;
-      margin-top: 8px;
-      background: rgba(255,255,255,.92);
-      color: var(--navy2);
-      padding: 7px 10px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 12px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
     }
 
-    .left-section{
-      margin-top: 18px;
+    .tag{
+      display:inline-block;
+      background: rgba(255,255,255,.92);
+      color: var(--navy2);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .side-section{
+      margin-top: 16px;
       padding-top: 14px;
       border-top: 1px solid rgba(255,255,255,.18);
     }
-    .left-title{
-      font-size: 13px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
+    .side-title{
       margin: 0 0 10px;
-      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 900;
+      opacity: .95;
     }
+
     .contact{
       display:grid;
       gap: 10px;
       font-size: 13px;
-      color: rgba(255,255,255,.9);
+      color: rgba(255,255,255,.92);
     }
+
     .c-row{
       display:grid;
       grid-template-columns: 18px 1fr;
       gap: 10px;
-      align-items:center;
+      align-items: start;
     }
-    .ico{
-      width: 18px;
-      height: 18px;
-      opacity:.9;
-    }
-    .mutedL{ color: rgba(255,255,255,.78); font-size: 12px; }
 
-    .bullets{
-      margin: 0;
-      padding-left: 16px;
-      color: rgba(255,255,255,.9);
-      font-size: 13px;
-    }
-    .bullets li{ margin: 6px 0; }
+    .mutedL{ color: rgba(255,255,255,.75); font-size: 12px; }
 
-    /* RIGHT */
-    .right{
-      background: transparent;
+    .btn{
+      width: 100%;
+      margin-top: 12px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 900;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.14); }
+    .btn:active{ transform: translateY(0); }
+
+    /* ====== Content ====== */
+    .content{
       display:grid;
-      grid-template-columns: 1fr 320px;
-      gap: 22px;
+      grid-template-columns: 1fr 360px;
+      gap: 18px;
+      align-items:start;
     }
+
     @media (max-width: 980px){
-      .right{ grid-template-columns: 1fr; }
+      .content{ grid-template-columns: 1fr; }
     }
+
     .col{
       display:flex;
-      flex-direction:column;
+      flex-direction: column;
       gap: 18px;
     }
+
     .card{
-      background: var(--white);
+      background: var(--card);
       border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
       padding: 18px;
-      box-shadow: 0 10px 24px rgba(16,24,40,.08);
+      overflow:hidden;
     }
+
     .pill{
-      display:inline-block;
+      display:block;
+      width:100%;
       background: var(--pill);
-      color: var(--white);
-      padding: 8px 16px;
+      color:#fff;
+      padding: 10px 18px;
       border-radius: 999px;
-      font-weight: 800;
-      letter-spacing: .08em;
+      font-weight: 900;
+      letter-spacing: .10em;
       text-transform: uppercase;
       font-size: 12px;
-      margin-bottom: 12px;
-      width: 100%;
+      margin: 0 0 12px;
     }
+
     .p{
-      margin: 0;
+      margin:0;
       color: var(--muted);
-      font-size: 13px;
       line-height: 1.55;
+      font-size: 13px;
     }
 
     .xp{
       display:flex;
-      flex-direction:column;
+      flex-direction: column;
       gap: 14px;
     }
+    .xp-item{
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcff;
+    }
     .xp-item h3{
-      margin: 0 0 4px;
+      margin:0 0 4px;
       font-size: 13px;
-      letter-spacing: .08em;
+      letter-spacing: .10em;
       text-transform: uppercase;
-    }
-    .xp-meta{
-      font-size: 12px;
       color: var(--navy2);
+    }
+    .meta{
+      font-size: 12px;
+      color: #2a3e55;
       font-style: italic;
+      font-weight: 800;
       margin-bottom: 6px;
-      font-weight: 700;
     }
-    .sep{
-      border: none;
-      border-top: 1px solid #e6e9ef;
-      margin: 10px 0 0;
-    }
-
     .list{
       margin: 0;
       padding-left: 18px;
@@ -204,209 +229,199 @@
     }
     .lang{
       display:grid;
-      gap: 8px;
-      font-size: 13px;
+      gap: 10px;
       color: var(--muted);
+      font-size: 13px;
     }
     .lang-row{
       display:flex;
-      justify-content:space-between;
-      gap: 10px;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fbfcff;
     }
     .lang-row b{ color: var(--navy2); }
-    .btn{
-      margin-top: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: rgba(255,255,255,.12);
-      color: #fff;
-      cursor:pointer;
-      font-weight: 800;
-    }
+
+    /* print */
     @media print{
-      body{ background: #fff; }
-      .page{ margin:0; padding:0; }
-      .left{ position: relative; }
-      .card{ box-shadow:none; }
+      body{ background:#fff; }
+      .layout{ padding: 0; gap: 12px; }
       .btn{ display:none; }
+      .card, .side{ box-shadow:none; }
+      .side{ position: relative; top:0; }
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
+  {% if perfil %}
+  <div class="layout">
 
-    {% if perfil %}
+    <!-- ===== Sidebar ===== -->
+    <aside class="side">
+      <div class="photo">
+        <!-- Recomendado: guardar URL en BD (perfil.foto_url).
+             Por ahora si no existe, muestra placeholder -->
+        <img
+          src="{{ perfil.foto_url|default:'https://via.placeholder.com/600x600.png?text=Foto' }}"
+          alt="Foto"
+        >
+      </div>
 
-    <div class="sheet">
+      <div class="fullname">
+        {{ perfil.nombres }}<br>
+        {{ perfil.apellidos }}
+      </div>
 
-      <!-- LEFT -->
-      <aside class="left">
-        <div class="avatar">
-          <!-- Si luego guardas ruta de foto, aquí la pones -->
-          <img src="https://via.placeholder.com/300x300.png?text=FOTO" alt="Foto">
-        </div>
+      <div class="tag">
+        {% if perfil.descripcion_de_perfil %}
+          {{ perfil.descripcion_de_perfil }}
+        {% else %}
+          PERFIL PROFESIONAL
+        {% endif %}
+      </div>
 
-        <div class="name">
-          {{ perfil.nombres }}<br/>
-          {{ perfil.apellidos }}
-        </div>
+      <button class="btn" id="btnPrint">Imprimir / PDF</button>
 
-        <div class="role">
-          {% if perfil.descripcion_de_perfil %}
-            {{ perfil.descripcion_de_perfil }}
-          {% else %}
-            PERFIL PROFESIONAL
-          {% endif %}
-        </div>
-
-        <button class="btn" id="btnPrint">Imprimir / PDF</button>
-
-        <div class="left-section">
-          <div class="left-title">Contacto</div>
-          <div class="contact">
-            <div class="c-row">
-              <span class="ico">☎</span>
-              <div>
-                {{ perfil.telefono_convencional|default:"-" }}
-                {% if perfil.telefono_fijo %}<div class="mutedL">{{ perfil.telefono_fijo }}</div>{% endif %}
-              </div>
-            </div>
-
-            <div class="c-row">
-              <span class="ico">📍</span>
-              <div>{{ perfil.direccion_domiciliaria|default:"-" }}</div>
-            </div>
-
-            <div class="c-row">
-              <span class="ico">🌐</span>
-              <div>{{ perfil.sitioweb|default:"-" }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="left-section">
-          <div class="left-title">Información</div>
-          <ul class="bullets">
-            {% if perfil.licencia_de_conducir %}<li>Licencia: {{ perfil.licencia_de_conducir }}</li>{% endif %}
-            <li>Nacionalidad: {{ perfil.nacionalidad|default:"-" }}</li>
-            <li>Cédula: {{ perfil.numero_de_cedula }}</li>
-            <li>Sexo: {{ perfil.get_sexo_display }}</li>
-            {% if perfil.estado_civil %}<li>Estado civil: {{ perfil.estado_civil }}</li>{% endif %}
-          </ul>
-        </div>
-      </aside>
-
-      <!-- RIGHT -->
-      <section class="right">
-
-        <!-- Main column -->
-        <div class="col">
-
-          <div class="card">
-            <div class="pill">Mi perfil</div>
-            <p class="p">
-              {% if perfil.descripcion_de_perfil %}
-                {{ perfil.descripcion_de_perfil }}
-              {% else %}
-                Aquí va una descripción corta de tu perfil profesional (2–4 líneas).
-              {% endif %}
-            </p>
-          </div>
-
-          <div class="card">
-            <div class="pill">Experiencia</div>
-
-            <div class="xp">
-              {% for exp in experiencias %}
-                <div class="xp-item">
-                  <h3>{{ exp.cargo_desempenado }}</h3>
-                  <div class="xp-meta">
-                    {{ exp.nombre_de_la_empresa }}
-                    {% if exp.lugarempresa %} · {{ exp.lugarempresa }}{% endif %}
-                    · {{ exp.fecha_de_inicio_de_gestion|default:"-" }} — {{ exp.fecha_fin_de_gestion|default:"-" }}
-                  </div>
-
-                  <p class="p">
-                    {% if exp.descripcion_de_funciones %}
-                      {{ exp.descripcion_de_funciones }}
-                    {% else %}
-                      Descripción de funciones / logros principales.
-                    {% endif %}
-                  </p>
-                  <hr class="sep">
-                </div>
-              {% empty %}
-                <p class="p">No hay experiencia marcada para mostrar.</p>
-              {% endfor %}
+      <div class="side-section">
+        <div class="side-title">Contacto</div>
+        <div class="contact">
+          <div class="c-row">
+            <div>☎</div>
+            <div>
+              {{ perfil.telefono_convencional|default:"-" }}
+              {% if perfil.telefono_fijo %}<div class="mutedL">{{ perfil.telefono_fijo }}</div>{% endif %}
             </div>
           </div>
 
+          <div class="c-row">
+            <div>📍</div>
+            <div>{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
+          </div>
+
+          <div class="c-row">
+            <div>🏢</div>
+            <div>{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
+          </div>
+
+          <div class="c-row">
+            <div>🌐</div>
+            <div>{{ perfil.sitioweb|default:"-" }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-section">
+        <div class="side-title">Información</div>
+        <ul class="list" style="color: rgba(255,255,255,.92);">
+          <li><b style="color:#fff;">Nacionalidad:</b> {{ perfil.nacionalidad|default:"-" }}</li>
+          <li><b style="color:#fff;">Sexo:</b> {{ perfil.get_sexo_display }}</li>
+          <li><b style="color:#fff;">Cédula:</b> {{ perfil.numero_de_cedula }}</li>
+          {% if perfil.estado_civil %}<li><b style="color:#fff;">Estado civil:</b> {{ perfil.estado_civil }}</li>{% endif %}
+          {% if perfil.licencia_de_conducir %}<li><b style="color:#fff;">Licencia:</b> {{ perfil.licencia_de_conducir }}</li>{% endif %}
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ===== Content ===== -->
+    <section class="content">
+
+      <!-- Columna principal -->
+      <div class="col">
+        <div class="card">
+          <div class="pill">Mi perfil</div>
+          <p class="p">
+            {% if perfil.descripcion_de_perfil %}
+              {{ perfil.descripcion_de_perfil }}
+            {% else %}
+              Aquí va una descripción corta y profesional (2–4 líneas) de tu perfil.
+            {% endif %}
+          </p>
         </div>
 
-        <!-- Side column -->
-        <div class="col">
-
-          <div class="card">
-            <div class="pill">Formación</div>
-
-            {% for curso in cursos %}
-              <div style="margin-bottom: 12px;">
-                <div style="font-weight:900; color: var(--navy2); font-size: 13px;">
-                  {{ curso.nombrecurso }}
+        <div class="card">
+          <div class="pill">Experiencia</div>
+          <div class="xp">
+            {% for exp in experiencias %}
+              <div class="xp-item">
+                <h3>{{ exp.cargo_desempenado }}</h3>
+                <div class="meta">
+                  {{ exp.nombre_de_la_empresa }}
+                  {% if exp.lugarempresa %} · {{ exp.lugarempresa }}{% endif %}
+                  · {{ exp.fecha_de_inicio_de_gestion|default:"-" }} — {{ exp.fecha_fin_de_gestion|default:"-" }}
                 </div>
-                <div class="p" style="margin-top:4px;">
-                  {{ curso.fecha_inicio|default:"-" }} — {{ curso.fecha_fin|default:"-" }}
-                </div>
-                {% if curso.descripcion_curso %}
-                  <div class="p" style="margin-top:6px;">{{ curso.descripcion_curso }}</div>
-                {% endif %}
-                <hr class="sep">
+                <p class="p">
+                  {% if exp.descripcion_de_funciones %}
+                    {{ exp.descripcion_de_funciones }}
+                  {% else %}
+                    Describe funciones y logros principales en 2–3 líneas.
+                  {% endif %}
+                </p>
               </div>
             {% empty %}
-              <p class="p">No hay formación/cursos marcados para mostrar.</p>
+              <p class="p">No hay experiencia marcada para mostrar.</p>
             {% endfor %}
           </div>
+        </div>
+      </div>
 
-          <div class="card">
-            <div class="pill">Herramientas</div>
-            <ul class="list">
-              {% for prod in productos %}
-                <li>
-                  <b style="color: var(--navy2);">{{ prod.nombrerecurso }}</b>
-                  {% if prod.descripcion %} — {{ prod.descripcion }}{% endif %}
-                </li>
-              {% empty %}
-                <li>No hay herramientas/productos marcados.</li>
-              {% endfor %}
-            </ul>
-          </div>
+      <!-- Columna derecha (como tu referencia) -->
+      <div class="col">
 
-          <div class="card">
-            <div class="pill">Idiomas</div>
-            <div class="lang">
-              <!-- Si después creas tabla de idiomas, lo iteramos. Por ahora, texto fijo -->
-              <div class="lang-row"><b>ESPAÑOL</b><span>Nativo</span></div>
-              <div class="lang-row"><b>INGLÉS</b><span>Intermedio</span></div>
+        <div class="card">
+          <div class="pill">Formación</div>
+          {% for curso in cursos %}
+            <div class="xp-item" style="margin-bottom: 12px;">
+              <h3 style="margin-bottom:6px;">{{ curso.nombrecurso }}</h3>
+              <div class="meta">
+                {{ curso.fecha_inicio|default:"-" }} — {{ curso.fecha_fin|default:"-" }}
+                {% if curso.entidad_patrocinadora %} · {{ curso.entidad_patrocinadora }}{% endif %}
+              </div>
+              {% if curso.descripcion_curso %}
+                <p class="p">{{ curso.descripcion_curso }}</p>
+              {% endif %}
             </div>
-          </div>
-
+          {% empty %}
+            <p class="p">No hay formación/cursos marcados para mostrar.</p>
+          {% endfor %}
         </div>
 
-      </section>
+        <div class="card">
+          <div class="pill">Herramientas</div>
+          <ul class="list">
+            {% for prod in productos %}
+              <li><b style="color:var(--navy2);">{{ prod.nombrerecurso }}</b>{% if prod.descripcion %} — {{ prod.descripcion }}{% endif %}</li>
+            {% empty %}
+              <li>No hay herramientas/productos marcados.</li>
+            {% endfor %}
+          </ul>
+        </div>
 
-    </div>
+        <div class="card">
+          <div class="pill">Idiomas</div>
+          <div class="lang">
+            <!-- Si luego haces un modelo Idioma, lo iteramos; por ahora ejemplo fijo -->
+            <div class="lang-row"><b>ESPAÑOL</b><span>Nativo</span></div>
+            <div class="lang-row"><b>INGLÉS</b><span>Intermedio</span></div>
+          </div>
+        </div>
 
-    {% else %}
-      <div class="card" style="max-width:700px; margin: 0 auto;">
+      </div>
+
+    </section>
+
+  </div>
+
+  {% else %}
+    <div style="padding:18px;">
+      <div class="card" style="max-width:800px; margin:0 auto;">
         <div class="pill">Sin perfil</div>
         <p class="p">Crea un registro en <b>DatosPersonales</b> y pon <code>perfil_activo = 1</code>.</p>
       </div>
-    {% endif %}
-
-  </div>
+    </div>
+  {% endif %}
 
   <script>
     document.getElementById("btnPrint")?.addEventListener("click", () => window.print());
