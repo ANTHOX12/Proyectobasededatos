@@ -1,99 +1,291 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hoja de Vida</title>
 
-{% block title %}Hoja de Vida{% endblock %}
+  <style>
+    :root{
+      --bg: #0b0f19;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --line: rgba(255,255,255,.12);
+      --chip: rgba(255,255,255,.10);
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(900px 450px at 15% 10%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(900px 450px at 85% 15%, rgba(34,197,94,.25), transparent 60%),
+        radial-gradient(900px 450px at 70% 85%, rgba(59,130,246,.25), transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+    }
+    .wrap{ max-width: 1100px; margin: 0 auto; padding: 28px 18px 60px; }
+    .topbar{
+      display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 14px; background: var(--card);
+      border:1px solid var(--line); border-radius:999px;
+      backdrop-filter: blur(10px); box-shadow: var(--shadow);
+    }
+    .dot{ width:10px; height:10px; border-radius:50%; background: rgba(255,255,255,.8); }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+    .btn{
+      border:1px solid var(--line); background: var(--card);
+      color: var(--text); padding:10px 12px; border-radius:999px;
+      cursor:pointer; backdrop-filter: blur(10px);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.22); background: var(--card2); }
+    .grid{ display:grid; grid-template-columns: 360px 1fr; gap:18px; align-items:start; }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+    .card{
+      background: var(--card); border:1px solid var(--line);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      backdrop-filter: blur(12px); overflow:hidden;
+    }
+    .pad{ padding:18px; }
+    .hero{
+      padding:22px 18px 18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.10), transparent),
+        radial-gradient(600px 250px at 15% 20%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(600px 250px at 85% 30%, rgba(59,130,246,.25), transparent 60%);
+      border-bottom: 1px solid var(--line);
+    }
+    .name{ margin:0 0 6px; font-size:26px; }
+    .subtitle{ margin:0; color: var(--muted); }
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .chip{
+      padding:7px 10px; border-radius:999px;
+      border:1px solid var(--line); background: var(--chip);
+      color: var(--muted); font-size:13px; white-space:nowrap;
+    }
+    .section-title{
+      margin:0 0 10px; font-size:14px; letter-spacing:.14em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .row{
+      display:flex; justify-content:space-between; gap:12px;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid var(--line); background: rgba(255,255,255,.05);
+    }
+    .row span:first-child{ color: var(--muted); }
+    .list{ display:flex; flex-direction:column; gap:12px; }
+    .item{
+      padding:14px; border-radius:16px;
+      border:1px solid var(--line); background: rgba(255,255,255,.05);
+    }
+    .item-head{ display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+    .item h3{ margin:0; font-size:16px; }
+    .meta{ color: var(--muted); font-size:13px; }
+    .desc{ margin:0; color: rgba(255,255,255,.82); }
+    .two{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; }
+    @media (max-width: 980px){ .two{ grid-template-columns: 1fr; } }
+    .search{
+      width: 100%; padding: 11px 12px; border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text); outline: none;
+    }
+    .search::placeholder{ color: rgba(255,255,255,.45); }
 
-{% block content %}
+    @media print{
+      body{ background:#fff; color:#111; }
+      .topbar{ display:none !important; }
+      .card{ box-shadow:none; border:1px solid #ddd; background:#fff; }
+      .row, .item{ background:#fff; }
+      .meta, .section-title{ color:#444 !important; }
+    }
+  </style>
+</head>
 
-{% if perfil %}
-  <h1 style="margin:0 0 6px 0;">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
-
-  {% if perfil.descripcion_de_perfil %}
-    <p><strong>Perfil:</strong> {{ perfil.descripcion_de_perfil }}</p>
-  {% endif %}
-
-  <hr>
-
-  <h2>Datos personales</h2>
-  <ul>
-    <li><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</li>
-    <li><strong>Lugar de nacimiento:</strong> {{ perfil.lugar_de_nacimiento }}</li>
-    <li><strong>Fecha de nacimiento:</strong> {{ perfil.fechana_de_nacimiento }}</li>
-    <li><strong>Cédula:</strong> {{ perfil.numero_de_cedula }}</li>
-    <li><strong>Sexo:</strong> {{ perfil.get_sexo_display }}</li>
-    <li><strong>Estado civil:</strong> {{ perfil.estado_civil }}</li>
-    <li><strong>Licencia:</strong> {{ perfil.licencia_de_conducir }}</li>
-  </ul>
-
-  <h3>Contacto</h3>
-  <ul>
-    <li><strong>Teléfono convencional:</strong> {{ perfil.telefono_convencional }}</li>
-    <li><strong>Teléfono fijo:</strong> {{ perfil.telefono_fijo }}</li>
-    <li><strong>Dirección domiciliaria:</strong> {{ perfil.direccion_domiciliaria }}</li>
-    <li><strong>Dirección de trabajo:</strong> {{ perfil.direccion_de_trabajo }}</li>
-    {% if perfil.sitioweb %}<li><strong>Sitio web:</strong> {{ perfil.sitioweb }}</li>{% endif %}
-  </ul>
-
-  <hr>
-
-  <h2>Experiencia laboral</h2>
-  {% for exp in experiencias %}
-    <div style="margin-bottom: 12px;">
-      <h3 style="margin:0;">{{ exp.cargo_desempenado }}</h3>
-      <div><strong>Empresa:</strong> {{ exp.nombre_de_la_empresa }}</div>
-      <div><strong>Periodo:</strong> {{ exp.fecha_de_inicio_de_gestion }} - {{ exp.fecha_fin_de_gestion }}</div>
-      {% if exp.descripcion_de_funciones %}
-        <p style="margin:6px 0 0 0;">{{ exp.descripcion_de_funciones }}</p>
-      {% endif %}
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="dot"></div>
+        <div>
+          <div style="font-weight:700;">CV</div>
+          <small style="color: rgba(255,255,255,.7);">Hoja de vida</small>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btnPrint">Imprimir / PDF</button>
+      </div>
     </div>
-  {% empty %}
-    <p>No hay experiencia marcada para mostrar.</p>
-  {% endfor %}
 
-  <hr>
+    {% if perfil %}
+      <div class="grid">
 
-  <h2>Cursos realizados</h2>
-  {% for curso in cursos %}
-    <div style="margin-bottom: 12px;">
-      <h3 style="margin:0;">{{ curso.nombrecurso }}</h3>
-      {% if curso.descripcion_curso %}<p style="margin:6px 0 0 0;">{{ curso.descripcion_curso }}</p>{% endif %}
-      <div><strong>Horas:</strong> {{ curso.total_horas }}</div>
-      <div><strong>Periodo:</strong> {{ curso.fecha_inicio }} - {{ curso.fecha_fin }}</div>
-      {% if curso.entidad_patrocinadora %}<div><strong>Entidad:</strong> {{ curso.entidad_patrocinadora }}</div>{% endif %}
-    </div>
-  {% empty %}
-    <p>No hay cursos marcados para mostrar.</p>
-  {% endfor %}
+        <aside class="card">
+          <div class="hero">
+            <h1 class="name">{{ perfil.nombres }} {{ perfil.apellidos }}</h1>
+            <p class="subtitle">{{ perfil.descripcion_de_perfil|default:"Perfil profesional" }}</p>
 
-  <hr>
+            <div class="chips">
+              <div class="chip">Cédula: {{ perfil.numero_de_cedula }}</div>
+              <div class="chip">Sexo: {{ perfil.get_sexo_display }}</div>
+              {% if perfil.estado_civil %}<div class="chip">{{ perfil.estado_civil }}</div>{% endif %}
+              {% if perfil.licencia_de_conducir %}<div class="chip">Licencia: {{ perfil.licencia_de_conducir }}</div>{% endif %}
+            </div>
+          </div>
 
-  <h2>Reconocimientos</h2>
-  {% for rec in reconocimientos %}
-    <div style="margin-bottom: 12px;">
-      <h3 style="margin:0;">{{ rec.tipo_reconocimiento }}</h3>
-      {% if rec.descripcion_reconocimiento %}<p style="margin:6px 0 0 0;">{{ rec.descripcion_reconocimiento }}</p>{% endif %}
-      <div><strong>Fecha:</strong> {{ rec.fecha_reconocimiento }}</div>
-      {% if rec.entidad_patrocinadora %}<div><strong>Entidad:</strong> {{ rec.entidad_patrocinadora }}</div>{% endif %}
-    </div>
-  {% empty %}
-    <p>No hay reconocimientos marcados para mostrar.</p>
-  {% endfor %}
+          <div class="pad">
+            <p class="section-title">Datos personales</p>
+            <div class="row"><span>Nacionalidad</span><span>{{ perfil.nacionalidad|default:"-" }}</span></div>
+            <div class="row"><span>Lugar nacimiento</span><span>{{ perfil.lugar_de_nacimiento|default:"-" }}</span></div>
+            <div class="row"><span>Fecha nacimiento</span><span>{{ perfil.fechana_de_nacimiento|default:"-" }}</span></div>
+            <div class="row"><span>Tel. convencional</span><span>{{ perfil.telefono_convencional|default:"-" }}</span></div>
+            <div class="row"><span>Tel. fijo</span><span>{{ perfil.telefono_fijo|default:"-" }}</span></div>
+            <div class="row"><span>Dirección</span><span>{{ perfil.direccion_domiciliaria|default:"-" }}</span></div>
+            <div class="row"><span>Trabajo</span><span>{{ perfil.direccion_de_trabajo|default:"-" }}</span></div>
+            <div class="row"><span>Sitio web</span><span>{{ perfil.sitioweb|default:"-" }}</span></div>
 
-  <hr>
+            <div style="margin-top:14px;">
+              <p class="section-title">Búsqueda</p>
+              <input class="search" id="search" placeholder="Filtra por empresa, curso, cargo...">
+            </div>
+          </div>
+        </aside>
 
-  <h2>Productos académicos</h2>
-  {% for prod in productos %}
-    <div style="margin-bottom: 12px;">
-      <h3 style="margin:0;">{{ prod.nombrerecurso }}</h3>
-      {% if prod.clasificador %}<div><strong>Clasificador:</strong> {{ prod.clasificador }}</div>{% endif %}
-      {% if prod.descripcion %}<p style="margin:6px 0 0 0;">{{ prod.descripcion }}</p>{% endif %}
-    </div>
-  {% empty %}
-    <p>No hay productos académicos marcados para mostrar.</p>
-  {% endfor %}
+        <main class="card">
+          <div class="pad">
 
-{% else %}
-  <h1>No hay perfil activo</h1>
-  <p>Crea un registro en <strong>DatosPersonales</strong> con <code>perfil_activo = 1</code>.</p>
-{% endif %}
+            <div class="two">
+              <section>
+                <p class="section-title">Experiencia laboral</p>
+                <div class="list">
+                  {% for exp in experiencias %}
+                    <div class="item searchable">
+                      <div class="item-head">
+                        <h3>{{ exp.cargo_desempenado }}</h3>
+                        <div class="meta">{{ exp.fecha_de_inicio_de_gestion|default:"-" }} — {{ exp.fecha_fin_de_gestion|default:"-" }}</div>
+                      </div>
+                      <div class="meta"><strong>{{ exp.nombre_de_la_empresa }}</strong>{% if exp.lugarempresa %} · {{ exp.lugarempresa }}{% endif %}</div>
+                      {% if exp.descripcion_de_funciones %}
+                        <p class="desc" style="margin-top:8px;">{{ exp.descripcion_de_funciones }}</p>
+                      {% endif %}
+                    </div>
+                  {% empty %}
+                    <div class="item"><p class="desc">No hay experiencia marcada para mostrar.</p></div>
+                  {% endfor %}
+                </div>
+              </section>
 
-{% endblock %}
+              <section>
+                <p class="section-title">Cursos</p>
+                <div class="list">
+                  {% for curso in cursos %}
+                    <div class="item searchable">
+                      <div class="item-head">
+                        <h3>{{ curso.nombrecurso }}</h3>
+                        <div class="meta">{{ curso.fecha_inicio|default:"-" }} — {{ curso.fecha_fin|default:"-" }}</div>
+                      </div>
+                      <div class="meta">
+                        {% if curso.total_horas %}{{ curso.total_horas }} h{% else %}-{% endif %}
+                        {% if curso.entidad_patrocinadora %} · {{ curso.entidad_patrocinadora }}{% endif %}
+                      </div>
+                      {% if curso.descripcion_curso %}
+                        <p class="desc" style="margin-top:8px;">{{ curso.descripcion_curso }}</p>
+                      {% endif %}
+                    </div>
+                  {% empty %}
+                    <div class="item"><p class="desc">No hay cursos marcados para mostrar.</p></div>
+                  {% endfor %}
+                </div>
+              </section>
+            </div>
+
+            <div class="two" style="margin-top: 18px;">
+              <section>
+                <p class="section-title">Reconocimientos</p>
+                <div class="list">
+                  {% for rec in reconocimientos %}
+                    <div class="item searchable">
+                      <div class="item-head">
+                        <h3>{{ rec.tipo_reconocimiento }}</h3>
+                        <div class="meta">{{ rec.fecha_reconocimiento|default:"-" }}</div>
+                      </div>
+                      {% if rec.entidad_patrocinadora %}
+                        <div class="meta"><strong>Entidad:</strong> {{ rec.entidad_patrocinadora }}</div>
+                      {% endif %}
+                      {% if rec.descripcion_reconocimiento %}
+                        <p class="desc" style="margin-top:8px;">{{ rec.descripcion_reconocimiento }}</p>
+                      {% endif %}
+                    </div>
+                  {% empty %}
+                    <div class="item"><p class="desc">No hay reconocimientos marcados para mostrar.</p></div>
+                  {% endfor %}
+                </div>
+              </section>
+
+              <section>
+                <p class="section-title">Productos académicos</p>
+                <div class="list">
+                  {% for prod in productos %}
+                    <div class="item searchable">
+                      <div class="item-head">
+                        <h3>{{ prod.nombrerecurso }}</h3>
+                        <div class="meta">{% if prod.clasificador %}{{ prod.clasificador }}{% else %}-{% endif %}</div>
+                      </div>
+                      {% if prod.descripcion %}
+                        <p class="desc">{{ prod.descripcion }}</p>
+                      {% else %}
+                        <p class="desc" style="opacity:.7;">Sin descripción.</p>
+                      {% endif %}
+                    </div>
+                  {% empty %}
+                    <div class="item"><p class="desc">No hay productos marcados para mostrar.</p></div>
+                  {% endfor %}
+                </div>
+              </section>
+            </div>
+
+          </div>
+        </main>
+      </div>
+
+    {% else %}
+      <div class="card">
+        <div class="pad">
+          <h2 style="margin:0 0 8px;">No hay perfil activo</h2>
+          <p class="meta" style="margin:0;">
+            Crea un registro en <strong>DatosPersonales</strong> y pon <code>perfil_activo = 1</code>.
+          </p>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <script>
+    document.getElementById("btnPrint")?.addEventListener("click", () => window.print());
+
+    const search = document.getElementById("search");
+    const items = () => Array.from(document.querySelectorAll(".searchable"));
+
+    function normalize(s){
+      return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    search?.addEventListener("input", (e) => {
+      const q = normalize(e.target.value);
+      items().forEach(el => {
+        el.style.display = normalize(el.innerText).includes(q) ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
