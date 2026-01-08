@@ -277,6 +277,80 @@
       .side, .panel, .card{ box-shadow:none; }
       .side{ position: relative; top:0; }
     }
+
+    /* === Slots de cursos (3 fijos en línea) === */
+.slots{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-top: 6px;
+}
+@media (max-width: 980px){
+  .slots{ grid-template-columns: 1fr; }
+}
+
+.slot{
+  border: 1px solid var(--line2);
+  border-radius: 18px;
+  background: #fbfcff;
+  padding: 14px;
+  display:flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 170px;
+}
+
+.slot-title{
+  font-weight: 900;
+  color: var(--navy2);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.slot-meta{
+  font-size: 12px;
+  color: #1f3348;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.slot-desc{
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.45;
+  flex: 1; /* empuja el botón hacia abajo */
+}
+
+.slot-empty{
+  font-weight: 900;
+  color: #1f3348;
+  opacity: .6;
+  font-size: 13px;
+}
+
+.slot-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+  text-decoration:none;
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 900;
+  border: 1px solid var(--line2);
+  background: var(--navy);
+  color: #fff;
+  cursor:pointer;
+  transition: transform .12s ease, opacity .12s ease;
+}
+.slot-btn:hover{ transform: translateY(-1px); }
+.slot-btn.disabled{
+  background: #9aa4b2;
+  border-color: #cbd5e1;
+  cursor:not-allowed;
+  opacity: .7;
+}
+
   </style>
 </head>
 
@@ -364,42 +438,111 @@
         </div>
       </div>
 
-      <!-- Cursos debajo -->
-      <div class="card">
-        <div class="pill">
-          <div class="pill-title">Cursos realizados</div>
-          <p class="hint">Agrega tus cursos desde el Admin y se verán aquí automáticamente.</p>
-        </div>
-
-        <div class="gridCourses">
-          {% for curso in cursos %}
-            <div class="course">
-              <h3>{{ curso.nombrecurso }}</h3>
-
-              <div class="meta">
-                {{ curso.fecha_inicio|default:"-" }} — {{ curso.fecha_fin|default:"-" }}
-                {% if curso.total_horas %} · {{ curso.total_horas }}h{% endif %}
-              </div>
-
-              {% if curso.entidad_patrocinadora %}
-                <div class="desc"><b>Entidad:</b> {{ curso.entidad_patrocinadora }}</div>
-              {% endif %}
-
-              {% if curso.descripcion_curso %}
-                <p class="desc">{{ curso.descripcion_curso }}</p>
-              {% else %}
-                <p class="desc" style="opacity:.75;">Sin descripción.</p>
-              {% endif %}
-            </div>
-          {% empty %}
-            <p class="hint">Aún no tienes cursos marcados para mostrar.</p>
-          {% endfor %}
-        </div>
-      </div>
-
-    </section>
-
+      <!-- Cursos: 3 slots fijos (lineales) -->
+<div class="card">
+  <div class="pill">
+    <div class="pill-title">Cursos realizados</div>
+    <p class="hint">Se muestran máximo 3 cursos (slots). Agrega más en Admin si quieres cambiar cuáles se ven.</p>
   </div>
+
+  <div class="slots">
+    <!-- SLOT 1 -->
+    <div class="slot">
+      {% with c=cursos.0 %}
+        {% if c %}
+          <div class="slot-title">{{ c.nombrecurso }}</div>
+          <div class="slot-meta">
+            {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
+            {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
+            {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
+          </div>
+
+          <div class="slot-desc">
+            {{ c.descripcion_curso|default:"Sin descripción." }}
+          </div>
+
+          {% if c.rutacertificado %}
+            <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
+              Ver comprobante
+            </a>
+          {% else %}
+            <button class="slot-btn disabled" type="button" disabled>
+              Sin comprobante
+            </button>
+          {% endif %}
+        {% else %}
+          <div class="slot-empty">Slot 1 vacío</div>
+          <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
+          <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <!-- SLOT 2 -->
+    <div class="slot">
+      {% with c=cursos.1 %}
+        {% if c %}
+          <div class="slot-title">{{ c.nombrecurso }}</div>
+          <div class="slot-meta">
+            {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
+            {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
+            {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
+          </div>
+
+          <div class="slot-desc">
+            {{ c.descripcion_curso|default:"Sin descripción." }}
+          </div>
+
+          {% if c.rutacertificado %}
+            <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
+              Ver comprobante
+            </a>
+          {% else %}
+            <button class="slot-btn disabled" type="button" disabled>
+              Sin comprobante
+            </button>
+          {% endif %}
+        {% else %}
+          <div class="slot-empty">Slot 2 vacío</div>
+          <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
+          <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <!-- SLOT 3 -->
+    <div class="slot">
+      {% with c=cursos.2 %}
+        {% if c %}
+          <div class="slot-title">{{ c.nombrecurso }}</div>
+          <div class="slot-meta">
+            {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
+            {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
+            {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
+          </div>
+
+          <div class="slot-desc">
+            {{ c.descripcion_curso|default:"Sin descripción." }}
+          </div>
+
+          {% if c.rutacertificado %}
+            <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
+              Ver comprobante
+            </a>
+          {% else %}
+            <button class="slot-btn disabled" type="button" disabled>
+              Sin comprobante
+            </button>
+          {% endif %}
+        {% else %}
+          <div class="slot-empty">Slot 3 vacío</div>
+          <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
+          <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+</div>
 
   {% else %}
     <div style="padding:18px;">

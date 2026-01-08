@@ -1,6 +1,12 @@
 # tasks/views.py
 from django.shortcuts import render
-from .models import DatosPersonales
+from .models import (
+    DatosPersonales,
+    CursoRealizado,
+    ExperienciaLaboral,
+    ProductoAcademico,
+    Reconocimiento,
+)
 
 def home(request):
     perfil = DatosPersonales.objects.filter(perfil_activo=1).first()
@@ -14,10 +20,25 @@ def home(request):
             "reconocimientos": [],
         })
 
-    cursos = perfil.cursos.filter(activarparaqueseveaenfront=True)
-    experiencias = perfil.experiencias.filter(activarparaqueseveaenfront=True)
-    productos = perfil.productos_academicos.filter(activarparaqueseveaenfront=True)
-    reconocimientos = perfil.reconocimientos.filter(activarparaqueseveaenfront=True)
+    cursos = CursoRealizado.objects.filter(
+        perfil=perfil,
+        activarparaqueseveaenfront=True
+    ).order_by("-fecha_inicio")[:3]
+
+    experiencias = ExperienciaLaboral.objects.filter(
+        perfil=perfil,
+        activarparaqueseveaenfront=True
+    )
+
+    productos = ProductoAcademico.objects.filter(
+        perfil=perfil,
+        activarparaqueseveaenfront=True
+    )
+
+    reconocimientos = Reconocimiento.objects.filter(
+        perfil=perfil,
+        activarparaqueseveaenfront=True
+    )
 
     return render(request, "home.html", {
         "perfil": perfil,
@@ -26,3 +47,5 @@ def home(request):
         "productos": productos,
         "reconocimientos": reconocimientos,
     })
+
+
