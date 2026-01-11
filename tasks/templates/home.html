@@ -155,16 +155,15 @@
   background: var(--navy);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 22px;
+  padding: 18px;                 /* ↓ menos padding = menos espacio vacío */
   color: #fff;
-
-  height: 100%;          /* 👈 */
-  min-height: 0;
 
   display:grid;
   grid-template-columns: 1fr 360px;
-  gap: 18px;
+  gap: 14px;                      /* ↓ menos separación entre columnas */
   align-items:start;
+
+  height: 100%;
 }
 
 @media (max-width: 980px){
@@ -172,11 +171,11 @@
 }
 
 .panel h2{
-  margin: 0 0 10px;
-  font-size: 12px;
+  margin: 0 0 8px;                /* ↓ menos margen */
+  font-size: 13px;                /* ↑ un poquito más grande */
   letter-spacing: .12em;
   text-transform: uppercase;
-  opacity: .9;
+  opacity: .92;
 }
 
 
@@ -187,11 +186,19 @@
   list-style: none;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;   /* ← CLAVE: 2 columnas */
-  column-gap: 24px;
-  row-gap: 10px;
 
-  font-size: 13px;                  /* un poco más pequeño */
+  /* 👇 En desktop usamos 3 columnas para llenar mejor el espacio */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  column-gap: 16px;               /* ↓ menos separación horizontal */
+  row-gap: 12px;                  /* ↓ menos separación vertical */
+  font-size: 15px;                /* ↑ letra más grande */
+}
+
+@media (max-width: 1100px){
+  .bullets{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 980px){
@@ -201,29 +208,29 @@
 }
 
 .bullets li{
-  display: flex;
+  display:flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items:flex-start;
   color: var(--muted);
-  line-height: 1.35;
+  line-height: 1.3;
 }
 
 .bullets li::before{
-  content: "•";
-  color: rgba(255,255,255,.85);
+  content:"•";
+  color: rgba(255,255,255,.9);
   font-weight: 900;
   margin-top: 1px;
 }
 
 .bullets b{
-  color: #fff;
+  color:#fff;
   font-weight: 900;
 }
 
     .info-col{
       display:flex;
       flex-direction:column;
-      gap: 14px;
+      gap: 12px;
       padding-left: 14px;
       border-left: 1px solid var(--line);
     }
@@ -241,7 +248,7 @@
   gap: 10px;
   align-items:start;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .irow .ico{
