@@ -458,6 +458,18 @@
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.10);
 }
+/* Subtexto para contacto (teléfono fijo, etc.) */
+.fsub{
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(255,255,255,.72);
+  font-weight: 700;
+}
+
+/* Contacto en 1 columna para que quede elegante en el panel derecho */
+.facts-contact{
+  grid-template-columns: 1fr !important;
+}
 
 .fico{
   width: 32px;
@@ -571,43 +583,47 @@
 
         </div>
 
-        <div class="info-col">
-          <h2>Contacto</h2>
+       <div class="info-col">
+  <h2>Contacto</h2>
 
-          <div class="irow">
-            <div class="ico">☎</div>
-            <div>
-              <b>Teléfono</b>
-              <div class="small">{{ perfil.telefono_convencional|default:"-" }}</div>
-              {% if perfil.telefono_fijo %}<div class="small">{{ perfil.telefono_fijo }}</div>{% endif %}
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">📍</div>
-            <div>
-              <b>Domicilio</b>
-              <div class="small">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">🏢</div>
-            <div>
-              <b>Trabajo</b>
-              <div class="small">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">🌐</div>
-            <div>
-              <b>Sitio web</b>
-              <div class="small">{{ perfil.sitioweb|default:"-" }}</div>
-            </div>
-          </div>
-        </div>
+  <div class="facts facts-contact">
+    <div class="fact">
+      <div class="fico">☎</div>
+      <div>
+        <div class="flabel">Teléfono</div>
+        <div class="fvalue">{{ perfil.telefono_convencional|default:"-" }}</div>
+        {% if perfil.telefono_fijo %}
+          <div class="fsub">{{ perfil.telefono_fijo }}</div>
+        {% endif %}
       </div>
+    </div>
+
+    <div class="fact">
+      <div class="fico">📍</div>
+      <div>
+        <div class="flabel">Domicilio</div>
+        <div class="fvalue">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
+      </div>
+    </div>
+
+    <div class="fact">
+      <div class="fico">🏢</div>
+      <div>
+        <div class="flabel">Trabajo</div>
+        <div class="fvalue">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
+      </div>
+    </div>
+
+    <div class="fact">
+      <div class="fico">🌐</div>
+      <div>
+        <div class="flabel">Sitio web</div>
+        <div class="fvalue">{{ perfil.sitioweb|default:"-" }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <!-- Cursos: 3 slots fijos (lineales) -->
 <div class="card">
