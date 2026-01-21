@@ -30,200 +30,207 @@
       overflow-x:hidden;
     }
 
-    /* ===== GRID GENERAL: side + panel arriba, cursos abajo full ===== */
-    .layout{
-      min-height: 100vh;
-      display:grid;
-      grid-template-columns: 320px 1fr;
-      grid-template-areas:
-        "side panel"
-        "cursos cursos";
-      gap: 18px;
-      padding: 18px;
-      align-items: start;
-    }
+  /* FULL WIDTH - NUEVO LAYOUT */
+.layout{
+  min-height: 100vh;
+  display:grid;
 
-    .side{ grid-area: side; }
-    .panel{ grid-area: panel; }
-    .card{ grid-area: cursos; }
+  grid-template-columns: 320px 1fr;
+  grid-template-areas:
+    "side panel"
+    "cursos cursos";
 
-    /* Para NO cambiar el orden del HTML */
-    .right{ display: contents; }
+  grid-template-rows: auto auto;   /* 👈 CLAVE */
+  gap: 18px;
+  padding: 18px;
 
-    @media (max-width: 980px){
-      .layout{
-        grid-template-columns: 1fr;
-        grid-template-areas:
-          "side"
-          "panel"
-          "cursos";
-        padding: 12px;
-      }
-      .right{ display:block; }
-    }
+  align-items: stretch;            /* 👈 CLAVE: iguala altura side/panel */
+  align-content: start;            /* 👈 CLAVE: evita el espacio blanco gigante */
+}
 
-    /* ===== LEFT ===== */
-    .side{
-      background: var(--navy);
-      border-radius: var(--radius);
-      color:#fff;
-      padding: 14px;
-      box-shadow: var(--shadow);
-      height: fit-content;
-      position: sticky;
-      top: 18px;
-    }
-    @media (max-width: 980px){
-      .side{ position: relative; top: 0; }
-    }
 
-    .photo{
-      width: 150px;
-      height: 150px;
-      margin: 6px auto 10px;
-      border-radius: 22px;
-      overflow:hidden;
-      border: 2px solid rgba(255,255,255,.65);
-      background: rgba(255,255,255,.08);
-      box-shadow: 0 12px 26px rgba(0,0,0,.25);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+/* asignación de áreas */
+.side{ grid-area: side; }
+.panel{ grid-area: panel; }
+.card{ grid-area: cursos; }
 
-    .fullname{
-      font-weight: 900;
-      font-size: 34px;
-      line-height: 1.02;
-      margin: 6px 0 10px;
-      letter-spacing:.2px;
-    }
+/* clave: no tocamos el orden del HTML */
+.right{ display: contents; }
 
-    .badge{
-      display:inline-block;
-      background: rgba(255,255,255,.92);
-      color: var(--navy2);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-weight: 900;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      font-size: 11px;
-    }
+@media (max-width: 980px){
+  .layout{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "side"
+      "panel"
+      "cursos";
+    padding: 12px;
+  }
+}
 
-    .btn{
-      width: 100%;
-      margin-top: 12px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.10);
-      color: #fff;
-      padding: 11px 12px;
-      border-radius: 14px;
-      cursor:pointer;
-      font-weight: 900;
-      transition: transform .12s ease, background .12s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.14); }
+/* LEFT (más compacto) */
+.side{
+  background: var(--navy);
+  border-radius: var(--radius);
+  color: #fff;
+  padding: 14px;
+  box-shadow: var(--shadow);
 
-    /* ===== PANEL (azul grande) ===== */
-    .panel{
-      background: var(--navy);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      color:#fff;
-      height: fit-content;
+  height: 100%;          /* 👈 */
+  position: sticky;
+  top: 18px;
+  align-self: stretch;   /* 👈 asegura que estire */
+}
 
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap: 18px;
-      align-items:start;
-    }
-    @media (max-width: 980px){
-      .panel{ grid-template-columns: 1fr; }
-    }
+@media (max-width: 980px){
+  .side{ position: relative; top: 0; }
+}
 
-    .panel h2{
-      margin: 0 0 12px;
-      font-size: 12px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      opacity: .9;
-    }
+/* Ajustes solo para desktop */
+@media (min-width: 981px){
+  .photo{ width: 130px; height: 130px; margin-bottom: 8px; }
+  .fullname{ font-size: 30px; margin-bottom: 8px; }
+  .badge{ font-size: 10px; padding: 5px 10px; }
+  .btn{ padding: 10px; margin-top: 10px; }
+}
 
-    /* ===== FACTS (tarjetitas) ===== */
-    .facts{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media (max-width: 1200px){
-      .facts{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 980px){
-      .facts{ grid-template-columns: 1fr; }
-    }
+.photo{
+  width: 150px;
+  height: 150px;
+  margin: 6px auto 10px;
+  border-radius: 22px;
+  overflow:hidden;
+  border: 2px solid rgba(255,255,255,.65);
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 12px 26px rgba(0,0,0,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .fact{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      min-width: 0;
-    }
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
 
-    .fico{
-      width: 36px;
-      height: 36px;
-      flex: 0 0 36px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius: 12px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.14);
-      font-size: 16px;
-    }
 
-    .flabel{
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      font-weight: 900;
-      color: rgba(255,255,255,.78);
-      line-height: 1.1;
-    }
+.fullname{
+  font-weight: 900;
+  font-size: 34px;
+  line-height: 1.02;
+  margin: 6px 0 10px;
+  letter-spacing:.2px;
+}
 
-    .fvalue{
-      margin-top: 2px;
-      font-size: 14px;
-      font-weight: 900;
-      color:#fff;
-      line-height: 1.2;
-      word-break: break-word;
-    }
+.badge{
+  display:inline-block;
+  background: rgba(255,255,255,.92);
+  color: var(--navy2);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
 
-    .fsub{
-      margin-top: 4px;
-      font-size: 12px;
-      color: rgba(255,255,255,.72);
-      font-weight: 700;
-    }
+.btn{
+  width: 100%;
+  margin-top: 12px;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+  padding: 11px 12px;
+  border-radius: 14px;
+  cursor:pointer;
+  font-weight: 900;
+  transition: transform .12s ease, background .12s ease;
+}
+.btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.14); }
 
-    /* ===== CONTACTO en 1 columna ===== */
-    .facts-contact{
-      grid-template-columns: 1fr !important;
-    }
+/* Panel azul grande */
+.panel{
+  background: var(--navy);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;                 /* ↓ menos padding = menos espacio vacío */
+  color: #fff;
+
+  display:grid;
+  grid-template-columns: 1fr 360px;
+  gap: 14px;                      /* ↓ menos separación entre columnas */
+  align-items:start;
+
+  height: 100%;
+}
+
+@media (max-width: 980px){
+  .panel{ grid-template-columns: 1fr; }
+}
+
+.panel h2{
+  margin: 0 0 8px;                /* ↓ menos margen */
+  font-size: 13px;                /* ↑ un poquito más grande */
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .92;
+}
+
+
+    /* Información personal más compacta y distribuida */
+.bullets{
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+
+  display: grid;
+
+  /* 👇 En desktop usamos 3 columnas para llenar mejor el espacio */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  column-gap: 16px;               /* ↓ menos separación horizontal */
+  row-gap: 12px;                  /* ↓ menos separación vertical */
+  font-size: 15px;                /* ↑ letra más grande */
+}
+
+@media (max-width: 1100px){
+  .bullets{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px){
+  .bullets{
+    grid-template-columns: 1fr;
+  }
+}
+
+.bullets li{
+  display:flex;
+  gap: 10px;
+  align-items:flex-start;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.bullets li::before{
+  content:"•";
+  color: rgba(255,255,255,.9);
+  font-weight: 900;
+  margin-top: 1px;
+}
+
+.bullets b{
+  color:#fff;
+  font-weight: 900;
+}
 
     .info-col{
       display:flex;
       flex-direction:column;
-      gap: 14px;
+      gap: 12px;
       padding-left: 14px;
       border-left: 1px solid var(--line);
     }
@@ -235,16 +242,49 @@
         padding-top: 14px;
       }
     }
+.irow{
+  display:grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items:start;
+  color: var(--muted);
+  font-size: 14px;
+}
 
-    /* ===== CARD CURSOS ===== */
-    .card{
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      border: 1px solid var(--line2);
-      padding: 18px;
-      overflow:hidden;
-    }
+.irow .ico{
+  width: 22px;
+  height: 22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,.10);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.irow b{
+  color:#fff;
+}
+
+.small{
+  font-size: 12px;
+  color: var(--muted2);
+  margin-top: 2px;
+}
+
+    /* Cards blancas debajo */
+  .card{
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow2);
+  border: 1px solid var(--line2);
+  padding: 18px;
+  overflow:hidden;
+  margin-top: 0;
+}
+
+
 
     .pill{
       display:flex;
@@ -266,91 +306,53 @@
       display:inline-block;
       min-width: 220px;
       text-align:left;
-      white-space: nowrap;
     }
 
     .hint{
       font-size: 13px;
       color: #4b5563;
       margin: 0;
-      text-align: right;
     }
 
-    /* ===== SLOTS (3) ===== */
-    .slots{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
-      margin-top: 6px;
-    }
-    @media (max-width: 980px){
-      .slots{ grid-template-columns: 1fr; }
-      .hint{ text-align:left; }
-    }
-
-    .slot{
+    /* Curso card */
+    .course{
+      padding: 14px;
       border: 1px solid var(--line2);
       border-radius: 18px;
       background: #fbfcff;
-      padding: 14px;
       display:flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 220px;
+      flex-direction:column;
+      gap: 6px;
     }
-
-    .slot-title{
-      font-weight: 900;
-      color: var(--navy2);
+    .course h3{
+      margin:0;
       font-size: 14px;
-      line-height: 1.2;
+      color: var(--navy2);
+      letter-spacing: .02em;
     }
-
-    .slot-meta{
+    .meta{
       font-size: 12px;
       color: #1f3348;
       font-weight: 800;
       font-style: italic;
     }
-
-    .slot-desc{
+    .desc{
+      margin:0;
       font-size: 13px;
       color: #4b5563;
-      line-height: 1.45;
-      flex: 1;
+      line-height: 1.5;
     }
 
-    .slot-empty{
-      font-weight: 900;
-      color: #1f3348;
-      opacity: .6;
-      font-size: 13px;
+    .gridCourses{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .gridCourses{ grid-template-columns: 1fr; }
     }
 
-    .slot-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: 8px;
-      text-decoration:none;
-      border-radius: 14px;
-      padding: 12px 12px;
-      font-weight: 900;
-      border: 1px solid var(--line2);
-      background: var(--navy);
-      color: #fff;
-      cursor:pointer;
-      transition: transform .12s ease, opacity .12s ease;
-    }
-    .slot-btn:hover{ transform: translateY(-1px); }
-    .slot-btn.disabled{
-      background: #9aa4b2;
-      border-color: #cbd5e1;
-      cursor:not-allowed;
-      opacity: .7;
-    }
-
-    /* ===== PRINT ===== */
+    /* print */
     @media print{
       body{ background:#fff; }
       .layout{ padding: 0; gap: 12px; }
@@ -358,6 +360,133 @@
       .side, .panel, .card{ box-shadow:none; }
       .side{ position: relative; top:0; }
     }
+
+    /* === Slots de cursos (3 fijos en línea) === */
+.slots{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-top: 6px;
+}
+@media (max-width: 980px){
+  .slots{ grid-template-columns: 1fr; }
+}
+
+.slot{
+  border: 1px solid var(--line2);
+  border-radius: 18px;
+  background: #fbfcff;
+  padding: 14px;
+  display:flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 170px;
+}
+
+.slot-title{
+  font-weight: 900;
+  color: var(--navy2);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.slot-meta{
+  font-size: 12px;
+  color: #1f3348;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.slot-desc{
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.45;
+  flex: 1; /* empuja el botón hacia abajo */
+}
+
+.slot-empty{
+  font-weight: 900;
+  color: #1f3348;
+  opacity: .6;
+  font-size: 13px;
+}
+
+.slot-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+  text-decoration:none;
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 900;
+  border: 1px solid var(--line2);
+  background: var(--navy);
+  color: #fff;
+  cursor:pointer;
+  transition: transform .12s ease, opacity .12s ease;
+}
+.slot-btn:hover{ transform: translateY(-1px); }
+.slot-btn.disabled{
+  background: #9aa4b2;
+  border-color: #cbd5e1;
+  cursor:not-allowed;
+  opacity: .7;
+}
+/* === FACTS (Info personal distribuida tipo dashboard) === */
+.facts{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columnas como tu 2da imagen */
+  gap: 14px 18px;
+  margin-top: 8px;
+}
+
+@media (max-width: 1200px){
+  .facts{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px){
+  .facts{ grid-template-columns: 1fr; }
+}
+
+.fact{
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.fico{
+  width: 32px;
+  height: 32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 12px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  font-size: 15px;
+}
+
+.flabel{
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+
+.fvalue{
+  font-size: 14px;
+  color: #fff;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
   </style>
 </head>
 
@@ -393,200 +522,204 @@
     <!-- RIGHT -->
     <section class="right">
 
-      <!-- PANEL -->
+      <!-- Panel grande -->
       <div class="panel">
-        <!-- IZQUIERDA -->
         <div>
           <h2>Información personal</h2>
 
           <div class="facts">
-            <div class="fact">
-              <div class="fico">🏳</div>
-              <div>
-                <div class="flabel">Nacionalidad</div>
-                <div class="fvalue">{{ perfil.nacionalidad|default:"-" }}</div>
-              </div>
-            </div>
+  <div class="fact">
+    <div class="fico">🏳️</div>
+    <div>
+      <div class="flabel">Nacionalidad</div>
+      <div class="fvalue">{{ perfil.nacionalidad|default:"-" }}</div>
+    </div>
+  </div>
 
-            <div class="fact">
-              <div class="fico">👤</div>
-              <div>
-                <div class="flabel">Sexo</div>
-                <div class="fvalue">{{ perfil.get_sexo_display|default:"-" }}</div>
-              </div>
-            </div>
+  <div class="fact">
+    <div class="fico">👤</div>
+    <div>
+      <div class="flabel">Sexo</div>
+      <div class="fvalue">{{ perfil.get_sexo_display }}</div>
+    </div>
+  </div>
 
-            <div class="fact">
-              <div class="fico">🪪</div>
-              <div>
-                <div class="flabel">Cédula</div>
-                <div class="fvalue">{{ perfil.numero_de_cedula|default:"-" }}</div>
-              </div>
-            </div>
+  <div class="fact">
+    <div class="fico">🪪</div>
+    <div>
+      <div class="flabel">Cédula</div>
+      <div class="fvalue">{{ perfil.numero_de_cedula|default:"-" }}</div>
+    </div>
+  </div>
 
-            <div class="fact">
-              <div class="fico">💍</div>
-              <div>
-                <div class="flabel">Estado civil</div>
-                <div class="fvalue">{{ perfil.estado_civil|default:"-" }}</div>
-              </div>
-            </div>
+  <div class="fact">
+    <div class="fico">💍</div>
+    <div>
+      <div class="flabel">Estado civil</div>
+      <div class="fvalue">{{ perfil.estado_civil|default:"-" }}</div>
+    </div>
+  </div>
 
-            <div class="fact">
-              <div class="fico">📅</div>
-              <div>
-                <div class="flabel">Fecha de nacimiento</div>
-                <div class="fvalue">{{ perfil.fechana_de_nacimiento|default:"-" }}</div>
-              </div>
-            </div>
-          </div>
+  <div class="fact">
+    <div class="fico">📅</div>
+    <div>
+      <div class="flabel">Fecha de nacimiento</div>
+      <div class="fvalue">{{ perfil.fechana_de_nacimiento|default:"-" }}</div>
+    </div>
+  </div>
+</div>
+
         </div>
 
-        <!-- DERECHA -->
         <div class="info-col">
           <h2>Contacto</h2>
 
-          <div class="facts facts-contact">
-            <div class="fact">
-              <div class="fico">☎</div>
-              <div>
-                <div class="flabel">Teléfono</div>
-                <div class="fvalue">{{ perfil.telefono_convencional|default:"-" }}</div>
-                {% if perfil.telefono_fijo %}<div class="fsub">{{ perfil.telefono_fijo }}</div>{% endif %}
-              </div>
+          <div class="irow">
+            <div class="ico">☎</div>
+            <div>
+              <b>Teléfono</b>
+              <div class="small">{{ perfil.telefono_convencional|default:"-" }}</div>
+              {% if perfil.telefono_fijo %}<div class="small">{{ perfil.telefono_fijo }}</div>{% endif %}
             </div>
+          </div>
 
-            <div class="fact">
-              <div class="fico">📍</div>
-              <div>
-                <div class="flabel">Domicilio</div>
-                <div class="fvalue">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
-              </div>
+          <div class="irow">
+            <div class="ico">📍</div>
+            <div>
+              <b>Domicilio</b>
+              <div class="small">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
             </div>
+          </div>
 
-            <div class="fact">
-              <div class="fico">🏢</div>
-              <div>
-                <div class="flabel">Trabajo</div>
-                <div class="fvalue">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
-              </div>
+          <div class="irow">
+            <div class="ico">🏢</div>
+            <div>
+              <b>Trabajo</b>
+              <div class="small">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
             </div>
+          </div>
 
-            <div class="fact">
-              <div class="fico">🌐</div>
-              <div>
-                <div class="flabel">Sitio web</div>
-                <div class="fvalue">{{ perfil.sitioweb|default:"-" }}</div>
-              </div>
+          <div class="irow">
+            <div class="ico">🌐</div>
+            <div>
+              <b>Sitio web</b>
+              <div class="small">{{ perfil.sitioweb|default:"-" }}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- CURSOS -->
-      <div class="card">
-        <div class="pill">
-          <div class="pill-title">Cursos realizados</div>
-          <p class="hint">Se muestran máximo 3 cursos (slots). Agrega más en Admin si quieres cambiar cuáles se ven.</p>
-        </div>
-
-        <div class="slots">
-          <!-- SLOT 1 -->
-          <div class="slot">
-            {% with c=cursos.0 %}
-              {% if c %}
-                <div class="slot-title">{{ c.nombrecurso }}</div>
-                <div class="slot-meta">
-                  {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
-                  {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
-                  {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
-                </div>
-
-                <div class="slot-desc">{{ c.descripcion_curso|default:"Sin descripción." }}</div>
-
-                {% if c.rutacertificado %}
-                  <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
-                    Ver comprobante
-                  </a>
-                {% else %}
-                  <button class="slot-btn disabled" type="button" disabled>Sin comprobante</button>
-                {% endif %}
-              {% else %}
-                <div class="slot-empty">Slot 1 vacío</div>
-                <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
-                <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
-              {% endif %}
-            {% endwith %}
-          </div>
-
-          <!-- SLOT 2 -->
-          <div class="slot">
-            {% with c=cursos.1 %}
-              {% if c %}
-                <div class="slot-title">{{ c.nombrecurso }}</div>
-                <div class="slot-meta">
-                  {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
-                  {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
-                  {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
-                </div>
-
-                <div class="slot-desc">{{ c.descripcion_curso|default:"Sin descripción." }}</div>
-
-                {% if c.rutacertificado %}
-                  <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
-                    Ver comprobante
-                  </a>
-                {% else %}
-                  <button class="slot-btn disabled" type="button" disabled>Sin comprobante</button>
-                {% endif %}
-              {% else %}
-                <div class="slot-empty">Slot 2 vacío</div>
-                <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
-                <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
-              {% endif %}
-            {% endwith %}
-          </div>
-
-          <!-- SLOT 3 -->
-          <div class="slot">
-            {% with c=cursos.2 %}
-              {% if c %}
-                <div class="slot-title">{{ c.nombrecurso }}</div>
-                <div class="slot-meta">
-                  {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
-                  {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
-                  {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
-                </div>
-
-                <div class="slot-desc">{{ c.descripcion_curso|default:"Sin descripción." }}</div>
-
-                {% if c.rutacertificado %}
-                  <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
-                    Ver comprobante
-                  </a>
-                {% else %}
-                  <button class="slot-btn disabled" type="button" disabled>Sin comprobante</button>
-                {% endif %}
-              {% else %}
-                <div class="slot-empty">Slot 3 vacío</div>
-                <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
-                <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
-              {% endif %}
-            {% endwith %}
-          </div>
-        </div>
-      </div>
-
-    </section>
+      <!-- Cursos: 3 slots fijos (lineales) -->
+<div class="card">
+  <div class="pill">
+    <div class="pill-title">Cursos realizados</div>
+    <p class="hint">Se muestran máximo 3 cursos (slots). Agrega más en Admin si quieres cambiar cuáles se ven.</p>
   </div>
+
+  <div class="slots">
+    <!-- SLOT 1 -->
+    <div class="slot">
+      {% with c=cursos.0 %}
+        {% if c %}
+          <div class="slot-title">{{ c.nombrecurso }}</div>
+          <div class="slot-meta">
+            {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
+            {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
+            {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
+          </div>
+
+          <div class="slot-desc">
+            {{ c.descripcion_curso|default:"Sin descripción." }}
+          </div>
+
+          {% if c.rutacertificado %}
+            <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
+              Ver comprobante
+            </a>
+          {% else %}
+            <button class="slot-btn disabled" type="button" disabled>
+              Sin comprobante
+            </button>
+          {% endif %}
+        {% else %}
+          <div class="slot-empty">Slot 1 vacío</div>
+          <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
+          <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <!-- SLOT 2 -->
+    <div class="slot">
+      {% with c=cursos.1 %}
+        {% if c %}
+          <div class="slot-title">{{ c.nombrecurso }}</div>
+          <div class="slot-meta">
+            {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
+            {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
+            {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
+          </div>
+
+          <div class="slot-desc">
+            {{ c.descripcion_curso|default:"Sin descripción." }}
+          </div>
+
+          {% if c.rutacertificado %}
+            <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
+              Ver comprobante
+            </a>
+          {% else %}
+            <button class="slot-btn disabled" type="button" disabled>
+              Sin comprobante
+            </button>
+          {% endif %}
+        {% else %}
+          <div class="slot-empty">Slot 2 vacío</div>
+          <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
+          <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <!-- SLOT 3 -->
+    <div class="slot">
+      {% with c=cursos.2 %}
+        {% if c %}
+          <div class="slot-title">{{ c.nombrecurso }}</div>
+          <div class="slot-meta">
+            {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} · {% endif %}
+            {{ c.fecha_inicio|default:"-" }} — {{ c.fecha_fin|default:"-" }}
+            {% if c.total_horas %} · {{ c.total_horas }}h{% endif %}
+          </div>
+
+          <div class="slot-desc">
+            {{ c.descripcion_curso|default:"Sin descripción." }}
+          </div>
+
+          {% if c.rutacertificado %}
+            <a class="slot-btn" href="{{ c.rutacertificado }}" target="_blank" rel="noopener">
+              Ver comprobante
+            </a>
+          {% else %}
+            <button class="slot-btn disabled" type="button" disabled>
+              Sin comprobante
+            </button>
+          {% endif %}
+        {% else %}
+          <div class="slot-empty">Slot 3 vacío</div>
+          <div class="slot-desc">Agrega un curso en Admin para que aparezca aquí.</div>
+          <button class="slot-btn disabled" type="button" disabled>Ver comprobante</button>
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+</div>
 
   {% else %}
     <div style="padding:18px;">
       <div class="card" style="max-width:800px; margin:0 auto;">
         <h2 style="margin:0 0 8px;">Sin perfil activo</h2>
-        <p style="margin:0; color:#4b5563;">
-          Crea un registro en <b>DatosPersonales</b> y pon <code>perfil_activo = 1</code>.
-        </p>
+        <p class="hint" style="margin:0;">Crea un registro en <b>DatosPersonales</b> y pon <code>perfil_activo = 1</code>.</p>
       </div>
     </div>
   {% endif %}
