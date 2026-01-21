@@ -226,6 +226,65 @@
   color:#fff;
   font-weight: 900;
 }
+/* GRID DE CONTACTO */
+.contact-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 980px){
+  .contact-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD REUTILIZABLE (MISMA IDEA QUE INFO PERSONAL) */
+.info-card{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--line);
+}
+
+/* ICONO */
+.info-ico{
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,.12);
+  border: 1px solid var(--line);
+  font-size: 16px;
+}
+
+/* TEXTO */
+.info-label{
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  font-weight: 800;
+  display:block;
+}
+
+.info-value{
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+  display:block;
+}
+
+.info-sub{
+  font-size: 12px;
+  color: var(--muted2);
+  display:block;
+}
 
     .info-col{
       display:flex;
@@ -572,42 +631,46 @@
         </div>
 
         <div class="info-col">
-          <h2>Contacto</h2>
+  <h2>Contacto</h2>
 
-          <div class="irow">
-            <div class="ico">☎</div>
-            <div>
-              <b>Teléfono</b>
-              <div class="small">{{ perfil.telefono_convencional|default:"-" }}</div>
-              {% if perfil.telefono_fijo %}<div class="small">{{ perfil.telefono_fijo }}</div>{% endif %}
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">📍</div>
-            <div>
-              <b>Domicilio</b>
-              <div class="small">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">🏢</div>
-            <div>
-              <b>Trabajo</b>
-              <div class="small">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">🌐</div>
-            <div>
-              <b>Sitio web</b>
-              <div class="small">{{ perfil.sitioweb|default:"-" }}</div>
-            </div>
-          </div>
-        </div>
+  <div class="contact-grid">
+    <div class="info-card">
+      <div class="info-ico">☎</div>
+      <div>
+        <span class="info-label">Teléfono</span>
+        <span class="info-value">{{ perfil.telefono_convencional|default:"-" }}</span>
+        {% if perfil.telefono_fijo %}
+          <span class="info-sub">{{ perfil.telefono_fijo }}</span>
+        {% endif %}
       </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-ico">📍</div>
+      <div>
+        <span class="info-label">Domicilio</span>
+        <span class="info-value">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-ico">🏢</div>
+      <div>
+        <span class="info-label">Trabajo</span>
+        <span class="info-value">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-ico">🌐</div>
+      <div>
+        <span class="info-label">Sitio web</span>
+        <span class="info-value">{{ perfil.sitioweb|default:"-" }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <!-- Cursos: 3 slots fijos (lineales) -->
 <div class="card">
