@@ -151,18 +151,16 @@
 .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.14); }
 
 /* Panel azul grande */
+/* Panel azul grande (FULL WIDTH, sin columna derecha) */
 .panel{
   background: var(--navy);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 18px;                 /* ↓ menos padding = menos espacio vacío */
+  padding: 18px;
   color: #fff;
 
-  display:grid;
-  grid-template-columns: 1fr 360px;
-  gap: 14px;                      /* ↓ menos separación entre columnas */
-  align-items:start;
-
+  /* antes era grid de 2 columnas (1fr 360px) */
+  display: block;
   height: 100%;
 }
 
@@ -447,6 +445,20 @@
 @media (max-width: 700px){
   .facts{ grid-template-columns: 1fr; }
 }
+/* Facts cuando mezclamos info + contacto en el mismo grid */
+.facts--all{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1300px){
+  .facts--all{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1100px){
+  .facts--all{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px){
+  .facts--all{ grid-template-columns: 1fr; }
+}
 
 .fact{
   display: grid;
@@ -585,93 +597,88 @@
 
     <!-- Panel grande -->
 <div class="panel">
-  <!-- COLUMNA IZQUIERDA: INFORMACIÓN PERSONAL -->
-  <div class="p-left">
-    <h2>Información personal</h2>
+  <h2>Información personal</h2>
 
-    <div class="facts">
-      <div class="fact">
-        <div class="fico">🏳️</div>
-        <div>
-          <div class="flabel">Nacionalidad</div>
-          <div class="fvalue">{{ perfil.nacionalidad|default:"-" }}</div>
-        </div>
+  <div class="facts facts--all">
+    <!-- INFO PERSONAL -->
+    <div class="fact">
+      <div class="fico">🏳️</div>
+      <div>
+        <div class="flabel">Nacionalidad</div>
+        <div class="fvalue">{{ perfil.nacionalidad|default:"-" }}</div>
       </div>
+    </div>
 
-      <div class="fact">
-        <div class="fico">👤</div>
-        <div>
-          <div class="flabel">Sexo</div>
-          <div class="fvalue">{{ perfil.get_sexo_display }}</div>
-        </div>
+    <div class="fact">
+      <div class="fico">👤</div>
+      <div>
+        <div class="flabel">Sexo</div>
+        <div class="fvalue">{{ perfil.get_sexo_display }}</div>
       </div>
+    </div>
 
-      <div class="fact">
-        <div class="fico">🪪</div>
-        <div>
-          <div class="flabel">Cédula</div>
-          <div class="fvalue">{{ perfil.numero_de_cedula|default:"-" }}</div>
-        </div>
+    <div class="fact">
+      <div class="fico">🪪</div>
+      <div>
+        <div class="flabel">Cédula</div>
+        <div class="fvalue">{{ perfil.numero_de_cedula|default:"-" }}</div>
       </div>
+    </div>
 
-      <div class="fact">
-        <div class="fico">💍</div>
-        <div>
-          <div class="flabel">Estado civil</div>
-          <div class="fvalue">{{ perfil.estado_civil|default:"-" }}</div>
-        </div>
+    <div class="fact">
+      <div class="fico">💍</div>
+      <div>
+        <div class="flabel">Estado civil</div>
+        <div class="fvalue">{{ perfil.estado_civil|default:"-" }}</div>
       </div>
+    </div>
 
-      <div class="fact">
-        <div class="fico">📅</div>
-        <div>
-          <div class="flabel">Fecha de nacimiento</div>
-          <div class="fvalue">{{ perfil.fechana_de_nacimiento|default:"-" }}</div>
+    <div class="fact">
+      <div class="fico">📅</div>
+      <div>
+        <div class="flabel">Fecha de nacimiento</div>
+        <div class="fvalue">{{ perfil.fechana_de_nacimiento|default:"-" }}</div>
+      </div>
+    </div>
+
+    <!-- CONTACTO (SIN TITULO "CONTACTO") -->
+    <div class="fact">
+      <div class="fico">☎</div>
+      <div>
+        <div class="flabel">Teléfono</div>
+        <div class="fvalue">
+          {{ perfil.telefono_convencional|default:"-" }}
+          {% if perfil.telefono_fijo %}<br>{{ perfil.telefono_fijo }}{% endif %}
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- COLUMNA DERECHA: CONTACTO -->
-  <div class="info-col">
-    <h2>Contacto</h2>
-
-    <div class="contact-facts">
-      <div class="cfact">
-        <div class="cico">☎</div>
-        <div>
-          <div class="clabel">Teléfono</div>
-          <div class="cvalue">{{ perfil.telefono_convencional|default:"-" }}</div>
-          {% if perfil.telefono_fijo %}<div class="csub">{{ perfil.telefono_fijo }}</div>{% endif %}
-        </div>
+    <div class="fact">
+      <div class="fico">📍</div>
+      <div>
+        <div class="flabel">Domicilio</div>
+        <div class="fvalue">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
       </div>
+    </div>
 
-      <div class="cfact">
-        <div class="cico">📍</div>
-        <div>
-          <div class="clabel">Domicilio</div>
-          <div class="cvalue">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
-        </div>
+    <div class="fact">
+      <div class="fico">🏢</div>
+      <div>
+        <div class="flabel">Trabajo</div>
+        <div class="fvalue">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
       </div>
+    </div>
 
-      <div class="cfact">
-        <div class="cico">🏢</div>
-        <div>
-          <div class="clabel">Trabajo</div>
-          <div class="cvalue">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
-        </div>
-      </div>
-
-      <div class="cfact">
-        <div class="cico">🌐</div>
-        <div>
-          <div class="clabel">Sitio web</div>
-          <div class="cvalue">{{ perfil.sitioweb|default:"-" }}</div>
-        </div>
+    <div class="fact">
+      <div class="fico">🌐</div>
+      <div>
+        <div class="flabel">Sitio web</div>
+        <div class="fvalue">{{ perfil.sitioweb|default:"-" }}</div>
       </div>
     </div>
   </div>
 </div>
+
 
 
       <!-- Cursos: 3 slots fijos (lineales) -->
