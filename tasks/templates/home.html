@@ -433,6 +433,59 @@
   cursor:not-allowed;
   opacity: .7;
 }
+/* === FACTS (Info personal distribuida tipo dashboard) === */
+.facts{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columnas como tu 2da imagen */
+  gap: 14px 18px;
+  margin-top: 8px;
+}
+
+@media (max-width: 1200px){
+  .facts{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px){
+  .facts{ grid-template-columns: 1fr; }
+}
+
+.fact{
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.fico{
+  width: 32px;
+  height: 32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 12px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  font-size: 15px;
+}
+
+.flabel{
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+
+.fvalue{
+  font-size: 14px;
+  color: #fff;
+  font-weight: 800;
+  line-height: 1.25;
+}
 
   </style>
 </head>
@@ -474,13 +527,48 @@
         <div>
           <h2>Información personal</h2>
 
-          <ul class="bullets">
-            <li><b>Nacionalidad:</b> {{ perfil.nacionalidad|default:"-" }}</li>
-            <li><b>Sexo:</b> {{ perfil.get_sexo_display }}</li>
-            <li><b>Cédula:</b> {{ perfil.numero_de_cedula }}</li>
-            <li><b>Estado civil:</b> {{ perfil.estado_civil|default:"-" }}</li>
-            <li><b>Fecha de nacimiento:</b> {{ perfil.fechana_de_nacimiento|default:"-" }}</li>
-          </ul>
+          <div class="facts">
+  <div class="fact">
+    <div class="fico">🏳️</div>
+    <div>
+      <div class="flabel">Nacionalidad</div>
+      <div class="fvalue">{{ perfil.nacionalidad|default:"-" }}</div>
+    </div>
+  </div>
+
+  <div class="fact">
+    <div class="fico">👤</div>
+    <div>
+      <div class="flabel">Sexo</div>
+      <div class="fvalue">{{ perfil.get_sexo_display }}</div>
+    </div>
+  </div>
+
+  <div class="fact">
+    <div class="fico">🪪</div>
+    <div>
+      <div class="flabel">Cédula</div>
+      <div class="fvalue">{{ perfil.numero_de_cedula|default:"-" }}</div>
+    </div>
+  </div>
+
+  <div class="fact">
+    <div class="fico">💍</div>
+    <div>
+      <div class="flabel">Estado civil</div>
+      <div class="fvalue">{{ perfil.estado_civil|default:"-" }}</div>
+    </div>
+  </div>
+
+  <div class="fact">
+    <div class="fico">📅</div>
+    <div>
+      <div class="flabel">Fecha de nacimiento</div>
+      <div class="fvalue">{{ perfil.fechana_de_nacimiento|default:"-" }}</div>
+    </div>
+  </div>
+</div>
+
         </div>
 
         <div class="info-col">
