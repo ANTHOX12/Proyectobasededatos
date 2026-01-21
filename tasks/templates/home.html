@@ -540,6 +540,14 @@
   margin-top: 2px;
 }
 
+/* Evita que el grid “aplasté” contenido y se monte */
+.panel > *{ min-width: 0; }
+.fact, .cfact{ min-width: 0; }
+.fvalue, .cvalue{ word-break: break-word; }
+
+/* Opcional: si quieres que contacto se vea más “tarjeta” */
+.contact-facts{ margin-top: 8px; }
+
   </style>
 </head>
 
@@ -575,89 +583,91 @@
     <!-- RIGHT -->
     <section class="right">
 
-      <!-- Panel grande -->
-      <div class="panel">
+    <!-- Panel grande -->
+<div class="panel">
+  <!-- COLUMNA IZQUIERDA: INFORMACIÓN PERSONAL -->
+  <div class="p-left">
+    <h2>Información personal</h2>
+
+    <div class="facts">
+      <div class="fact">
+        <div class="fico">🏳️</div>
         <div>
-          <h2>Información personal</h2>
-
-          <div class="facts">
-  <div class="fact">
-    <div class="fico">🏳️</div>
-    <div>
-      <div class="flabel">Nacionalidad</div>
-      <div class="fvalue">{{ perfil.nacionalidad|default:"-" }}</div>
-    </div>
-  </div>
-
-  <div class="fact">
-    <div class="fico">👤</div>
-    <div>
-      <div class="flabel">Sexo</div>
-      <div class="fvalue">{{ perfil.get_sexo_display }}</div>
-    </div>
-  </div>
-
-  <div class="fact">
-    <div class="fico">🪪</div>
-    <div>
-      <div class="flabel">Cédula</div>
-      <div class="fvalue">{{ perfil.numero_de_cedula|default:"-" }}</div>
-    </div>
-  </div>
-
-  <div class="fact">
-    <div class="fico">💍</div>
-    <div>
-      <div class="flabel">Estado civil</div>
-      <div class="fvalue">{{ perfil.estado_civil|default:"-" }}</div>
-    </div>
-  </div>
-
-  <div class="fact">
-    <div class="fico">📅</div>
-    <div>
-      <div class="flabel">Fecha de nacimiento</div>
-      <div class="fvalue">{{ perfil.fechana_de_nacimiento|default:"-" }}</div>
-    </div>
-  </div>
-</div>
-
+          <div class="flabel">Nacionalidad</div>
+          <div class="fvalue">{{ perfil.nacionalidad|default:"-" }}</div>
         </div>
+      </div>
 
-        <div class="info-col">
-  <h2>Contacto</h2>
+      <div class="fact">
+        <div class="fico">👤</div>
+        <div>
+          <div class="flabel">Sexo</div>
+          <div class="fvalue">{{ perfil.get_sexo_display }}</div>
+        </div>
+      </div>
 
-  <div class="contact-facts">
-    <div class="cfact">
-      <div class="cico">☎</div>
-      <div>
-        <div class="clabel">Teléfono</div>
-        <div class="cvalue">{{ perfil.telefono_convencional|default:"-" }}</div>
-        {% if perfil.telefono_fijo %}<div class="csub">{{ perfil.telefono_fijo }}</div>{% endif %}
+      <div class="fact">
+        <div class="fico">🪪</div>
+        <div>
+          <div class="flabel">Cédula</div>
+          <div class="fvalue">{{ perfil.numero_de_cedula|default:"-" }}</div>
+        </div>
+      </div>
+
+      <div class="fact">
+        <div class="fico">💍</div>
+        <div>
+          <div class="flabel">Estado civil</div>
+          <div class="fvalue">{{ perfil.estado_civil|default:"-" }}</div>
+        </div>
+      </div>
+
+      <div class="fact">
+        <div class="fico">📅</div>
+        <div>
+          <div class="flabel">Fecha de nacimiento</div>
+          <div class="fvalue">{{ perfil.fechana_de_nacimiento|default:"-" }}</div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="cfact">
-      <div class="cico">📍</div>
-      <div>
-        <div class="clabel">Domicilio</div>
-        <div class="cvalue">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
+  <!-- COLUMNA DERECHA: CONTACTO -->
+  <div class="info-col">
+    <h2>Contacto</h2>
+
+    <div class="contact-facts">
+      <div class="cfact">
+        <div class="cico">☎</div>
+        <div>
+          <div class="clabel">Teléfono</div>
+          <div class="cvalue">{{ perfil.telefono_convencional|default:"-" }}</div>
+          {% if perfil.telefono_fijo %}<div class="csub">{{ perfil.telefono_fijo }}</div>{% endif %}
+        </div>
       </div>
-    </div>
 
-    <div class="cfact">
-      <div class="cico">🏢</div>
-      <div>
-        <div class="clabel">Trabajo</div>
-        <div class="cvalue">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
+      <div class="cfact">
+        <div class="cico">📍</div>
+        <div>
+          <div class="clabel">Domicilio</div>
+          <div class="cvalue">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
+        </div>
       </div>
-    </div>
 
-    <div class="cfact">
-      <div class="cico">🌐</div>
-      <div>
-        <div class="clabel">Sitio web</div>
-        <div class="cvalue">{{ perfil.sitioweb|default:"-" }}</div>
+      <div class="cfact">
+        <div class="cico">🏢</div>
+        <div>
+          <div class="clabel">Trabajo</div>
+          <div class="cvalue">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
+        </div>
+      </div>
+
+      <div class="cfact">
+        <div class="cico">🌐</div>
+        <div>
+          <div class="clabel">Sitio web</div>
+          <div class="cvalue">{{ perfil.sitioweb|default:"-" }}</div>
+        </div>
       </div>
     </div>
   </div>
