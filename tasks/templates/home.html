@@ -487,6 +487,59 @@
   line-height: 1.25;
 }
 
+/* === CONTACTO en estilo "cards" como facts === */
+.contact-facts{
+  display: grid;
+  grid-template-columns: 1fr;       /* 1 columna (queda bonito en el panel derecho) */
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cfact{
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.cico{
+  width: 32px;
+  height: 32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 12px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  font-size: 15px;
+}
+
+.clabel{
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+  font-weight: 900;
+  margin-bottom: 2px;
+}
+
+.cvalue{
+  font-size: 14px;
+  color: #fff;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.csub{
+  font-size: 12px;
+  color: var(--muted2);
+  margin-top: 2px;
+}
+
   </style>
 </head>
 
@@ -572,42 +625,44 @@
         </div>
 
         <div class="info-col">
-          <h2>Contacto</h2>
+  <h2>Contacto</h2>
 
-          <div class="irow">
-            <div class="ico">☎</div>
-            <div>
-              <b>Teléfono</b>
-              <div class="small">{{ perfil.telefono_convencional|default:"-" }}</div>
-              {% if perfil.telefono_fijo %}<div class="small">{{ perfil.telefono_fijo }}</div>{% endif %}
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">📍</div>
-            <div>
-              <b>Domicilio</b>
-              <div class="small">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">🏢</div>
-            <div>
-              <b>Trabajo</b>
-              <div class="small">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
-            </div>
-          </div>
-
-          <div class="irow">
-            <div class="ico">🌐</div>
-            <div>
-              <b>Sitio web</b>
-              <div class="small">{{ perfil.sitioweb|default:"-" }}</div>
-            </div>
-          </div>
-        </div>
+  <div class="contact-facts">
+    <div class="cfact">
+      <div class="cico">☎</div>
+      <div>
+        <div class="clabel">Teléfono</div>
+        <div class="cvalue">{{ perfil.telefono_convencional|default:"-" }}</div>
+        {% if perfil.telefono_fijo %}<div class="csub">{{ perfil.telefono_fijo }}</div>{% endif %}
       </div>
+    </div>
+
+    <div class="cfact">
+      <div class="cico">📍</div>
+      <div>
+        <div class="clabel">Domicilio</div>
+        <div class="cvalue">{{ perfil.direccion_domiciliaria|default:"No registrada" }}</div>
+      </div>
+    </div>
+
+    <div class="cfact">
+      <div class="cico">🏢</div>
+      <div>
+        <div class="clabel">Trabajo</div>
+        <div class="cvalue">{{ perfil.direccion_de_trabajo|default:"No registrada" }}</div>
+      </div>
+    </div>
+
+    <div class="cfact">
+      <div class="cico">🌐</div>
+      <div>
+        <div class="clabel">Sitio web</div>
+        <div class="cvalue">{{ perfil.sitioweb|default:"-" }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <!-- Cursos: 3 slots fijos (lineales) -->
 <div class="card">
