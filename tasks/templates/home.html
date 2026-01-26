@@ -570,10 +570,10 @@
     <!-- LEFT -->
     <aside class="side">
       <div class="photo">
-        <img
-          src="{{ perfil.foto_url|default:'https://via.placeholder.com/600x600.png?text=Foto' }}"
-          alt="Foto"
-        >
+       <img
+  src="{% if perfil.foto %}{{ perfil.foto.url }}{% else %}https://via.placeholder.com/600x600.png?text=Foto{% endif %}"
+  alt="Foto"
+>
       </div>
 
       <div class="fullname">
