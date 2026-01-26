@@ -33,6 +33,10 @@ class DatosPersonales(models.Model):
 
     sitioweb = models.CharField(max_length=60, blank=True)
 
+        # Foto por URL (link)
+    foto_url = models.URLField(blank=True)
+
+
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
 
