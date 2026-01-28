@@ -6,7 +6,8 @@ from .models import (
     ExperienciaLaboral,
     ProductoAcademico,
     Reconocimiento,
-    VentaGarage,   
+    VentaGarage,
+    Formacion,   # ✅ NUEVO
 )
 
 def home(request):
@@ -19,7 +20,8 @@ def home(request):
             "experiencias": [],
             "productos": [],
             "reconocimientos": [],
-            "garage": [],          
+            "garage": [],
+            "formacion": [],      # ✅ NUEVO
         })
 
     cursos = CursoRealizado.objects.filter(
@@ -30,7 +32,7 @@ def home(request):
     experiencias = ExperienciaLaboral.objects.filter(
         perfil=perfil,
         activarparaqueseveaenfront=True
-    )
+    ).order_by("-fecha_de_inicio_de_gestion")[:3]
 
     productos = ProductoAcademico.objects.filter(
         perfil=perfil,
@@ -42,10 +44,15 @@ def home(request):
         activarparaqueseveaenfront=True
     )
 
-    garage = VentaGarage.objects.filter(   
+    garage = VentaGarage.objects.filter(
         perfil=perfil,
         activarparaqueseveaenfront=True
     )
+
+    formacion = Formacion.objects.filter(   # ✅ NUEVO
+        perfil=perfil,
+        activarparaqueseveaenfront=True
+    ).order_by("-id")  # (si luego pones fecha, cambiamos esto a -fecha)
 
     return render(request, "home.html", {
         "perfil": perfil,
@@ -53,7 +60,6 @@ def home(request):
         "experiencias": experiencias,
         "productos": productos,
         "reconocimientos": reconocimientos,
-        "garage": garage,        
+        "garage": garage,
+        "formacion": formacion,   # ✅ NUEVO
     })
-
-

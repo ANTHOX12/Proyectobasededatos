@@ -200,6 +200,9 @@ class VentaGarage(models.Model):
     estadoproducto = models.CharField(max_length=40, choices=ESTADO_CHOICES)
     descripcion = models.CharField(max_length=100, blank=True)
 
+    # ✅ NUEVO: Imagen por URL (para mostrar miniatura en el front)
+    imagen_url = models.URLField(blank=True)
+
     valordelbien = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -220,3 +223,26 @@ class VentaGarage(models.Model):
 
     def __str__(self):
         return self.nombreproducto
+
+
+class Formacion(models.Model):
+    perfil = models.ForeignKey(
+        DatosPersonales, on_delete=models.CASCADE, related_name="formacion_items"
+    )
+
+    TIPO_CHOICES = [
+        ("PROYECTO", "PROYECTO"),
+        ("CURSO", "CURSO"),
+        ("CERTIFICACION", "CERTIFICACIÓN"),
+        ("TITULO", "TÍTULO"),
+        ("OTRO", "OTRO"),
+    ]
+
+    titulo = models.CharField(max_length=160)
+    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES, default="PROYECTO")
+    descripcion = models.TextField(blank=True)
+
+    activarparaqueseveaenfront = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.tipo} - {self.titulo}"

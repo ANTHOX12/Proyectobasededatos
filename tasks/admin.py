@@ -9,6 +9,7 @@ from .models import (
     CursoRealizado,
     ProductoAcademico,
     VentaGarage,
+    Formacion,
 )
 
 
@@ -90,7 +91,6 @@ class CursoRealizadoAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Fechas
         if "fecha_inicio" in self.fields:
             self.fields["fecha_inicio"].widget = forms.SelectDateWidget(
                 years=years_last(30)
@@ -100,7 +100,6 @@ class CursoRealizadoAdminForm(forms.ModelForm):
                 years=years_last(30)
             )
 
-        # 🔒 NO negativos (UI)
         if "total_horas" in self.fields:
             self.fields["total_horas"].widget = forms.NumberInput(
                 attrs={"min": 0, "step": 1}
@@ -110,13 +109,26 @@ class CursoRealizadoAdminForm(forms.ModelForm):
 @admin.register(CursoRealizado)
 class CursoRealizadoAdmin(admin.ModelAdmin):
     form = CursoRealizadoAdminForm
-
-    # 👉 ORDEN POR FECHA (más reciente primero)
     ordering = ("-fecha_fin", "-fecha_inicio")
 
     class Media:
         js = ("tasks/admin/js/curso_fechas.js",)
 
+
+# ----------------- FORMACION -----------------
+@admin.register(Formacion)
+class FormacionAdmin(admin.ModelAdmin):
+    list_display = ("perfil", "tipo", "titulo", "activarparaqueseveaenfront")
+    list_filter = ("tipo", "activarparaqueseveaenfront")
+    search_fields = ("titulo", "descripcion", "perfil__nombres", "perfil__apellidos")
+
+    fields = (
+        "perfil",
+        "tipo",
+        "titulo",
+        "descripcion",
+        "activarparaqueseveaenfront",
+    )
 
 
 # ----------------- VentaGarage -----------------
@@ -128,16 +140,42 @@ class VentaGarageAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # 🔒 NO negativos (UI)
         if "valordelbien" in self.fields:
             self.fields["valordelbien"].widget = forms.NumberInput(
                 attrs={"min": 0, "step": "0.01"}
             )
 
+        # ✅ NUEVO: Placeholder para pegar la URL de la imagen
+        if "imagen_url" in self.fields:
+            self.fields["imagen_url"].widget.attrs.update({
+                "placeholder": "https://ejemplo.com/imagen.jpg"
+            })
+
 
 @admin.register(VentaGarage)
 class VentaGarageAdmin(admin.ModelAdmin):
     form = VentaGarageAdminForm
+
+    # ✅ Mostrar el campo imagen_url en el formulario del admin
+    fields = (
+        "perfil",
+        "nombreproducto",
+        "estadoproducto",
+        "descripcion",
+        "imagen_url",
+        "valordelbien",
+        "activarparaqueseveaenfront",
+    )
+
+    # ✅ Listado más útil
+    list_display = (
+        "nombreproducto",
+        "estadoproducto",
+        "valordelbien",
+        "activarparaqueseveaenfront",
+    )
+    list_filter = ("estadoproducto", "activarparaqueseveaenfront")
+    search_fields = ("nombreproducto", "descripcion")
 
 
 # ----------------- ProductoAcademico -----------------

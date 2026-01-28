@@ -473,128 +473,6 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,.14);
     }
 
-    .section-sub{
-      margin: 6px 0 0;
-      color: #4b5563;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .pill-actions{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content:flex-end;
-    }
-
-    .pill-chip{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      border: 1px solid var(--line2);
-      background: #fbfcff;
-      color: #1f3348;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-weight: 900;
-      font-size: 12px;
-      cursor: pointer;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      user-select:none;
-    }
-    .pill-chip:hover{ transform: translateY(-1px); background: #f3f6ff; }
-    .pill-chip.is-on{
-      background: rgba(35,58,82,.10);
-      border-color: rgba(35,58,82,.25);
-    }
-
-    .section-grid{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 14px;
-    }
-    @media (max-width: 980px){
-      .section-grid{ grid-template-columns: 1fr; }
-    }
-
-    .tile{
-      border: 1px solid var(--line2);
-      border-radius: 18px;
-      background: #fbfcff;
-      padding: 14px;
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-      min-height: 160px;
-    }
-
-    .tile-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-    }
-
-    .tile-badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(35,58,82,.08);
-      border: 1px solid rgba(35,58,82,.16);
-      color: var(--navy2);
-      font-weight: 900;
-      font-size: 12px;
-    }
-
-    .tile-title{
-      font-weight: 900;
-      color: var(--navy2);
-      font-size: 15px;
-      line-height: 1.2;
-    }
-
-    .tile-desc{
-      color: #4b5563;
-      font-size: 13px;
-      line-height: 1.45;
-      flex: 1;
-    }
-
-    .tile-foot{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap: wrap;
-    }
-
-    .tile-meta{
-      color: #1f3348;
-      font-size: 12px;
-      font-weight: 800;
-      opacity: .85;
-    }
-
-    .tile-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: 8px;
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 900;
-      border: 1px solid var(--line2);
-      background: var(--navy);
-      color: #fff;
-      cursor:pointer;
-      transition: transform .12s ease, opacity .12s ease;
-      text-decoration:none;
-    }
-    .tile-btn:hover{ transform: translateY(-1px); }
-
     .empty-state{
       border: 1px dashed rgba(31,51,72,.25);
       background: linear-gradient(180deg, #fbfcff, #f7f9ff);
@@ -609,6 +487,411 @@
     }
     .empty-state strong{ display:block; font-size: 14px; margin-bottom: 4px; }
     .empty-state p{ margin: 0; font-size: 13px; opacity: .85; font-weight: 700; }
+
+    /* =================== Experiencia en 3 PÍLDORAS VERTICALES =================== */
+    .xp-pills{
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .xp-pill{
+      border: 1px solid var(--line2);
+      border-radius: 18px;
+      background: #fbfcff;
+      padding: 14px 14px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+      min-height: 150px;
+    }
+
+    .xp-title{
+      font-weight: 900;
+      color: var(--navy2);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .xp-sub{
+      font-size: 13px;
+      font-weight: 800;
+      color: #1f3348;
+      opacity: .95;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .xp-date{
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--navy);
+      background: rgba(35,58,82,.08);
+      border: 1px solid rgba(35,58,82,.16);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      height: fit-content;
+    }
+
+    .xp-desc{
+      grid-column: 1 / -1;
+      color: #4b5563;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .xp-box{
+      grid-column: 1 / -1;
+      border-left: 4px solid rgba(35,58,82,.65);
+      background: rgba(35,58,82,.05);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 6px;
+    }
+
+    .xp-box .xp-contact{
+      font-size: 12px;
+      font-weight: 800;
+      color: #1f3348;
+      opacity: .92;
+      line-height: 1.6;
+    }
+
+    .xp-foot{
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .xp-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      text-decoration:none;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 900;
+      border: 1px solid var(--line2);
+      background: var(--navy);
+      color: #fff;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .xp-btn:hover{ transform: translateY(-1px); }
+
+    .xp-btn.disabled{
+      background: #9aa4b2;
+      border-color: #cbd5e1;
+      cursor:not-allowed;
+      opacity: .7;
+    }
+
+    @media (max-width: 560px){
+      .xp-pill{ grid-template-columns: 1fr; }
+      .xp-date{ justify-self: start; }
+    }
+
+    /* =================== NUEVO DISEÑO: Reconocimientos / Producto =================== */
+    .deck{
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .deck-item{
+      border: 1px solid var(--line2);
+      border-radius: 18px;
+      background: #fbfcff;
+      padding: 14px;
+      box-shadow: 0 10px 20px rgba(16, 24, 40, .06);
+      transition: transform .12s ease, box-shadow .12s ease;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .deck-item:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(16, 24, 40, .10);
+    }
+
+    .deck-ico{
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 20px;
+      background: rgba(35,58,82,.10);
+      border: 1px solid rgba(35,58,82,.16);
+      color: var(--navy2);
+    }
+
+    .deck-main{ min-width: 0; }
+
+    .deck-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .deck-title{
+      font-weight: 1000;
+      color: var(--navy2);
+      font-size: 16px;
+      line-height: 1.2;
+      letter-spacing: .2px;
+      min-width: 0;
+    }
+
+    .deck-sub{
+      margin-top: 6px;
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(35,58,82,.08);
+      border: 1px solid rgba(35,58,82,.14);
+      color: #1f3348;
+      font-weight: 900;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .chip.soft{
+      background: rgba(17,24,39,.04);
+      border-color: rgba(17,24,39,.10);
+      color: rgba(31,51,72,.92);
+      font-weight: 800;
+    }
+
+    .deck-desc{
+      margin-top: 10px;
+      color: #4b5563;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .deck-actions{
+      margin-top: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .deck-actions .meta{
+      color:#1f3348;
+      font-size: 12px;
+      font-weight: 900;
+      opacity: .85;
+    }
+
+    .deck-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      text-decoration:none;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 900;
+      border: 1px solid var(--line2);
+      background: var(--navy);
+      color: #fff;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .deck-btn:hover{ transform: translateY(-1px); }
+    .deck-btn.ghost{
+      background: #fff;
+      color: var(--navy2);
+      border-color: rgba(35,58,82,.22);
+    }
+
+    .deck-date{
+      font-size: 12px;
+      font-weight: 1000;
+      color: var(--navy);
+      background: rgba(35,58,82,.08);
+      border: 1px solid rgba(35,58,82,.16);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      height: fit-content;
+    }
+
+    @media (max-width: 620px){
+      .deck-item{ grid-template-columns: 1fr; }
+      .deck-ico{ width: 48px; height: 48px; border-radius: 16px; }
+      .deck-head{ align-items: flex-start; }
+      .deck-date{ justify-self: start; }
+    }
+
+    /* =================== GARAGE (✅ ARREGLADO FINAL: FOTO PEGADA A LA DERECHA) =================== */
+    .section-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    @media (max-width: 980px){
+      .section-grid{ grid-template-columns: 1fr; }
+    }
+
+    /* ✅ CAMBIO CLAVE: tile ahora es GRID (contenido | foto) */
+    .tile{
+      border: 1px solid var(--line2);
+      border-radius: 18px;
+      background: #fbfcff;
+      padding: 16px;
+      box-shadow: 0 10px 20px rgba(16, 24, 40, .06);
+      transition: transform .12s ease, box-shadow .12s ease;
+
+      display: grid;
+      grid-template-columns: 1fr 64px; /* 👈 izquierda | derecha */
+      gap: 16px;
+      align-items: center;
+
+      min-height: 170px;
+    }
+
+    .tile:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(16, 24, 40, .10);
+    }
+
+    /* CONTENIDO IZQUIERDO */
+    .tile-content{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .tile-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+
+    .tile-badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(35,58,82,.10);
+      border: 1px solid rgba(35,58,82,.16);
+      color: #1f3348;
+      font-weight: 1000;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .tile-meta{
+      font-size: 12px;
+      font-weight: 900;
+      color: #1f3348;
+      opacity: .85;
+      white-space: nowrap;
+    }
+
+    .tile-title{
+      font-weight: 1000;
+      color: var(--navy2);
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .tile-desc{
+      color: #4b5563;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .tile-foot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .tile-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 900;
+      border: 1px solid var(--line2);
+      background: var(--navy);
+      color: #fff;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .tile-btn:hover{ transform: translateY(-1px); }
+
+    /* ✅ FOTO: FIJA EN LA PUNTA DERECHA */
+    .tile-thumb{
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(35,58,82,.10);
+      border: 1px solid rgba(35,58,82,.16);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      justify-self: end;     /* 👈 pega a la derecha */
+      align-self: center;    /* 👈 centra vertical */
+    }
+    .tile-thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .tile-thumb-fallback{
+      font-size: 16px;
+      opacity: .85;
+    }
+
+    /* Responsive: en pantallas muy pequeñas, baja la foto debajo */
+    @media (max-width: 520px){
+      .tile{
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+      .tile-thumb{
+        justify-self: start;
+        margin-top: 6px;
+      }
+    }
   </style>
 </head>
 
@@ -616,7 +899,7 @@
   <nav class="topbar">
     <div class="topbar-inner">
       <div class="topbar-left">
-        <a class="brand" data-tab="home">Hoja de Vida</a>
+       
       </div>
 
       <div class="topbar-right" id="tabs">
@@ -633,7 +916,7 @@
   <div class="scroll-area" id="scrollArea">
     <main class="tabs-panels">
 
-      <!-- ===================== HOME ===================== -->
+      <!-- HOME -->
       <section class="tab-panel" data-panel="home">
         {% if perfil %}
         <div class="layout">
@@ -746,7 +1029,7 @@
             <div class="card">
               <div class="pill">
                 <div class="pill-title">Cursos realizados</div>
-                <p class="hint">Se muestran máximo 3 cursos (slots). Agrega más en Admin si quieres cambiar cuáles se ven.</p>
+               
               </div>
 
               <div class="slots">
@@ -833,50 +1116,52 @@
         {% endif %}
       </section>
 
-      <!-- ===================== RECONOCIMIENTOS (CONECTADO) ===================== -->
+      <!-- RECONOCIMIENTOS -->
       <section class="tab-panel" data-panel="reconocimientos">
         <div class="section">
           <div class="section-shell">
             <div class="section-top">
               <div>
                 <div class="section-pill"><span class="dot"></span> Reconocimientos</div>
-               
               </div>
-
-             
             </div>
 
             {% if reconocimientos %}
-              <div class="section-grid">
+              <div class="deck">
                 {% for r in reconocimientos %}
-                  <article class="tile">
-                    <div class="tile-top">
-                      <span class="tile-badge">🏆 Reconocimiento</span>
-                      <span class="tile-meta">
-                        {# Si tienes fecha en tu modelo, cambia r.fecha por el nombre real #}
-                        {{ r.fecha|default:"" }}
-                      </span>
-                    </div>
+                  <article class="deck-item">
+                    <div class="deck-ico">🏆</div>
 
-                    <div class="tile-title">{{ r }}</div>
+                    <div class="deck-main">
+                      <div class="deck-head">
+                        <div class="deck-title">{{ r.tipo_reconocimiento }}</div>
+                        {% if r.fecha_reconocimiento %}
+                          <div class="deck-date">{{ r.fecha_reconocimiento }}</div>
+                        {% endif %}
+                      </div>
 
-                    <div class="tile-desc">
-                      {# Si tienes un campo descripcion, cambia r.descripcion por el nombre real #}
-                      {{ r.descripcion|default:"" }}
-                    </div>
+                      <div class="deck-sub">
+                        {% if r.entidad_patrocinadora %}
+                          <span class="chip">🏛️ {{ r.entidad_patrocinadora }}</span>
+                        {% else %}
+                          <span class="chip soft">Entidad no registrada</span>
+                        {% endif %}
+                        <span class="chip soft">Reconocimiento</span>
+                      </div>
 
-                    <div class="tile-foot">
-                      <span class="tile-meta">
-                        {# Si tienes entidad/organizacion, cambia r.entidad por el nombre real #}
-                        {{ r.entidad|default:"" }}
-                      </span>
+                      <div class="deck-desc">
+                        {{ r.descripcion_reconocimiento|default:"Sin descripción." }}
+                      </div>
 
-                      {# Si tienes un archivo/url de soporte, cambia r.rutacertificado por el nombre real #}
-                      {% if r.rutacertificado %}
-                        <a class="tile-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Ver soporte</a>
-                      {% else %}
-                       
-                      {% endif %}
+                      <div class="deck-actions">
+                        <span class="meta"></span>
+
+                        {% if r.rutacertificado %}
+                          <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Ver soporte</a>
+                        {% else %}
+                          
+                        {% endif %}
+                      </div>
                     </div>
                   </article>
                 {% endfor %}
@@ -887,73 +1172,97 @@
                   <strong>Aún no hay reconocimientos</strong>
                   <p>Activa registros con <b>activarparaqueseveaenfront</b> para que aparezcan aquí.</p>
                 </div>
-               
               </div>
             {% endif %}
           </div>
         </div>
       </section>
 
-      <!-- ===================== FORMACIÓN (placeholder hasta que tengas modelo) ===================== -->
+      <!-- FORMACIÓN -->
       <section class="tab-panel" data-panel="formacion">
         <div class="section">
           <div class="section-shell">
             <div class="section-top">
               <div>
                 <div class="section-pill"><span class="dot"></span> Formación</div>
-               
               </div>
-
-             
             </div>
 
-            <div class="empty-state">
-              <div>
-                <strong>Formación (pendiente)</strong>
-               
+            {% if formacion %}
+              <div class="xp-pills">
+                {% for f in formacion %}
+                  <article class="xp-pill">
+                    <div>
+                      <div class="xp-title">{{ f.titulo }}</div>
+                      <div class="xp-sub">{{ f.tipo }}</div>
+                    </div>
+
+                    <div class="xp-date">#{{ f.id }}</div>
+
+                    <div class="xp-desc">
+                      {{ f.descripcion|default:"Sin descripción." }}
+                    </div>
+
+                    <div class="xp-foot">
+                      <span class="tile-meta"></span>
+                   
+                    </div>
+                  </article>
+                {% endfor %}
               </div>
-             
-            </div>
+            {% else %}
+              <div class="empty-state">
+                <div>
+                  <strong>Formación vacía</strong>
+                  <p>Crea registros en <b>Formacion</b> en Admin y deja <b>activarparaqueseveaenfront</b> en true.</p>
+                </div>
+              </div>
+            {% endif %}
           </div>
         </div>
       </section>
 
-      <!-- ===================== PRODUCTO (CONECTADO A "productos") ===================== -->
+      <!-- PRODUCTO -->
       <section class="tab-panel" data-panel="producto">
         <div class="section">
           <div class="section-shell">
             <div class="section-top">
               <div>
                 <div class="section-pill"><span class="dot"></span> Producto Laboral</div>
-               
               </div>
-
-             
             </div>
 
             {% if productos %}
-              <div class="section-grid">
+              <div class="deck">
                 {% for p in productos %}
-                  <article class="tile">
-                    <div class="tile-top">
-                      <span class="tile-badge">📦 Producto</span>
-                      <span class="tile-meta">{{ p.fecha|default:"" }}</span>
-                    </div>
+                  <article class="deck-item">
+                    <div class="deck-ico">📦</div>
 
-                    <div class="tile-title">{{ p }}</div>
+                    <div class="deck-main">
+                      <div class="deck-head">
+                        <div class="deck-title">{{ p.nombrerecurso }}</div>
+                        {% if p.clasificador %}
+                          <div class="deck-date">{{ p.clasificador }}</div>
+                        {% endif %}
+                      </div>
 
-                    <div class="tile-desc">
-                      {{ p.descripcion|default:"" }}
-                    </div>
+                      <div class="deck-sub">
+                        {% if p.clasificador %}
+                          <span class="chip">🏷️ {{ p.clasificador }}</span>
+                        {% else %}
+                          <span class="chip soft">Sin clasificador</span>
+                        {% endif %}
+                        <span class="chip soft">Producto Laboral</span>
+                      </div>
 
-                    <div class="tile-foot">
-                      <span class="tile-meta">{{ p.categoria|default:"" }}</span>
+                      <div class="deck-desc">
+                        {{ p.descripcion|default:"Sin descripción." }}
+                      </div>
 
-                      {% if p.url %}
-                        <a class="tile-btn" href="{{ p.url }}" target="_blank" rel="noopener">Ver</a>
-                      {% else %}
-                        <a class="tile-btn" href="/admin" target="_blank" rel="noopener">Editar</a>
-                      {% endif %}
+                      <div class="deck-actions">
+                        <span class="meta"></span>
+                        
+                      </div>
                     </div>
                   </article>
                 {% endfor %}
@@ -964,48 +1273,56 @@
                   <strong>Aún no hay productos</strong>
                   <p>Activa registros con <b>activarparaqueseveaenfront</b> para que aparezcan aquí.</p>
                 </div>
-               
-              
+              </div>
             {% endif %}
           </div>
         </div>
       </section>
 
-      <!-- ===================== EXPERIENCIA (CONECTADO A "experiencias") ===================== -->
+      <!-- EXPERIENCIA -->
       <section class="tab-panel" data-panel="experiencia">
         <div class="section">
           <div class="section-shell">
             <div class="section-top">
               <div>
                 <div class="section-pill"><span class="dot"></span> Experiencia</div>
-               
               </div>
-
-              
             </div>
 
             {% if experiencias %}
-              <div class="section-grid">
+              <div class="xp-pills">
                 {% for e in experiencias %}
-                  <article class="tile">
-                    <div class="tile-top">
-                      <span class="tile-badge">💼 Experiencia</span>
-                      <span class="tile-meta">
-                        {{ e.fecha_inicio|default:"" }}{% if e.fecha_fin %} — {{ e.fecha_fin }}{% endif %}
-                      </span>
+                  <article class="xp-pill">
+                    <div>
+                      <div class="xp-title">{{ e.cargo_desempenado|default:"Cargo" }}</div>
+                      <div class="xp-sub">
+                        {{ e.nombre_de_la_empresa|default:"Empresa" }}
+                        {% if e.lugarempresa %} · {{ e.lugarempresa }}{% endif %}
+                      </div>
                     </div>
 
-                    <div class="tile-title">{{ e }}</div>
-
-                    <div class="tile-desc">
-                      {{ e.descripcion|default:"" }}
+                    <div class="xp-date">
+                      {{ e.fecha_de_inicio_de_gestion|default:"-" }} —
+                      {% if e.fecha_fin_de_gestion %}{{ e.fecha_fin_de_gestion }}{% else %}Actualidad{% endif %}
                     </div>
 
-                    <div class="tile-foot">
-                      <span class="tile-meta">{{ e.empresa|default:"" }}</span>
+                    <div class="xp-desc">
+                      <b>Funciones:</b> {{ e.descripcion_de_funciones|default:"Sin descripción." }}
+                    </div>
 
-                      {% if e.url %}
-                        <a class="tile-btn" href="{{ e.url }}" target="_blank" rel="noopener">Ver</a>
+                    <div class="xp-box">
+                      <div class="xp-contact">
+                        <b>Contacto:</b> {{ e.nombre_contacto_empresarial|default:"—" }}<br>
+                        <b>Teléfono:</b> {{ e.telefono_contacto_empresarial|default:"—" }}<br>
+                        <b>Email:</b> {{ e.email_empresa|default:"—" }}
+                      </div>
+                    </div>
+
+                    <div class="xp-foot">
+                      <span class="tile-meta">{{ e.sitio_web_empresa|default:"" }}</span>
+
+                      {% if e.ruta_certificado %}
+                        <a class="xp-btn" href="{{ e.ruta_certificado }}" target="_blank" rel="noopener">Ver soporte</a>
                       {% else %}
                        
                       {% endif %}
@@ -1019,49 +1336,56 @@
                   <strong>Sin experiencia registrada</strong>
                   <p>Activa registros con <b>activarparaqueseveaenfront</b> para que aparezcan aquí.</p>
                 </div>
-               
+              </div>
             {% endif %}
           </div>
         </div>
       </section>
 
-      <!-- ===================== GARAGE (CONECTADO A "garage") ===================== -->
+      <!-- GARAGE (✅ FINAL: PÍLDORA ANCHA + FOTO PEGADA A LA DERECHA) -->
       <section class="tab-panel" data-panel="garage">
         <div class="section">
           <div class="section-shell">
             <div class="section-top">
               <div>
                 <div class="section-pill"><span class="dot"></span> Garage</div>
-                
               </div>
-
-              
             </div>
 
             {% if garage %}
               <div class="section-grid">
                 {% for g in garage %}
                   <article class="tile">
-                    <div class="tile-top">
-                      <span class="tile-badge">🧩 Garage</span>
-                      <span class="tile-meta">{{ g.fecha|default:"" }}</span>
+                    <!-- IZQUIERDA: TODO el contenido -->
+                    <div class="tile-content">
+                      <div class="tile-top">
+                        <span class="tile-badge">🧩 Garage</span>
+                        <span class="tile-meta">{{ g.estadoproducto|default:"" }}</span>
+                      </div>
+
+                      <div class="tile-title">{{ g.nombreproducto }}</div>
+
+                      <div class="tile-desc">
+                        {{ g.descripcion|default:"" }}
+                      </div>
+
+                      <div class="tile-foot">
+                        <span class="tile-meta">$ {{ g.valordelbien }}</span>
+                        <a class="tile-btn" href="/admin" target="_blank" rel="noopener">Editar</a>
+                      </div>
                     </div>
 
-                    <div class="tile-title">{{ g }}</div>
-
-                    <div class="tile-desc">
-                      {{ g.descripcion|default:"" }}
-                    </div>
-
-                    <div class="tile-foot">
-                      <span class="tile-meta">
-                        {% if g.precio %}$ {{ g.precio }}{% endif %}
-                      </span>
-
-                      {% if g.foto_url %}
-                        <a class="tile-btn" href="{{ g.foto_url }}" target="_blank" rel="noopener">Ver foto</a>
+                    <!-- DERECHA: FOTO (pegada a la punta) -->
+                    <div class="tile-thumb" title="{{ g.nombreproducto }}">
+                      {% if g.imagen_url %}
+                        <img
+                          src="{{ g.imagen_url }}"
+                          alt="Foto de {{ g.nombreproducto }}"
+                          loading="lazy"
+                          onerror="this.onerror=null; this.parentElement.innerHTML='<span class=&quot;tile-thumb-fallback&quot;>📷</span>';"
+                        >
                       {% else %}
-                       
+                        <span class="tile-thumb-fallback">📷</span>
                       {% endif %}
                     </div>
                   </article>
@@ -1073,7 +1397,6 @@
                   <strong>Garage vacío</strong>
                   <p>Activa registros con <b>activarparaqueseveaenfront</b> para que aparezcan aquí.</p>
                 </div>
-               
               </div>
             {% endif %}
           </div>
@@ -1115,16 +1438,6 @@
     window.addEventListener("hashchange", () => {
       const h = (location.hash || "#home").slice(1);
       activate(allowed.has(h) ? h : "home");
-    });
-
-    // chips: solo visual
-    document.querySelectorAll("[data-chips]").forEach(group=>{
-      group.querySelectorAll(".pill-chip").forEach(chip=>{
-        chip.addEventListener("click", ()=>{
-          group.querySelectorAll(".pill-chip").forEach(c=>c.classList.remove("is-on"));
-          chip.classList.add("is-on");
-        });
-      });
     });
   </script>
 
