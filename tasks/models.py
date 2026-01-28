@@ -173,6 +173,9 @@ class ProductoAcademico(models.Model):
     clasificador = models.CharField(max_length=100, blank=True)
     descripcion = models.CharField(max_length=100, blank=True)
 
+    # ✅ NUEVO: fecha de inicio (no futuras)
+    fecha_inicio = models.DateField(null=True, blank=True, validators=[no_futuro])
+
     activarparaqueseveaenfront = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
@@ -181,6 +184,7 @@ class ProductoAcademico(models.Model):
 
     def __str__(self):
         return self.nombrerecurso
+
 
 
 class VentaGarage(models.Model):

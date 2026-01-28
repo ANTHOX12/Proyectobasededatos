@@ -816,6 +816,29 @@
       white-space: nowrap;
     }
 
+    /* ✅ NUEVO: estado con bolita (Bueno/Regular) */
+    .state{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #1f3348;
+      opacity: .92;
+      white-space: nowrap;
+    }
+    .state-dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+      box-shadow: 0 0 0 3px rgba(35,58,82,.10);
+      border: 1px solid rgba(15,23,42,.10);
+    }
+    .state--bueno .state-dot{ background: #22c55e; }
+    .state--regular .state-dot{ background: #fbbf24; }
+    .state--unknown .state-dot{ background: #94a3b8; }
+
     .tile-title{
       font-weight: 1000;
       color: var(--navy2);
@@ -854,7 +877,7 @@
     }
     .tile-btn:hover{ transform: translateY(-1px); }
 
-    /* ✅ miniatura (ahora clickeable para zoom) */
+    /* ✅ miniatura (zoom) */
     .tile-thumb{
       width: 56px;
       height: 56px;
@@ -867,7 +890,7 @@
       justify-content:center;
       justify-self: end;
       align-self: center;
-      cursor: zoom-in;              /* 👈 */
+      cursor: zoom-in;
       user-select: none;
     }
     .tile-thumb img{
@@ -892,7 +915,7 @@
       }
     }
 
-    /* =================== ZOOM MODAL (✅ NUEVO) =================== */
+    /* =================== ZOOM MODAL =================== */
     .zoom-overlay{
       position: fixed;
       inset: 0;
@@ -969,9 +992,7 @@
 <body>
   <nav class="topbar">
     <div class="topbar-inner">
-      <div class="topbar-left">
-       
-      </div>
+      <div class="topbar-left"></div>
 
       <div class="topbar-right" id="tabs">
         <a class="nav-link" data-tab="home">Hoja de Vida</a>
@@ -1227,7 +1248,7 @@
                         <span class="meta"></span>
 
                         {% if r.rutacertificado %}
-                          <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Ver soporte</a>
+                          <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Comprobante</a>
                         {% else %}
                         {% endif %}
                       </div>
@@ -1307,12 +1328,16 @@
                     <div class="deck-ico">📦</div>
 
                     <div class="deck-main">
-                      <div class="deck-head">
-                        <div class="deck-title">{{ p.nombrerecurso }}</div>
-                        {% if p.clasificador %}
-                          <div class="deck-date">{{ p.clasificador }}</div>
-                        {% endif %}
-                      </div>
+                     <div class="deck-head">
+  <div class="deck-title">{{ p.nombrerecurso }}</div>
+
+  {% if p.fecha_inicio %}
+    <div class="deck-date">{{ p.fecha_inicio }}</div>
+  {% elif p.clasificador %}
+    <div class="deck-date">{{ p.clasificador }}</div>
+  {% endif %}
+</div>
+
 
                       <div class="deck-sub">
                         {% if p.clasificador %}
@@ -1425,7 +1450,15 @@
                     <div class="tile-content">
                       <div class="tile-top">
                         <span class="tile-badge">🧩 Garage</span>
-                        <span class="tile-meta">{{ g.estadoproducto|default:"" }}</span>
+
+                        <!-- ✅ Estado + bolita dinámica -->
+                        <span class="state
+                          {% if g.estadoproducto == 'Bueno' %}state--bueno
+                          {% elif g.estadoproducto == 'Regular' %}state--regular
+                          {% else %}state--unknown{% endif %}">
+                          <span class="state-dot" aria-hidden="true"></span>
+                          {{ g.estadoproducto|default:"" }}
+                        </span>
                       </div>
 
                       <div class="tile-title">{{ g.nombreproducto }}</div>
@@ -1439,7 +1472,7 @@
                       </div>
                     </div>
 
-                    <!-- ✅ CAMBIO: data-zoom-src para el modal -->
+                    <!-- ✅ Zoom modal -->
                     <div class="tile-thumb"
                          title="{{ g.nombreproducto }}"
                          {% if g.imagen_url %}data-zoom-src="{{ g.imagen_url }}"{% endif %}>
@@ -1507,7 +1540,7 @@
     });
   </script>
 
-  <!-- =================== ZOOM MODAL (✅ NUEVO) =================== -->
+  <!-- =================== ZOOM MODAL =================== -->
   <div class="zoom-overlay" id="zoomOverlay" aria-hidden="true">
     <div class="zoom-dialog" role="dialog" aria-modal="true" aria-label="Zoom imagen">
       <div class="zoom-top">
