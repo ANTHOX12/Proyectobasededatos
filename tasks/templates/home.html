@@ -748,7 +748,7 @@
       .deck-date{ justify-self: start; }
     }
 
-    /* =================== GARAGE (✅ ARREGLADO FINAL: FOTO PEGADA A LA DERECHA) =================== */
+    /* =================== GARAGE =================== */
     .section-grid{
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -759,7 +759,6 @@
       .section-grid{ grid-template-columns: 1fr; }
     }
 
-    /* ✅ CAMBIO CLAVE: tile ahora es GRID (contenido | foto) */
     .tile{
       border: 1px solid var(--line2);
       border-radius: 18px;
@@ -769,7 +768,7 @@
       transition: transform .12s ease, box-shadow .12s ease;
 
       display: grid;
-      grid-template-columns: 1fr 64px; /* 👈 izquierda | derecha */
+      grid-template-columns: 1fr 64px;
       gap: 16px;
       align-items: center;
 
@@ -781,7 +780,6 @@
       box-shadow: 0 14px 28px rgba(16, 24, 40, .10);
     }
 
-    /* CONTENIDO IZQUIERDO */
     .tile-content{
       display:flex;
       flex-direction: column;
@@ -856,7 +854,7 @@
     }
     .tile-btn:hover{ transform: translateY(-1px); }
 
-    /* ✅ FOTO: FIJA EN LA PUNTA DERECHA */
+    /* ✅ miniatura (ahora clickeable para zoom) */
     .tile-thumb{
       width: 56px;
       height: 56px;
@@ -867,8 +865,10 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      justify-self: end;     /* 👈 pega a la derecha */
-      align-self: center;    /* 👈 centra vertical */
+      justify-self: end;
+      align-self: center;
+      cursor: zoom-in;              /* 👈 */
+      user-select: none;
     }
     .tile-thumb img{
       width:100%;
@@ -881,7 +881,6 @@
       opacity: .85;
     }
 
-    /* Responsive: en pantallas muy pequeñas, baja la foto debajo */
     @media (max-width: 520px){
       .tile{
         grid-template-columns: 1fr;
@@ -891,6 +890,78 @@
         justify-self: start;
         margin-top: 6px;
       }
+    }
+
+    /* =================== ZOOM MODAL (✅ NUEVO) =================== */
+    .zoom-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 15, 25, .72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 5000;
+      padding: 18px;
+    }
+    .zoom-overlay.is-open{ display:flex; }
+
+    .zoom-dialog{
+      width: min(980px, 96vw);
+      max-height: 92vh;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #0b1624;
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 26px 60px rgba(0,0,0,.45);
+      position: relative;
+    }
+
+    .zoom-top{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: linear-gradient(180deg, #122233, #0e1b2a);
+      color: rgba(255,255,255,.9);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+
+    .zoom-title{
+      font-weight: 900;
+      letter-spacing: .04em;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .zoom-close{
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      font-weight: 900;
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    .zoom-body{
+      padding: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(1200px 600px at 50% 30%, rgba(255,255,255,.06), transparent 55%);
+    }
+
+    .zoom-body img{
+      width: 100%;
+      height: auto;
+      max-height: 78vh;
+      object-fit: contain;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
     }
   </style>
 </head>
@@ -1029,7 +1100,6 @@
             <div class="card">
               <div class="pill">
                 <div class="pill-title">Cursos realizados</div>
-               
               </div>
 
               <div class="slots">
@@ -1159,7 +1229,6 @@
                         {% if r.rutacertificado %}
                           <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Ver soporte</a>
                         {% else %}
-                          
                         {% endif %}
                       </div>
                     </div>
@@ -1205,7 +1274,6 @@
 
                     <div class="xp-foot">
                       <span class="tile-meta"></span>
-                   
                     </div>
                   </article>
                 {% endfor %}
@@ -1261,7 +1329,6 @@
 
                       <div class="deck-actions">
                         <span class="meta"></span>
-                        
                       </div>
                     </div>
                   </article>
@@ -1324,7 +1391,6 @@
                       {% if e.ruta_certificado %}
                         <a class="xp-btn" href="{{ e.ruta_certificado }}" target="_blank" rel="noopener">Ver soporte</a>
                       {% else %}
-                       
                       {% endif %}
                     </div>
                   </article>
@@ -1342,7 +1408,7 @@
         </div>
       </section>
 
-      <!-- GARAGE (✅ FINAL: PÍLDORA ANCHA + FOTO PEGADA A LA DERECHA) -->
+      <!-- GARAGE -->
       <section class="tab-panel" data-panel="garage">
         <div class="section">
           <div class="section-shell">
@@ -1356,7 +1422,6 @@
               <div class="section-grid">
                 {% for g in garage %}
                   <article class="tile">
-                    <!-- IZQUIERDA: TODO el contenido -->
                     <div class="tile-content">
                       <div class="tile-top">
                         <span class="tile-badge">🧩 Garage</span>
@@ -1371,12 +1436,13 @@
 
                       <div class="tile-foot">
                         <span class="tile-meta">$ {{ g.valordelbien }}</span>
-                        <a class="tile-btn" href="/admin" target="_blank" rel="noopener">Editar</a>
                       </div>
                     </div>
 
-                    <!-- DERECHA: FOTO (pegada a la punta) -->
-                    <div class="tile-thumb" title="{{ g.nombreproducto }}">
+                    <!-- ✅ CAMBIO: data-zoom-src para el modal -->
+                    <div class="tile-thumb"
+                         title="{{ g.nombreproducto }}"
+                         {% if g.imagen_url %}data-zoom-src="{{ g.imagen_url }}"{% endif %}>
                       {% if g.imagen_url %}
                         <img
                           src="{{ g.imagen_url }}"
@@ -1439,6 +1505,63 @@
       const h = (location.hash || "#home").slice(1);
       activate(allowed.has(h) ? h : "home");
     });
+  </script>
+
+  <!-- =================== ZOOM MODAL (✅ NUEVO) =================== -->
+  <div class="zoom-overlay" id="zoomOverlay" aria-hidden="true">
+    <div class="zoom-dialog" role="dialog" aria-modal="true" aria-label="Zoom imagen">
+      <div class="zoom-top">
+        <div class="zoom-title" id="zoomTitle">Imagen</div>
+        <button class="zoom-close" id="zoomClose" type="button">Cerrar ✕</button>
+      </div>
+      <div class="zoom-body">
+        <img id="zoomImg" alt="Imagen ampliada">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ Zoom garage: click miniatura -> modal
+    (function(){
+      const overlay = document.getElementById("zoomOverlay");
+      const img = document.getElementById("zoomImg");
+      const title = document.getElementById("zoomTitle");
+      const closeBtn = document.getElementById("zoomClose");
+
+      function openZoom(src, t){
+        if(!src) return;
+        img.src = src;
+        title.textContent = t || "Imagen";
+        overlay.classList.add("is-open");
+        overlay.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeZoom(){
+        overlay.classList.remove("is-open");
+        overlay.setAttribute("aria-hidden", "true");
+        img.src = "";
+        document.body.style.overflow = "";
+      }
+
+      document.addEventListener("click", (e) => {
+        const thumb = e.target.closest(".tile-thumb[data-zoom-src]");
+        if(!thumb) return;
+        const src = thumb.getAttribute("data-zoom-src");
+        const t = thumb.getAttribute("title") || "Imagen";
+        openZoom(src, t);
+      });
+
+      overlay.addEventListener("click", (e) => {
+        if(e.target === overlay) closeZoom();
+      });
+
+      closeBtn.addEventListener("click", closeZoom);
+
+      document.addEventListener("keydown", (e) => {
+        if(e.key === "Escape" && overlay.classList.contains("is-open")) closeZoom();
+      });
+    })();
   </script>
 
   <footer class="footer">
