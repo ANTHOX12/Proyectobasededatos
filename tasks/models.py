@@ -125,3 +125,33 @@ class ProductoAcademico(models.Model):
 
     def __str__(self):
         return self.nombrerecurso
+
+from django.db import models
+
+
+class VentaGarage(models.Model):
+    ESTADO_CHOICES = [
+        ("Bueno", "Bueno"),
+        ("Regular", "Regular"),
+    ]
+
+    # FK -> datospersonales(idperfil)  (en Django es perfil_id)
+    perfil = models.ForeignKey(
+        "DatosPersonales",
+        on_delete=models.CASCADE,
+        db_column="idperfilconqueestaactivo",
+        related_name="ventas_garage",
+    )
+
+    nombreproducto = models.CharField(max_length=100)
+    estadoproducto = models.CharField(max_length=40, choices=ESTADO_CHOICES)
+    descripcion = models.CharField(max_length=100, blank=True)
+    valordelbien = models.DecimalField(max_digits=5, decimal_places=2)
+
+    activarparaqueseveaenfront = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = "venta_garage"
+
+    def __str__(self):
+        return self.nombreproducto

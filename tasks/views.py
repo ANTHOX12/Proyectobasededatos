@@ -6,6 +6,7 @@ from .models import (
     ExperienciaLaboral,
     ProductoAcademico,
     Reconocimiento,
+    VentaGarage,   
 )
 
 def home(request):
@@ -18,6 +19,7 @@ def home(request):
             "experiencias": [],
             "productos": [],
             "reconocimientos": [],
+            "garage": [],          
         })
 
     cursos = CursoRealizado.objects.filter(
@@ -40,12 +42,28 @@ def home(request):
         activarparaqueseveaenfront=True
     )
 
+    garage = VentaGarage.objects.filter(   
+        perfil=perfil,
+        activarparaqueseveaenfront=True
+    )
+
     return render(request, "home.html", {
         "perfil": perfil,
         "cursos": cursos,
         "experiencias": experiencias,
         "productos": productos,
         "reconocimientos": reconocimientos,
+        "garage": garage,        
     })
 
 
+from django.shortcuts import render
+from .models import DatosPersonales, Reconocimiento
+
+def reconocimientos_view(request):
+    perfil = DatosPersonales.objects.filter(perfil_activo=1).first()
+    reconocimientos = Reconocimiento.objects.filter(
+        perfil=perfil,
+        activarparaqueseveaenfront=True
+    ) if perfil else []
+    return render(request, "reconocimientos.html", {"perfil": perfil, "reconocimientos": reconocimientos})
