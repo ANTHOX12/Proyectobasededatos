@@ -1,23 +1,33 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+from django.utils import timezone
+from django.db.models import Q
 
 
+# ---------- Validadores ----------
+def no_futuro(value):
+    if value and value > timezone.localdate():
+        raise ValidationError("No se permiten fechas futuras.")
+
+
+# ---------- Modelos ----------
 class DatosPersonales(models.Model):
     SEXO_CHOICES = [
         ("H", "Hombre"),
         ("M", "Mujer"),
     ]
 
-    # Perfil
     descripcion_de_perfil = models.CharField(max_length=50, blank=True)
     perfil_activo = models.IntegerField(default=1)
 
-    # Datos básicos
     apellidos = models.CharField(max_length=60)
     nombres = models.CharField(max_length=60)
 
     nacionalidad = models.CharField(max_length=20, blank=True)
     lugar_de_nacimiento = models.CharField(max_length=60, blank=True)
-    fechana_de_nacimiento = models.DateField(null=True, blank=True)
+
+    fechana_de_nacimiento = models.DateField(null=True, blank=True, validators=[no_futuro])
 
     numero_de_cedula = models.CharField(max_length=10, unique=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
@@ -32,10 +42,7 @@ class DatosPersonales(models.Model):
     direccion_domiciliaria = models.CharField(max_length=50, blank=True)
 
     sitioweb = models.CharField(max_length=60, blank=True)
-
-        # Foto por URL (link)
     foto_url = models.URLField(blank=True)
-
 
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
@@ -56,13 +63,26 @@ class ExperienciaLaboral(models.Model):
     nombre_contacto_empresarial = models.CharField(max_length=100, blank=True)
     telefono_contacto_empresarial = models.CharField(max_length=60, blank=True)
 
-    fecha_de_inicio_de_gestion = models.DateField(null=True, blank=True)
-    fecha_fin_de_gestion = models.DateField(null=True, blank=True)
+    fecha_de_inicio_de_gestion = models.DateField(null=True, blank=True, validators=[no_futuro])
+    fecha_fin_de_gestion = models.DateField(null=True, blank=True, validators=[no_futuro])
 
     descripcion_de_funciones = models.CharField(max_length=100, blank=True)
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
     ruta_certificado = models.CharField(max_length=100, blank=True)
+
+    def clean(self):
+        super().clean()
+        if self.fecha_de_inicio_de_gestion and self.fecha_fin_de_gestion:
+            if self.fecha_fin_de_gestion < self.fecha_de_inicio_de_gestion:
+                raise ValidationError({
+                    "fecha_fin_de_gestion": "La fecha fin no puede ser menor que la fecha inicio."
+                })
+
+    # ✅ Blindaje: valida siempre (admin, scripts, etc.)
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.cargo_desempenado} - {self.nombre_de_la_empresa}"
@@ -74,7 +94,7 @@ class Reconocimiento(models.Model):
     )
 
     tipo_reconocimiento = models.CharField(max_length=100)
-    fecha_reconocimiento = models.DateField(null=True, blank=True)
+    fecha_reconocimiento = models.DateField(null=True, blank=True, validators=[no_futuro])
     descripcion_reconocimiento = models.CharField(max_length=100, blank=True)
 
     entidad_patrocinadora = models.CharField(max_length=100, blank=True)
@@ -83,6 +103,10 @@ class Reconocimiento(models.Model):
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
     rutacertificado = models.CharField(max_length=100, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.tipo_reconocimiento
@@ -94,10 +118,17 @@ class CursoRealizado(models.Model):
     )
 
     nombrecurso = models.CharField(max_length=100)
-    fecha_inicio = models.DateField(null=True, blank=True)
-    fecha_fin = models.DateField(null=True, blank=True)
 
-    total_horas = models.IntegerField(null=True, blank=True)
+    fecha_inicio = models.DateField(null=True, blank=True, validators=[no_futuro])
+    fecha_fin = models.DateField(null=True, blank=True, validators=[no_futuro])
+
+    # ✅ AQUÍ ESTABA EL HUECO: ahora no permite negativos
+    total_horas = models.IntegerField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0)]
+    )
+
     descripcion_curso = models.CharField(max_length=100, blank=True)
 
     entidad_patrocinadora = models.CharField(max_length=100, blank=True)
@@ -107,6 +138,27 @@ class CursoRealizado(models.Model):
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
     rutacertificado = models.CharField(max_length=100, blank=True)
+
+    def clean(self):
+        super().clean()
+        if self.fecha_inicio and self.fecha_fin and self.fecha_fin < self.fecha_inicio:
+            raise ValidationError({
+                "fecha_fin": "La fecha fin no puede ser menor que la fecha inicio."
+            })
+
+    # ✅ Blindaje: valida siempre
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        constraints = [
+            # ✅ Extra blindaje DB: total_horas >= 0 (si es null, no molesta)
+            models.CheckConstraint(
+                check=Q(total_horas__gte=0) | Q(total_horas__isnull=True),
+                name="curso_total_horas_no_negativo"
+            ),
+        ]
 
     def __str__(self):
         return self.nombrecurso
@@ -123,10 +175,12 @@ class ProductoAcademico(models.Model):
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nombrerecurso
-
-from django.db import models
 
 
 class VentaGarage(models.Model):
@@ -135,9 +189,8 @@ class VentaGarage(models.Model):
         ("Regular", "Regular"),
     ]
 
-    # FK -> datospersonales(idperfil)  (en Django es perfil_id)
     perfil = models.ForeignKey(
-        "DatosPersonales",
+        DatosPersonales,
         on_delete=models.CASCADE,
         db_column="idperfilconqueestaactivo",
         related_name="ventas_garage",
@@ -146,12 +199,24 @@ class VentaGarage(models.Model):
     nombreproducto = models.CharField(max_length=100)
     estadoproducto = models.CharField(max_length=40, choices=ESTADO_CHOICES)
     descripcion = models.CharField(max_length=100, blank=True)
-    valordelbien = models.DecimalField(max_digits=5, decimal_places=2)
+
+    valordelbien = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
+    )
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
 
     class Meta:
         db_table = "venta_garage"
+        constraints = [
+            models.CheckConstraint(check=Q(valordelbien__gte=0), name="venta_valor_no_negativo"),
+        ]
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nombreproducto
