@@ -3,230 +3,611 @@
 <head>
   <meta charset="utf-8" />
   <title>CV</title>
+
   <style>
-    @page { size: A4; margin: 18mm; }
+    :root{
+      --ink:#0f172a;
+      --muted:#475569;
+      --line:#e5e7eb;
+      --brand:#2563eb;
+      --paper:#ffffff;
+      --bg:#f3f6fb;
+      --navy1:#0b1b34;
+      --navy2:#0a1730;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; color:var(--ink); font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+
     body{
-      font-family: Arial, Helvetica, sans-serif;
-      color:#0f172a;
+      background: var(--bg);
+      padding: 24px 0;
       font-size: 12px;
-      margin:0;
+    }
+
+    /* ===== CV PAGE ===== */
+    .sheet{
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(2,6,23,.12);
+      overflow: hidden;
     }
 
     .header{
+      padding: 22px 26px;
+      border-bottom: 1px solid var(--line);
       display:flex;
-      justify-content:space-between;
       align-items:flex-start;
-      gap: 18px;
-      margin-bottom: 14px;
+      justify-content:space-between;
+      gap:16px;
+      position: relative;
     }
 
     .name{
-      font-size: 22px;
-      font-weight: 800;
-      margin: 0 0 6px;
+      font-size: 30px;
+      font-weight: 1000;
+      letter-spacing:.2px;
+      line-height:1.05;
+      margin:0;
     }
 
     .role{
-      color:#2563eb;
-      font-weight: 700;
-      margin: 0 0 10px;
+      margin-top:6px;
+      color: var(--brand);
+      font-weight: 900;
+      font-size: 14px;
     }
 
-    .meta{
-      font-size: 11px;
-      color:#334155;
-      line-height: 1.5;
+    /* ✅ un poco más de vida: línea suave debajo */
+    .header::after{
+      content:"";
+      position:absolute;
+      left:26px;
+      right:26px;
+      bottom:-1px;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(37,99,235,.55), rgba(37,99,235,0));
+      opacity:.55;
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns: 72mm 1fr;
+      gap: 0;
+      min-height: calc(297mm - 95px);
+    }
+
+    .sidebar{
+      padding: 18px 18px 22px;
+      background: linear-gradient(180deg, var(--navy1), var(--navy2));
+      color:#fff;
+    }
+
+    .main{
+      padding: 18px 22px 22px;
     }
 
     .photo{
-      width: 95px;
-      height: 115px;
-      border: 1px solid #e2e8f0;
+      width: 52mm;
+      height: 52mm;
+      border-radius: 14px;
       overflow:hidden;
-      border-radius: 6px;
-      flex: 0 0 auto;
+      margin: 0 auto 14px;
+      border: 2px solid rgba(255,255,255,.5);
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 14px 28px rgba(0,0,0,.25);
     }
-    .photo img{ width:100%; height:100%; object-fit: cover; display:block; }
+    .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    .section{
+    .block{
       margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.16);
     }
 
-    .section-title{
-      font-size: 13px;
-      font-weight: 800;
-      color:#2563eb;
-      margin: 0 0 6px;
-    }
-
-    .divider{
-      height: 1px;
-      background:#2563eb;
-      opacity:.45;
+    .s-title{
+      font-size: 11px;
+      font-weight: 1000;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: .92;
       margin: 0 0 10px;
     }
 
-    .item{
-      margin-bottom: 10px;
+    .kv{ display:grid; gap:10px; }
+    .kv .row{
+      display:grid;
+      grid-template-columns: 16px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .kv .k{ opacity:.9; font-size: 12px; font-weight: 900; }
+    .kv .v{ font-size: 12px; font-weight: 700; line-height:1.35; opacity:.95; word-break: break-word; }
+
+    /* ✅ caja de “sobre mí” dentro del sidebar */
+    .about{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      font-size: 12px;
+      line-height: 1.55;
+      opacity: .96;
     }
 
+    .section{
+      margin-bottom: 14px;
+    }
+
+    .h2{
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--brand);
+      border-bottom: 2px solid rgba(37,99,235,.25);
+      padding-bottom: 6px;
+    }
+
+    .p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+
+    .item{
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .item:last-child{ border-bottom: none; }
+
     .item-title{
-      font-weight: 800;
-      margin-bottom: 2px;
+      font-weight: 1000;
+      font-size: 13px;
+      margin: 0;
     }
 
     .item-sub{
-      color:#334155;
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 900;
       font-style: italic;
-      font-size: 11px;
-      margin-bottom: 3px;
+      line-height:1.35;
     }
 
-    .desc{
-      color:#334155;
-      line-height: 1.45;
+    .item-desc{
+      margin-top: 6px;
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height:1.5;
     }
 
     ul{ margin: 6px 0 0 18px; padding:0; }
-    li{ margin: 2px 0; }
+    li{ margin: 2px 0; color: var(--muted); line-height:1.45; }
 
-    @media print {
-  @page { size: A4; margin: 14mm; }
+    /* ===== CERTIFICADOS PAGE ===== */
+    .cert-page{
+      width: 210mm;
+      min-height: 297mm;
+      margin: 16px auto 0;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(2,6,23,.12);
+      overflow: hidden;
+      padding: 22px 26px;
+    }
 
-  /* Quitar cosas de UI */
-  .topbar, .footer, .pdf-overlay, .zoom-overlay { display: none !important; }
+    .cert-title{
+      text-align:center;
+      font-size: 14px;
+      font-weight: 1000;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin: 0 0 10px;
+    }
 
-  /* Evitar que se corten tarjetas */
-  .card, .xp-pill, .deck-item, .tile { break-inside: avoid; page-break-inside: avoid; }
+    .cert-grid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-  body { background: #fff !important; }
-}
+    .cert-card{
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow:hidden;
+      background:#fff;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
 
+    .cert-cap{
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 1000;
+      font-size: 12px;
+      color: var(--ink);
+      background: #fbfdff;
+    }
+
+    .cert-card img{
+      width:100%;
+      height: auto;
+      display:block;
+      background:#fff;
+    }
+
+    /* ✅ cuando el “certificado” no sea imagen (PDF/link) */
+    .cert-link{
+      padding: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .cert-pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(37,99,235,.08);
+      border: 1px solid rgba(37,99,235,.18);
+      color: var(--ink);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .cert-link a{
+      color: var(--brand);
+      font-weight: 900;
+      text-decoration: none;
+      word-break: break-all;
+    }
+    .cert-link a:hover{ text-decoration: underline; }
+
+    .cert-empty{
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    @media print{
+      body{ background:#fff; padding:0; }
+      @page{ size: A4; margin: 12mm; }
+
+      .sheet, .cert-page{
+        border:none;
+        border-radius:0;
+        box-shadow:none;
+        margin:0;
+        width:auto;
+        min-height:auto;
+      }
+
+      .section, .item, .cert-card{ break-inside: avoid; page-break-inside: avoid; }
+    }
   </style>
 </head>
+
 <body>
 
-  <div class="header">
-    <div>
-      <div class="name">{{ perfil.nombres }} {{ perfil.apellidos }}</div>
-      <div class="role">{{ perfil.descripcion_de_perfil|default:"Desarrollador" }}</div>
+  <!-- ====================== CV ====================== -->
+  <div class="sheet">
+    <div class="header">
+      <div>
+        <div class="name">{{ perfil.nombres }} {{ perfil.apellidos }}</div>
+        <div class="role">{{ perfil.descripcion_de_perfil|default:"Desarrollador" }}</div>
+      </div>
+    </div>
 
-      <div class="meta">
-        {% if inc_datos %}
-          {% if perfil.email %}{{ perfil.email }}{% endif %}
-          {% if perfil.telefono_convencional %} / {{ perfil.telefono_convencional }}{% endif %}
-          {% if perfil.direccion_domiciliaria %} / {{ perfil.direccion_domiciliaria }}{% endif %}
+    <div class="content">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="photo">
+          <img src="{% if perfil.foto_url %}{{ perfil.foto_url }}{% else %}https://via.placeholder.com/600x600.png?text=Foto{% endif %}" alt="Foto">
+        </div>
+
+        <!-- ✅ UN SOLO BLOQUE: PERFIL (Datos + texto, sin dividir) -->
+        <div class="block">
+          <div class="s-title">Perfil</div>
+
+          {% if inc_datos %}
+          <div class="kv">
+            {% if perfil.email %}
+            <div class="row">
+              <div class="k">✉</div>
+              <div class="v">{{ perfil.email }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.telefono_convencional %}
+            <div class="row">
+              <div class="k">☎</div>
+              <div class="v">
+                {{ perfil.telefono_convencional }}
+                {% if perfil.telefono_fijo %}<br>{{ perfil.telefono_fijo }}{% endif %}
+              </div>
+            </div>
+            {% endif %}
+
+            {% if perfil.direccion_domiciliaria %}
+            <div class="row">
+              <div class="k">📍</div>
+              <div class="v">{{ perfil.direccion_domiciliaria }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.direccion_de_trabajo %}
+            <div class="row">
+              <div class="k">🏢</div>
+              <div class="v">{{ perfil.direccion_de_trabajo }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.sitioweb %}
+            <div class="row">
+              <div class="k">🌐</div>
+              <div class="v">{{ perfil.sitioweb }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.nacionalidad %}
+            <div class="row">
+              <div class="k">🏳️</div>
+              <div class="v">{{ perfil.nacionalidad }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.get_sexo_display %}
+            <div class="row">
+              <div class="k">👤</div>
+              <div class="v">{{ perfil.get_sexo_display }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.estado_civil %}
+            <div class="row">
+              <div class="k">💍</div>
+              <div class="v">{{ perfil.estado_civil }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.fechana_de_nacimiento %}
+            <div class="row">
+              <div class="k">📅</div>
+              <div class="v">{{ perfil.fechana_de_nacimiento }}</div>
+            </div>
+            {% endif %}
+
+            {% if perfil.numero_de_cedula %}
+            <div class="row">
+              <div class="k">🪪</div>
+              <div class="v">{{ perfil.numero_de_cedula }}</div>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          {% if inc_perfil %}
+            {% if perfil_texto %}
+              <div class="about">{{ perfil_texto }}</div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main">
+
+        {% if inc_formacion and formacion %}
+        <section class="section">
+          <div class="h2">Formación</div>
+          {% for f in formacion %}
+            <div class="item">
+              <div class="item-title">{{ f.titulo|default:"Título" }}</div>
+              <div class="item-sub">{{ f.tipo|default:"" }}</div>
+              <div class="item-desc">{{ f.descripcion|default:"" }}</div>
+            </div>
+          {% endfor %}
+        </section>
         {% endif %}
-      </div>
+
+        {% if inc_cursos and cursos %}
+        <section class="section">
+          <div class="h2">Cursos realizados</div>
+          {% for c in cursos %}
+            <div class="item">
+              <div class="item-title">{{ c.nombrecurso }}</div>
+              <div class="item-sub">
+                {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }}{% endif %}
+                {% if c.total_horas %} · {{ c.total_horas }} horas{% endif %}
+                {% if c.fecha_inicio or c.fecha_fin %} · {{ c.fecha_inicio|default:"" }} {{ c.fecha_fin|default:"" }}{% endif %}
+              </div>
+              <div class="item-desc">{{ c.descripcion_curso|default:"" }}</div>
+            </div>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if inc_experiencia and experiencias %}
+        <section class="section">
+          <div class="h2">Experiencia laboral</div>
+          {% for e in experiencias %}
+            <div class="item">
+              <div class="item-title">{{ e.cargo_desempenado|default:"Cargo" }}</div>
+              <div class="item-sub">
+                {{ e.nombre_de_la_empresa|default:"Empresa" }}
+                {% if e.lugarempresa %} · {{ e.lugarempresa }}{% endif %}
+                {% if e.fecha_de_inicio_de_gestion %} · {{ e.fecha_de_inicio_de_gestion }}{% endif %}
+                {% if e.fecha_fin_de_gestion %} — {{ e.fecha_fin_de_gestion }}{% else %} — Actualidad{% endif %}
+              </div>
+              <div class="item-desc"><b>Funciones:</b> {{ e.descripcion_de_funciones|default:"" }}</div>
+            </div>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if inc_reconocimientos and reconocimientos %}
+        <section class="section">
+          <div class="h2">Reconocimientos</div>
+          {% for r in reconocimientos %}
+            <div class="item">
+              <div class="item-title">{{ r.tipo_reconocimiento|default:"Reconocimiento" }}</div>
+              <div class="item-sub">
+                {% if r.entidad_patrocinadora %}{{ r.entidad_patrocinadora }}{% endif %}
+                {% if r.fecha_reconocimiento %} · {{ r.fecha_reconocimiento }}{% endif %}
+              </div>
+              <div class="item-desc">{{ r.descripcion_reconocimiento|default:"" }}</div>
+            </div>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if inc_producto and productos %}
+        <section class="section">
+          <div class="h2">Producto laboral</div>
+          {% for p in productos %}
+            <div class="item">
+              <div class="item-title">{{ p.nombrerecurso|default:"Producto" }}</div>
+              <div class="item-sub">
+                {% if p.clasificador %}{{ p.clasificador }}{% endif %}
+                {% if p.fecha_inicio %} · {{ p.fecha_inicio }}{% endif %}
+              </div>
+              <div class="item-desc">{{ p.descripcion|default:"" }}</div>
+            </div>
+          {% endfor %}
+        </section>
+        {% endif %}
+
+        {% if inc_garage and garage %}
+        <section class="section">
+          <div class="h2">Garage</div>
+          <ul>
+            {% for g in garage %}
+              <li><b>{{ g.nombreproducto }}</b> — ${{ g.valordelbien }}{% if g.estadoproducto %} ({{ g.estadoproducto }}){% endif %}. {{ g.descripcion|default:"" }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+        {% endif %}
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ====================== CERTIFICADOS (debajo) ====================== -->
+  {% if inc_cursos or inc_reconocimientos or inc_experiencia %}
+  <div class="cert-page">
+    <div class="cert-title">CERTIFICADOS</div>
+
+    <div class="cert-grid">
+
+      {# Cursos #}
+      {% if inc_cursos and cursos %}
+        {% for c in cursos %}
+          {% if c.rutacertificado %}
+          <div class="cert-card">
+            <div class="cert-cap">Curso: {{ c.nombrecurso }}</div>
+            <img
+              src="{{ c.rutacertificado }}"
+              alt="Certificado {{ c.nombrecurso }}"
+              onerror="this.closest('.cert-card').querySelector('.cert-body').style.display='block'; this.remove();"
+            >
+            <div class="cert-link cert-body" style="display:none;">
+              <span class="cert-pill">📄 Link</span>
+              <div>
+                <div style="font-weight:900; color:var(--ink); margin-bottom:4px;">No se pudo previsualizar como imagen</div>
+                <a href="{{ c.rutacertificado }}" target="_blank" rel="noopener">{{ c.rutacertificado }}</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {# Reconocimientos #}
+      {% if inc_reconocimientos and reconocimientos %}
+        {% for r in reconocimientos %}
+          {% if r.rutacertificado %}
+          <div class="cert-card">
+            <div class="cert-cap">Reconocimiento: {{ r.tipo_reconocimiento }}</div>
+            <img
+              src="{{ r.rutacertificado }}"
+              alt="Certificado {{ r.tipo_reconocimiento }}"
+              onerror="this.closest('.cert-card').querySelector('.cert-body').style.display='block'; this.remove();"
+            >
+            <div class="cert-link cert-body" style="display:none;">
+              <span class="cert-pill">📄 Link</span>
+              <div>
+                <div style="font-weight:900; color:var(--ink); margin-bottom:4px;">No se pudo previsualizar como imagen</div>
+                <a href="{{ r.rutacertificado }}" target="_blank" rel="noopener">{{ r.rutacertificado }}</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {# Experiencia #}
+      {% if inc_experiencia and experiencias %}
+        {% for e in experiencias %}
+          {% if e.ruta_certificado %}
+          <div class="cert-card">
+            <div class="cert-cap">Experiencia: {{ e.cargo_desempenado|default:"Cargo" }}</div>
+            <img
+              src="{{ e.ruta_certificado }}"
+              alt="Certificado experiencia"
+              onerror="this.closest('.cert-card').querySelector('.cert-body').style.display='block'; this.remove();"
+            >
+            <div class="cert-link cert-body" style="display:none;">
+              <span class="cert-pill">📄 Link</span>
+              <div>
+                <div style="font-weight:900; color:var(--ink); margin-bottom:4px;">No se pudo previsualizar como imagen</div>
+                <a href="{{ e.ruta_certificado }}" target="_blank" rel="noopener">{{ e.ruta_certificado }}</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
     </div>
 
-    <div class="photo">
-      <img src="{% if perfil.foto_url %}{{ perfil.foto_url }}{% else %}https://via.placeholder.com/300x400.png?text=Foto{% endif %}">
+    {# ✅ SI NO HAY NINGUNO: sin paréntesis (Django template no soporta) #}
+    <div style="margin-top:12px;">
+      {% if not has_certs %}
+        <div class="cert-empty">No hay certificados disponibles para mostrar.</div>
+      {% endif %}
     </div>
   </div>
-
-  {% if inc_datos and perfil.perfil_profesional %}
-  <div class="section">
-    <div class="section-title">Perfil profesional</div>
-    <div class="divider"></div>
-    <div class="desc">{{ perfil.perfil_profesional }}</div>
-  </div>
   {% endif %}
 
-  {% if inc_academicos and academicos %}
-  <div class="section">
-    <div class="section-title">Productos académicos</div>
-    <div class="divider"></div>
+  <script>
+    window.addEventListener("load", () => {
+      setTimeout(() => window.print(), 600);
+    });
 
-    {% for p in academicos %}
-      <div class="item">
-        <div class="item-title">{{ p.nombrerecurso|default:"Producto" }}</div>
-        <div class="desc">{{ p.descripcion|default:"" }}</div>
-      </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  {% if inc_cursos and cursos %}
-  <div class="section">
-    <div class="section-title">Cursos realizados</div>
-    <div class="divider"></div>
-
-    {% for c in cursos %}
-      <div class="item">
-        <div class="item-title">{{ c.nombrecurso }}</div>
-        <div class="item-sub">
-          {% if c.entidad_patrocinadora %}{{ c.entidad_patrocinadora }} / {% endif %}
-          {% if c.total_horas %}{{ c.total_horas }} horas{% endif %}
-        </div>
-        <div class="desc">{{ c.descripcion_curso|default:"" }}</div>
-      </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  {% if inc_experiencia and experiencias %}
-  <div class="section">
-    <div class="section-title">Experiencia laboral</div>
-    <div class="divider"></div>
-
-    {% for e in experiencias %}
-      <div class="item">
-        <div class="item-title">{{ e.cargo_desempenado|default:"Cargo" }}</div>
-        <div class="item-sub">
-          {{ e.nombre_de_la_empresa|default:"Empresa" }}
-          {% if e.fecha_de_inicio_de_gestion %} / {{ e.fecha_de_inicio_de_gestion }}{% endif %}
-          {% if e.fecha_fin_de_gestion %} - {{ e.fecha_fin_de_gestion }}{% else %} - Actualidad{% endif %}
-        </div>
-        <div class="desc"><b>Funciones:</b> {{ e.descripcion_de_funciones|default:"" }}</div>
-      </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  {% if inc_reconocimientos and reconocimientos %}
-  <div class="section">
-    <div class="section-title">Reconocimientos</div>
-    <div class="divider"></div>
-
-    {% for r in reconocimientos %}
-      <div class="item">
-        <div class="item-title">{{ r.tipo_reconocimiento|default:"Reconocimiento" }}</div>
-        <div class="item-sub">
-          {% if r.entidad_patrocinadora %}{{ r.entidad_patrocinadora }}{% endif %}
-          {% if r.fecha_reconocimiento %} / {{ r.fecha_reconocimiento }}{% endif %}
-        </div>
-        <div class="desc">{{ r.descripcion_reconocimiento|default:"" }}</div>
-      </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
-  {% if inc_garage and garage %}
-  <div class="section">
-    <div class="section-title">Venta garage</div>
-    <div class="divider"></div>
-
-    <ul>
-      {% for g in garage %}
-        <li><b>{{ g.nombreproducto }}</b> — ${{ g.valordelbien }}. {{ g.descripcion|default:"" }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
-<script>
-  // Abre el cuadro de imprimir automáticamente
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      window.print();
-    }, 600);
-  });
-
-  // Opcional: cerrar la pestaña después de imprimir/guardar
-  window.addEventListener("afterprint", () => {
-    setTimeout(() => window.close(), 300);
-  });
-</script>
+    window.addEventListener("afterprint", () => {
+      setTimeout(() => window.close(), 300);
+    });
+  </script>
 
 </body>
 </html>

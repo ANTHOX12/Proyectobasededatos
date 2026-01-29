@@ -87,9 +87,8 @@ def generar_pdf(request):
     include_raw = (request.GET.get("include") or "").strip()
 
     if include_raw:
-        include = {x.strip() for x in include_raw.split(",") if x.strip()}
+        include = {x.strip().lower() for x in include_raw.split(",") if x.strip()}
     else:
-        # si no vino include, armamos include por query params tipo ?datos=1
         keys = ["datos", "perfil", "formacion", "experiencia", "cursos", "reconocimientos", "producto", "garage"]
         include = {k for k in keys if request.GET.get(k) == "1"}
 
@@ -146,7 +145,22 @@ def generar_pdf(request):
         if ctx["inc_garage"] else []
     )
 
-    # 5) template imprimible
+    # ✅ 5) texto del perfil para el template (en tu HTML se llama perfil_texto)
+    #     (usa primero perfil_profesional; si no existe, intenta con descripcion_de_perfil)
+    ctx["perfil_texto"] = (
+        (getattr(perfil, "perfil_profesional", None) or "").strip()
+        or (getattr(perfil, "descripcion_de_perfil", None) or "").strip()
+        or ""
+    )
+
+    # ✅ 6) has_certs: evita el TemplateSyntaxError (Django template NO soporta paréntesis)
+    ctx["has_certs"] = (
+        (ctx["inc_cursos"] and any(getattr(c, "rutacertificado", None) for c in ctx["cursos"])) or
+        (ctx["inc_reconocimientos"] and any(getattr(r, "rutacertificado", None) for r in ctx["reconocimientos"])) or
+        (ctx["inc_experiencia"] and any(getattr(e, "ruta_certificado", None) for e in ctx["experiencias"]))
+    )
+
+    # 7) template imprimible
     response = render(request, "cv_pdf.html", ctx)
 
     # evita cache (para que refleje cambios al toque)
