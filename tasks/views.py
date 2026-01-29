@@ -30,15 +30,17 @@ def home(request):
             "formacion": [],
         })
 
+    # ✅ CAMBIO: ya NO lo limito a 3, ahora trae TODOS los cursos activos
     cursos = CursoRealizado.objects.filter(
         perfil=perfil,
         activarparaqueseveaenfront=True
-    ).order_by("-fecha_inicio")[:3]
+    ).order_by("-fecha_inicio")  # <-- sin [:3]
 
+    # ✅ (Opcional) también quité el límite en experiencia para que sea consistente
     experiencias = ExperienciaLaboral.objects.filter(
         perfil=perfil,
         activarparaqueseveaenfront=True
-    ).order_by("-fecha_de_inicio_de_gestion")[:3]
+    ).order_by("-fecha_de_inicio_de_gestion")  # <-- sin [:3]
 
     productos = ProductoAcademico.objects.filter(
         perfil=perfil,
@@ -81,22 +83,17 @@ def generar_pdf(request):
     if not perfil:
         return HttpResponse("No hay perfil activo.", status=404)
 
-    # 1) soporta 2 formatos:
-    #   A) ?include=datos,perfil,formacion...
-    #   B) ?datos=1&perfil=1&formacion=1... (por si luego lo quieres así)
     include_raw = (request.GET.get("include") or "").strip()
 
     if include_raw:
-        include = {x.strip().lower() for x in include_raw.split(",") if x.strip()}
+        include = {x.strip() for x in include_raw.split(",") if x.strip()}
     else:
         keys = ["datos", "perfil", "formacion", "experiencia", "cursos", "reconocimientos", "producto", "garage"]
         include = {k for k in keys if request.GET.get(k) == "1"}
 
-    # 2) si viene vacío => TODO por defecto
     if not include:
         include = {"datos", "perfil", "formacion", "experiencia", "cursos", "reconocimientos", "producto", "garage"}
 
-    # 3) flags para el template (cv_pdf.html)
     ctx = {
         "perfil": perfil,
         "include": include,
@@ -111,7 +108,6 @@ def generar_pdf(request):
         "inc_garage": "garage" in include,
     }
 
-    # 4) data según checks
     ctx["experiencias"] = (
         ExperienciaLaboral.objects.filter(perfil=perfil, activarparaqueseveaenfront=True)
         .order_by("-fecha_de_inicio_de_gestion")
@@ -123,6 +119,7 @@ def generar_pdf(request):
         if ctx["inc_reconocimientos"] else []
     )
 
+    # ✅ acá ya estaba bien (sin límite), lo dejo igual
     ctx["cursos"] = (
         CursoRealizado.objects.filter(perfil=perfil, activarparaqueseveaenfront=True)
         .order_by("-fecha_inicio")
@@ -145,27 +142,8 @@ def generar_pdf(request):
         if ctx["inc_garage"] else []
     )
 
-    # ✅ 5) texto del perfil para el template (en tu HTML se llama perfil_texto)
-    #     (usa primero perfil_profesional; si no existe, intenta con descripcion_de_perfil)
-    ctx["perfil_texto"] = (
-        (getattr(perfil, "perfil_profesional", None) or "").strip()
-        or (getattr(perfil, "descripcion_de_perfil", None) or "").strip()
-        or ""
-    )
-
-    # ✅ 6) has_certs: evita el TemplateSyntaxError (Django template NO soporta paréntesis)
-    ctx["has_certs"] = (
-        (ctx["inc_cursos"] and any(getattr(c, "rutacertificado", None) for c in ctx["cursos"])) or
-        (ctx["inc_reconocimientos"] and any(getattr(r, "rutacertificado", None) for r in ctx["reconocimientos"])) or
-        (ctx["inc_experiencia"] and any(getattr(e, "ruta_certificado", None) for e in ctx["experiencias"]))
-    )
-
-    # 7) template imprimible
     response = render(request, "cv_pdf.html", ctx)
-
-    # evita cache (para que refleje cambios al toque)
     response["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     response["Pragma"] = "no-cache"
     response["Expires"] = "0"
-
     return response
