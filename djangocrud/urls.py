@@ -21,6 +21,10 @@ from tasks import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+
+    # ✅ PDF
+    path('cv/pdf/', views.generar_pdf, name='cv_pdf'),
 ]
+
 
 

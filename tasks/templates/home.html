@@ -861,22 +861,6 @@
       margin-top: 4px;
     }
 
-    .tile-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 900;
-      border: 1px solid var(--line2);
-      background: var(--navy);
-      color: #fff;
-      cursor:pointer;
-      transition: transform .12s ease, opacity .12s ease;
-    }
-    .tile-btn:hover{ transform: translateY(-1px); }
-
     /* ✅ miniatura (zoom) */
     .tile-thumb{
       width: 56px;
@@ -986,6 +970,128 @@
       background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.10);
     }
+
+    /* =================== MODAL PDF (solo UI) =================== */
+    .pdf-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 15, 25, .72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 6500;
+      padding: 18px;
+    }
+    .pdf-overlay.is-open{ display:flex; }
+
+    .pdf-dialog{
+      width: min(760px, 96vw);
+      border-radius: 22px;
+      overflow: hidden;
+      background: #0b1624;
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 26px 60px rgba(0,0,0,.45);
+    }
+
+    .pdf-top{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: linear-gradient(180deg, #122233, #0e1b2a);
+      color: rgba(255,255,255,.92);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+
+    .pdf-title{
+      font-weight: 900;
+      letter-spacing: .08em;
+      font-size: 12px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pdf-close{
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      font-weight: 900;
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    .pdf-body{
+      padding: 16px;
+      background: radial-gradient(1200px 600px at 50% 30%, rgba(255,255,255,.06), transparent 55%);
+      color: rgba(255,255,255,.92);
+    }
+
+    .pdf-sub{
+      margin: 0;
+      font-size: 13px;
+      font-weight: 800;
+      opacity: .85;
+    }
+
+    .pdf-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 560px){
+      .pdf-grid{ grid-template-columns: 1fr; }
+    }
+
+    .pdf-opt{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      user-select:none;
+    }
+    .pdf-opt input{
+      width: 16px;
+      height: 16px;
+      accent-color: #4f7db0;
+    }
+
+    .pdf-actions{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .pdf-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease, background .12s ease;
+    }
+    .pdf-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.14); }
+
+    .pdf-btn.primary{
+      background: rgba(79, 125, 176, .22);
+      border-color: rgba(255,255,255,.22);
+    }
   </style>
 </head>
 
@@ -1033,7 +1139,7 @@
               {% endif %}
             </div>
 
-            <button class="btn" id="btnPrint">Imprimir / PDF</button>
+            <button class="btn" id="btnPrint" type="button">Imprimir / PDF</button>
           </aside>
 
           <section class="right">
@@ -1248,7 +1354,7 @@
                         <span class="meta"></span>
 
                         {% if r.rutacertificado %}
-                          <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Comprobante</a>
+                          <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Ver soporte</a>
                         {% else %}
                         {% endif %}
                       </div>
@@ -1328,16 +1434,15 @@
                     <div class="deck-ico">📦</div>
 
                     <div class="deck-main">
-                     <div class="deck-head">
-  <div class="deck-title">{{ p.nombrerecurso }}</div>
+                      <div class="deck-head">
+                        <div class="deck-title">{{ p.nombrerecurso }}</div>
 
-  {% if p.fecha_inicio %}
-    <div class="deck-date">{{ p.fecha_inicio }}</div>
-  {% elif p.clasificador %}
-    <div class="deck-date">{{ p.clasificador }}</div>
-  {% endif %}
-</div>
-
+                        {% if p.fecha_inicio %}
+                          <div class="deck-date">{{ p.fecha_inicio }}</div>
+                        {% elif p.clasificador %}
+                          <div class="deck-date">{{ p.clasificador }}</div>
+                        {% endif %}
+                      </div>
 
                       <div class="deck-sub">
                         {% if p.clasificador %}
@@ -1451,7 +1556,6 @@
                       <div class="tile-top">
                         <span class="tile-badge">🧩 Garage</span>
 
-                        <!-- ✅ Estado + bolita dinámica -->
                         <span class="state
                           {% if g.estadoproducto == 'Bueno' %}state--bueno
                           {% elif g.estadoproducto == 'Regular' %}state--regular
@@ -1472,7 +1576,6 @@
                       </div>
                     </div>
 
-                    <!-- ✅ Zoom modal -->
                     <div class="tile-thumb"
                          title="{{ g.nombreproducto }}"
                          {% if g.imagen_url %}data-zoom-src="{{ g.imagen_url }}"{% endif %}>
@@ -1506,11 +1609,11 @@
   </div>
 
   <script>
-    document.getElementById("btnPrint")?.addEventListener("click", () => window.print());
-
+    // ✅ Footer year
     const y = document.getElementById("year");
     if (y) y.textContent = new Date().getFullYear();
 
+    // ✅ Tabs
     const tabs = Array.from(document.querySelectorAll("[data-tab]"));
     const panels = Array.from(document.querySelectorAll(".tab-panel[data-panel]"));
 
@@ -1596,6 +1699,103 @@
       });
     })();
   </script>
+
+  <!-- =================== MODAL PDF (solo UI) =================== -->
+  <div class="pdf-overlay" id="pdfOverlay" aria-hidden="true">
+    <div class="pdf-dialog" role="dialog" aria-modal="true" aria-label="PDF CV">
+      <div class="pdf-top">
+        <div class="pdf-title">Armar PDF</div>
+        <button class="pdf-close" id="pdfClose" type="button">Cerrar ✕</button>
+      </div>
+
+      <div class="pdf-body">
+        <p class="pdf-sub">Selecciona qué secciones quieres incluir:</p>
+
+        <div class="pdf-grid" id="pdfGrid">
+          <label class="pdf-opt"><input type="checkbox" value="datos" checked> Datos personales</label>
+          <label class="pdf-opt"><input type="checkbox" value="perfil" checked> Perfil profesional</label>
+          <label class="pdf-opt"><input type="checkbox" value="formacion" checked> Educación / Formación</label>
+          <label class="pdf-opt"><input type="checkbox" value="experiencia" checked> Experiencia laboral</label>
+          <label class="pdf-opt"><input type="checkbox" value="cursos" checked> Cursos</label>
+          <label class="pdf-opt"><input type="checkbox" value="reconocimientos"> Reconocimientos</label>
+          <label class="pdf-opt"><input type="checkbox" value="producto"> Producto laboral</label>
+          <label class="pdf-opt"><input type="checkbox" value="garage"> Garage</label>
+        </div>
+
+        <div class="pdf-actions">
+          <button class="pdf-btn" id="pdfAll" type="button">Todo</button>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="pdf-btn" id="pdfNone" type="button">Ninguno</button>
+            <button class="pdf-btn primary" id="pdfGenerate" type="button">Continuar</button>
+          </div>
+        </div>
+
+        <div style="margin-top:10px; font-size:12px; opacity:.70;">
+          * Por ahora esto solo muestra el selector (aún no genera el PDF).
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<script>
+  const CV_PDF_URL = "{% url 'cv_pdf' %}";
+</script>
+
+  <script>
+  (function () {
+    const btn = document.getElementById("btnPrint");
+    const overlay = document.getElementById("pdfOverlay");
+    const closeBtn = document.getElementById("pdfClose");
+    const allBtn = document.getElementById("pdfAll");
+    const noneBtn = document.getElementById("pdfNone");
+    const genBtn = document.getElementById("pdfGenerate");
+
+    const checks = () =>
+      Array.from(document.querySelectorAll("#pdfGrid input[type='checkbox']"));
+
+    function openPdf() {
+      overlay.classList.add("is-open");
+      overlay.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closePdf() {
+      overlay.classList.remove("is-open");
+      overlay.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    btn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPdf();
+    });
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closePdf();
+    });
+
+    closeBtn.addEventListener("click", closePdf);
+
+    allBtn.addEventListener("click", () => checks().forEach((c) => (c.checked = true)));
+    noneBtn.addEventListener("click", () => checks().forEach((c) => (c.checked = false)));
+
+    genBtn.addEventListener("click", () => {
+      const selected = checks()
+        .filter((c) => c.checked)
+        .map((c) => c.value.trim().toLowerCase());
+
+      const params = new URLSearchParams();
+      params.set("include", selected.join(","));
+
+      const base = CV_PDF_URL; // ✅ ruta real de Django
+      const url = base + "?" + params.toString();
+
+      window.open(url, "_blank", "noopener");
+      closePdf();
+    });
+  })();
+</script>
+
 
   <footer class="footer">
     <div class="footer-inner">
