@@ -1593,39 +1593,49 @@ body{
   </div>
 
   <script>
-    // ✅ Footer year
-    const y = document.getElementById("year");
-    if (y) y.textContent = new Date().getFullYear();
-
-    // ✅ Tabs
+  // ✅ Tabs (robusto + siempre arranca en Home al recargar)
+  (function () {
     const tabs = Array.from(document.querySelectorAll("[data-tab]"));
     const panels = Array.from(document.querySelectorAll(".tab-panel[data-panel]"));
 
-    function activate(name){
-      panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === name));
-      tabs.forEach(t => t.classList.toggle("is-active", t.dataset.tab === name));
-      history.replaceState(null, "", "#" + name);
+    const allowed = new Set(["home","reconocimientos","formacion","producto","experiencia","garage"]);
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    function activate(name, opts = { scroll: true, setHash: true }) {
+      const safe = allowed.has(name) ? name : "home";
 
+      panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === safe));
+      tabs.forEach(t => t.classList.toggle("is-active", t.dataset.tab === safe));
+
+      if (opts.setHash) {
+        history.replaceState(null, "", "#" + safe);
+      }
+
+      if (opts.scroll) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
 
+    // ✅ Click en tabs
     tabs.forEach(t => {
       t.addEventListener("click", (e) => {
         e.preventDefault();
-        activate(t.dataset.tab);
+        activate(t.dataset.tab, { scroll: true, setHash: true });
       });
     });
 
-    const allowed = new Set(["home","reconocimientos","formacion","producto","experiencia","garage"]);
-    const initial = (location.hash || "#home").slice(1);
-    activate(allowed.has(initial) ? initial : "home");
+    // ✅ AL RECARGAR / ENTRAR: SIEMPRE HOME (sin romper el proyecto)
+    // Ponemos #home y activamos sin depender del hash anterior
+    history.replaceState(null, "", "#home");
+    activate("home", { scroll: false, setHash: false });
 
+    // ✅ Si el hash cambia por algo externo, igual lo controlamos:
+    // (pero como tú quieres que recargar siempre vaya a home, aquí forzamos home también)
     window.addEventListener("hashchange", () => {
-      const h = (location.hash || "#home").slice(1);
-      activate(allowed.has(h) ? h : "home");
+      history.replaceState(null, "", "#home");
+      activate("home", { scroll: true, setHash: false });
     });
-  </script>
+  })();
+</script>
 
   <!-- =================== ZOOM MODAL =================== -->
   <div class="zoom-overlay" id="zoomOverlay" aria-hidden="true">
