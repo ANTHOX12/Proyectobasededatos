@@ -43,14 +43,17 @@ def home(request):
     ).order_by("-fecha_de_inicio_de_gestion")  # <-- sin [:3]
 
     productos = ProductoAcademico.objects.filter(
-        perfil=perfil,
-        activarparaqueseveaenfront=True
-    )
+    perfil=perfil,
+    activarparaqueseveaenfront=True
+).order_by("-fecha_inicio", "-id")
+
 
     reconocimientos = Reconocimiento.objects.filter(
-        perfil=perfil,
-        activarparaqueseveaenfront=True
-    )
+    perfil=perfil,
+    activarparaqueseveaenfront=True
+).order_by("-fecha_reconocimiento", "-id")
+
+
 
     garage = VentaGarage.objects.filter(
         perfil=perfil,

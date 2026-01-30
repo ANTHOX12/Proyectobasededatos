@@ -91,6 +91,7 @@ class ExperienciaLaboral(models.Model):
 class Reconocimiento(models.Model):
     perfil = models.ForeignKey(
         DatosPersonales, on_delete=models.CASCADE, related_name="reconocimientos"
+        
     )
 
     tipo_reconocimiento = models.CharField(max_length=100)
@@ -103,6 +104,9 @@ class Reconocimiento(models.Model):
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
     rutacertificado = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        ordering = ["-fecha_reconocimiento", "-id"]
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -177,6 +181,9 @@ class ProductoAcademico(models.Model):
     fecha_inicio = models.DateField(null=True, blank=True, validators=[no_futuro])
 
     activarparaqueseveaenfront = models.BooleanField(default=True)
+
+    class Meta:
+     ordering = ["-fecha_inicio", "-id"]
 
     def save(self, *args, **kwargs):
         self.full_clean()
