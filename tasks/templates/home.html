@@ -24,55 +24,48 @@
     }
 
     *{ box-sizing:border-box; }
-    html, body{ height:100%; }
+   html, body{
+  height:100%;
+  margin:0;
+}
 
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: var(--paper);
-      color: var(--text);
-      overflow: hidden;
-    }
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background: var(--paper);
+  color: var(--text);
+  /* ✅ SCROLL NATURAL */
+  overflow-y: auto;
+}
 
-    .scroll-area{
-      height: calc(100dvh - var(--topbarH) - var(--footerH));
-      margin-top: var(--topbarH);
-      margin-bottom: var(--footerH);
+/* ❌ ELIMINADO scroll-area */
+/* .scroll-area { … } */
 
-      overflow-y: auto;
-      overflow-x: hidden;
-      scrollbar-gutter: stable;
-      padding: 0;
-      -webkit-overflow-scrolling: touch;
+/* ✅ TOPBAR EN FLUJO NORMAL */
+.topbar{
+  position: static;
+  height: var(--topbarH);
+  display:flex;
+  align-items:center;
+  background: linear-gradient(180deg, #1b2f44, #122233);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
 
-      scrollbar-width: thin;
-      scrollbar-color: rgba(35,58,82,.75) rgba(15,23,42,.06);
-    }
+/* ✅ FOOTER EN FLUJO NORMAL */
+.footer{
+  position: static; /* ✅ CLAVE */
+  width: 100%;
+  height: var(--footerH);
+  background: linear-gradient(180deg, #122233, #0e1b2a);
+  color: rgba(255,255,255,.85);
+  border-top: 1px solid rgba(255,255,255,.12);
+}
 
-    .scroll-area::-webkit-scrollbar{ width: 12px; }
-    .scroll-area::-webkit-scrollbar-track{ background: rgba(15,23,42,.06); }
-    .scroll-area::-webkit-scrollbar-thumb{
-      background: rgba(35,58,82,.75);
-      border-radius: 999px;
-      border: 3px solid rgba(246,247,251,1);
-    }
-    .scroll-area::-webkit-scrollbar-thumb:hover{
-      background: rgba(26,44,63,.85);
-    }
 
-    .topbar{
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
+/* ✅ WRAPPER QUE EMPUJA FOOTER ABAJO */
+.main-wrapper{
+  min-height: calc(100vh - var(--topbarH) - var(--footerH));
+}
 
-      height: var(--topbarH);
-      display:flex;
-      align-items:center;
-      background: linear-gradient(180deg, #1b2f44, #122233);
-      border-bottom: 1px solid rgba(255,255,255,.12);
-    }
 
     .topbar-inner{
       width: 100%;
@@ -116,6 +109,34 @@
       opacity:1;
       transform: translateY(-1px);
     }
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
+.admin-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  text-decoration:none;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .06em;
+  color: #fff;
+
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.22);
+  transition: transform .12s ease, background .12s ease, opacity .12s ease;
+}
+
+.admin-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.14);
+}
 
     .nav-link.is-active,
     .brand.is-active{
@@ -395,18 +416,7 @@
       opacity: .7;
     }
 
-    .footer{
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 999;
-      height: var(--footerH);
-      background: linear-gradient(180deg, #122233, #0e1b2a);
-      color: rgba(255,255,255,.85);
-      border-top: 1px solid rgba(255,255,255,.12);
-      margin-top: 0;
-    }
+  
 
     .footer-inner{
       max-width: 1400px;
@@ -1106,6 +1116,15 @@
 <body>
   <nav class="topbar">
     <div class="topbar-inner">
+  <div class="topbar-left">
+    <a class="admin-btn" href="https://proyectobasededatos-xeta.onrender.com/admin/" target="_blank" rel="noopener">
+      Admin
+    </a>
+  </div>
+
+  <div class="topbar-right" id="tabs">
+
+    <div class="topbar-inner">
       <div class="topbar-left"></div>
 
       <div class="topbar-right" id="tabs">
@@ -1119,8 +1138,9 @@
     </div>
   </nav>
 
-  <div class="scroll-area" id="scrollArea">
-    <main class="tabs-panels">
+<div class="main-wrapper">
+  <main class="tabs-panels">
+
 
       <!-- HOME -->
       <section class="tab-panel" data-panel="home">
@@ -1587,8 +1607,8 @@
       tabs.forEach(t => t.classList.toggle("is-active", t.dataset.tab === name));
       history.replaceState(null, "", "#" + name);
 
-      const sc = document.getElementById("scrollArea");
-      if (sc) sc.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
     }
 
     tabs.forEach(t => {
