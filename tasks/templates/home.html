@@ -417,7 +417,6 @@ body{
     }
 
   
-
     .footer-inner{
       max-width: 1400px;
       margin: 0 auto;
@@ -1339,7 +1338,7 @@ body{
                         <span class="meta"></span>
 
                         {% if r.rutacertificado %}
-                          <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">Comp</a>
+                          <a class="deck-btn" href="{{ r.rutacertificado }}" target="_blank" rel="noopener">comprobante/a>
                         {% else %}
                         {% endif %}
                       </div>
@@ -1619,8 +1618,10 @@ body{
     });
 
     const allowed = new Set(["home","reconocimientos","formacion","producto","experiencia","garage"]);
-    const initial = (location.hash || "#home").slice(1);
-    activate(allowed.has(initial) ? initial : "home");
+    // ✅ SIEMPRE arrancar en Home aunque exista hash
+history.replaceState(null, "", "#home");
+activate("home");
+
 
     window.addEventListener("hashchange", () => {
       const h = (location.hash || "#home").slice(1);
