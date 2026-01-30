@@ -1618,10 +1618,8 @@ body{
     });
 
     const allowed = new Set(["home","reconocimientos","formacion","producto","experiencia","garage"]);
-    // ✅ SIEMPRE arrancar en Home aunque exista hash
-history.replaceState(null, "", "#home");
-activate("home");
-
+    const initial = (location.hash || "#home").slice(1);
+    activate(allowed.has(initial) ? initial : "home");
 
     window.addEventListener("hashchange", () => {
       const h = (location.hash || "#home").slice(1);
